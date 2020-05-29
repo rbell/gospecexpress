@@ -1,6 +1,6 @@
 package validation
 
-type Validator interface {
+type Specification interface {
 	IsValid() bool
 }
 
