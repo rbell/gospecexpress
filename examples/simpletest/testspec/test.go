@@ -6,20 +6,20 @@ import (
 )
 
 func init() {
-	specexpress.Catalog().Register(newTestSpec().ForType(&testmodels.Customer{}))
-}
+	specexpress.Catalog().Register(newTestSpec())
 
-var _ specexpress.SpecificationBuilder = &TestSpec{}
+}
 
 type TestSpec struct {
 	specexpress.Specification
 }
 
 func newTestSpec() *TestSpec {
-	return &TestSpec{}
-}
+	s := &TestSpec{}
 
-func (t *TestSpec) Validate(thing interface{}) bool {
-	return true
+	s.ForType(&testmodels.Customer{}).
+		RequiredField("FirstName")
+
+	return s
 }
 

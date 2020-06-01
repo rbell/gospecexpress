@@ -1,28 +1,23 @@
 package specexpress
 
-import "reflect"
-
-// SpecificationValidator defines interface to Validate something
-type SpecificationValidator interface {
-	Validate(interface{}) bool
-}
-
-// SpecificationBuilder defines interface methods to build a specification
-type SpecificationBuilder interface {
-	SpecificationValidator
-	ForType(forType interface{}) SpecificationBuilder
-	GetForType() reflect.Type
-}
+import (
+	"gitlab.com/govalidate/internal/validatorBuilder"
+	"gitlab.com/govalidate/pkg/interfaces"
+	"reflect"
+)
 
 // Specification defines a base for specification
 type Specification struct {
 	forType reflect.Type
+	validators []interfaces.Validator
 }
 
 // ForType sets the type that the specification is to be applied to
-func (s *Specification) ForType(forType interface{}) SpecificationBuilder {
-	s.forType = reflect.TypeOf(forType)
-	return s
+func (s *Specification) ForType(forType interface{}) interfaces.ValidatorBuilder {
+	forValue := reflect.ValueOf(forType)
+	s.forType = forValue.Type()
+	s.validators = []interfaces.Validator{}
+	return validatorBuilder.NewValidatorBuilder(&s.validators, forValue)
 }
 
 // GetForType returns the type that the specification is to be applied to
@@ -31,6 +26,12 @@ func (s *Specification) GetForType() reflect.Type {
 }
 
 // Validate validates an instance of the type
-func (s *Specification) Validate(interface{}) bool {
+func (s *Specification) Validate(thing interface{}) bool {
+	for _, v := range s.validators {
+		if !v.Validate(thing) {
+			return false
+		}
+	}
 	return true
 }
+

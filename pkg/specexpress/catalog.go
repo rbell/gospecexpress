@@ -1,6 +1,7 @@
 package specexpress
 
 import (
+	"gitlab.com/govalidate/pkg/interfaces"
 	"reflect"
 	"sync"
 )
@@ -11,7 +12,7 @@ const (
 
 // Cataloger defines interface for a validation catalog
 type Cataloger interface {
-	Register(s SpecificationBuilder)
+	Register(s interfaces.SpecificationValidator)
 	Validate(something interface{}) bool
 }
 
@@ -19,14 +20,14 @@ var instance Cataloger
 var instanceOnce = &sync.Once{}
 
 type catalog struct {
-	validators map[reflect.Type]map[string]SpecificationBuilder
+	validators map[reflect.Type]map[string]interfaces.SpecificationValidator
 }
 
 // Catalog gets the singleton instance of the Cataloger
 func Catalog() Cataloger {
 	instanceOnce.Do(func() {
 		instance = &catalog{
-			validators: make(map[reflect.Type]map[string]SpecificationBuilder),
+			validators: make(map[reflect.Type]map[string]interfaces.SpecificationValidator),
 		}
 	})
 
@@ -34,10 +35,10 @@ func Catalog() Cataloger {
 }
 
 // Register registers a specification in the catalog
-func (c *catalog) Register(s SpecificationBuilder) {
+func (c *catalog) Register(s interfaces.SpecificationValidator) {
 	t := s.GetForType()
 	if c.validators[t] == nil {
-		c.validators[t] = make(map[string]SpecificationBuilder)
+		c.validators[t] = make(map[string]interfaces.SpecificationValidator)
 	}
 	c.validators[t][defaultContext] = s
 }

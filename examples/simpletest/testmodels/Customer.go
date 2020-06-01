@@ -1,6 +1,8 @@
 package testmodels
 
 type Customer struct {
-	FirstName string
-	LastName string
+	FirstName  string
+	middleName string
+	LastName   string
+	Age        int16
 }

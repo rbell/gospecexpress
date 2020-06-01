@@ -12,6 +12,7 @@ func main() {
 	c := &testmodels.Customer{
 		FirstName: "Fred",
 		LastName:  "Flinstone",
+		Age: 23,
 	}
 	isvalid := specexpress.Catalog().Validate(c)
 	fmt.Printf("Customer valid: %v", isvalid)
