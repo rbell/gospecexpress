@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
+	"gitlab.com/govalidate/examples/simpletest/testmodels"
+	"gitlab.com/govalidate/pkg/specexpress"
 
-	"local/gospecexpress/examples/simpletest/testmodels"
-	"local/gospecexpress/pkg/validation"
-
-	_ "local/gospecexpress/examples/simpletest/testspec"
+	_ "gitlab.com/govalidate/examples/simpletest/testspec"
 )
 
 func main() {
@@ -14,7 +13,7 @@ func main() {
 		FirstName: "Fred",
 		LastName:  "Flinstone",
 	}
-	isvalid := validation.Catalog().Validate(c)
+	isvalid := specexpress.Catalog().Validate(c)
 	fmt.Printf("Customer valid: %v", isvalid)
 }
 

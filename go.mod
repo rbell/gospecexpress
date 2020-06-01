@@ -1,4 +1,4 @@
-module local/govalidate
+module gitlab.com/govalidate
 
 go 1.13
 

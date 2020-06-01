@@ -1,4 +1,4 @@
-package validation
+package specexpress
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -8,14 +8,14 @@ import (
 
 func TestCatalog_RegisterForType_ShouldRegisterDefalutSpecForType(t *testing.T) {
 	// setup
-	c := &catalog{validators: make(map[reflect.Type]map[string]Specification)}
+	c := &catalog{validators: make(map[reflect.Type]map[string]SpecificationValidator)}
 	mSpec := &MockSpecification{}
 	type fakeStruct struct {}
 	fake := &fakeStruct{}
 	fakeType := reflect.TypeOf(fake)
 
 	// test
-	c.RegisterForType(fake, mSpec)
+	c.Register(fake, mSpec)
 
 	// assert
 	assert.Contains(t, c.validators, fakeType)

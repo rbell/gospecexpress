@@ -1,20 +1,25 @@
 package testspec
 
 import (
-	"local/gospecexpress/examples/simpletest/testmodels"
-	"local/gospecexpress/pkg/validation"
+	"gitlab.com/govalidate/examples/simpletest/testmodels"
+	"gitlab.com/govalidate/pkg/specexpress"
 )
 
 func init() {
-	validation.Catalog().RegisterForType(&testmodels.Customer{}, &TestSpec{})
+	specexpress.Catalog().Register(newTestSpec().ForType(&testmodels.Customer{}))
 }
 
-var _ validation.Validator = &TestSpec{}
+var _ specexpress.SpecificationBuilder = &TestSpec{}
 
 type TestSpec struct {
-
+	specexpress.Specification
 }
 
-func (t *TestSpec) IsValid() bool {
+func newTestSpec() *TestSpec {
+	return &TestSpec{}
+}
+
+func (t *TestSpec) Validate(thing interface{}) bool {
 	return true
 }
+
