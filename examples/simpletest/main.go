@@ -10,7 +10,7 @@ import (
 
 func main() {
 	c := &testmodels.Customer{
-		FirstName: "",
+		FirstName: "Fred",
 		LastName:  "",
 		Age: 23,
 	}

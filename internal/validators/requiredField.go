@@ -22,6 +22,7 @@ func (v *RequiredField) Validate(thing interface{}) error {
 	if fv, ok := reflectionHelpers.GetFieldValue(thing, v.fieldName); ok {
 		if fv.IsZero() {
 			// TODO: Get message from a msg repository of some sorts
+			// msg := catalog.Registry.GetMsg("en_US", "RequiredField", v.fieldName, forType)
 			return errors.NewValidationError(v.fieldName, fmt.Sprintf("%v is required.", v.fieldName))
 		}
 	}

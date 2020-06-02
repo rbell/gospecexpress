@@ -19,7 +19,8 @@ func newTestSpec() *TestSpec {
 
 	s.ForType(&testmodels.Customer{}).
 		RequiredField("FirstName").
-		RequiredField("LastName")
+		RequiredField("LastName").
+		RequiredField("middleName")
 
 	return s
 }
