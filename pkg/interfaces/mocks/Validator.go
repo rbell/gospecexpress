@@ -10,14 +10,14 @@ type Validator struct {
 }
 
 // Validate provides a mock function with given fields: thing
-func (_m *Validator) Validate(thing interface{}) bool {
+func (_m *Validator) Validate(thing interface{}) error {
 	ret := _m.Called(thing)
 
-	var r0 bool
-	if rf, ok := ret.Get(0).(func(interface{}) bool); ok {
+	var r0 error
+	if rf, ok := ret.Get(0).(func(interface{}) error); ok {
 		r0 = rf(thing)
 	} else {
-		r0 = ret.Get(0).(bool)
+		r0 = ret.Error(0)
 	}
 
 	return r0
