@@ -2,6 +2,7 @@ package specexpress
 
 import (
 	"gitlab.com/govalidate/internal/validatorBuilder"
+	"gitlab.com/govalidate/pkg/errors"
 	"gitlab.com/govalidate/pkg/interfaces"
 	"reflect"
 )
@@ -26,12 +27,16 @@ func (s *Specification) GetForType() reflect.Type {
 }
 
 // Validate validates an instance of the type
-func (s *Specification) Validate(thing interface{}) bool {
+func (s *Specification) Validate(thing interface{}) error {
+	var specError *errors.ValidationError = nil
 	for _, v := range s.validators {
-		if !v.Validate(thing) {
-			return false
+		if err := v.Validate(thing); err != nil {
+			specError = errors.JoinErrors(specError, err)
 		}
 	}
-	return true
-}
 
+	if specError == nil || reflect.ValueOf(specError).IsNil() {
+		return nil
+	}
+	return specError
+}

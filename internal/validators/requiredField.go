@@ -1,7 +1,9 @@
 package validators
 
 import (
+	"fmt"
 	"gitlab.com/govalidate/internal/reflectionHelpers"
+	"gitlab.com/govalidate/pkg/errors"
 	"gitlab.com/govalidate/pkg/interfaces"
 )
 
@@ -16,10 +18,12 @@ func NewRequiredFieldValidator(fieldName string) interfaces.Validator {
 	}
 }
 
-func (v *RequiredField) Validate(thing interface{}) bool {
+func (v *RequiredField) Validate(thing interface{}) error {
 	if fv, ok := reflectionHelpers.GetFieldValue(thing, v.fieldName); ok {
-		return !fv.IsZero()
+		if fv.IsZero() {
+			return errors.NewValidationError(v.fieldName, fmt.Sprintf("%v is required.", v.fieldName))
+		}
 	}
 
-	return false
+	return nil
 }

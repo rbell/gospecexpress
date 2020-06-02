@@ -4,7 +4,7 @@ import "reflect"
 
 // SpecificationValidator defines interface to Validate something
 type SpecificationValidator interface {
-	Validate(interface{}) bool
+	Validate(interface{}) error
 	ForType(forType interface{}) ValidatorBuilder
 	GetForType() reflect.Type
 }
@@ -15,5 +15,5 @@ type ValidatorBuilder interface {
 }
 
 type Validator interface {
-	Validate(thing interface{}) bool
+	Validate(thing interface{}) error
 }

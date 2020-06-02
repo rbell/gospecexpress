@@ -10,11 +10,15 @@ import (
 
 func main() {
 	c := &testmodels.Customer{
-		FirstName: "Fred",
-		LastName:  "Flinstone",
+		FirstName: "",
+		LastName:  "",
 		Age: 23,
 	}
-	isvalid := specexpress.Catalog().Validate(c)
-	fmt.Printf("Customer valid: %v", isvalid)
+	err := specexpress.Catalog().Validate(c)
+	if err == nil {
+		fmt.Printf("Customer is valid.")
+	} else {
+		fmt.Printf("Customer is not valid:\n%v", err.Error())
+	}
 }
 

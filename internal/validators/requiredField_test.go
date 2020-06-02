@@ -19,7 +19,7 @@ func TestValidate_ValidForPopulatedRequiredField(t *testing.T) {
 	result := validator.Validate(testSubject)
 
 	// Assert
-	assert.True(t, result)
+	assert.Nil(t, result)
 }
 
 func TestValidate_NonExportedField_ValidForPopulatedRequiredField(t *testing.T) {
@@ -36,24 +36,24 @@ func TestValidate_NonExportedField_ValidForPopulatedRequiredField(t *testing.T) 
 	result := validator.Validate(testSubject)
 
 	// Assert
-	assert.True(t, result)
+	assert.Nil(t, result)
 }
 
 func TestValidate_NotValidForUnPopulatedRequiredField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
-		fieldName:   "",
+		fieldName:   "firstName",
 	}
 	type testSubectType struct {
 		firstName string
 	}
-	testSubject := &testSubectType{firstName: "Fred"}
+	testSubject := &testSubectType{firstName: ""}
 
 	// Test
 	result := validator.Validate(testSubject)
 
 	// Assert
-	assert.False(t, result)
+	assert.NotNil(t, result)
 }
 
 func TestValidate_Numeric_ValidForNonZeroField(t *testing.T) {
@@ -70,7 +70,7 @@ func TestValidate_Numeric_ValidForNonZeroField(t *testing.T) {
 	result := validator.Validate(testSubject)
 
 	// Assert
-	assert.True(t, result)
+	assert.Nil(t, result)
 }
 
 func TestValidate_Numeric_NotValidForZeroField(t *testing.T) {
@@ -87,7 +87,7 @@ func TestValidate_Numeric_NotValidForZeroField(t *testing.T) {
 	result := validator.Validate(testSubject)
 
 	// Assert
-	assert.False(t, result)
+	assert.NotNil(t, result)
 }
 
 // TODO: Pointers (nil references)?

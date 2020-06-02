@@ -13,7 +13,7 @@ const (
 // Cataloger defines interface for a validation catalog
 type Cataloger interface {
 	Register(s interfaces.SpecificationValidator)
-	Validate(something interface{}) bool
+	Validate(something interface{}) error
 }
 
 var instance Cataloger
@@ -44,12 +44,14 @@ func (c *catalog) Register(s interfaces.SpecificationValidator) {
 }
 
 // Validate validates something against the catalog of specifications
-func (c *catalog) Validate(something interface{}) bool {
+func (c *catalog) Validate(something interface{}) error {
 	t := reflect.TypeOf(something)
 	if vs,ok := c.validators[t]; ok {
 		if v,ok := vs[defaultContext];ok {
 			return v.Validate(something)
 		}
 	}
-	return false
+
+	// Catalog does not contain specification for something or it is valid.
+	return nil
 }
