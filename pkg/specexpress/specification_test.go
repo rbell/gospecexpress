@@ -1,11 +1,12 @@
 package specexpress
 
 import (
+	"reflect"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"gitlab.com/govalidate/pkg/interfaces"
 	"gitlab.com/govalidate/pkg/interfaces/mocks"
-	"reflect"
-	"testing"
 )
 
 func TestSpecification_ForType_ShouldReturnValidatorBuilder(t *testing.T) {
@@ -37,7 +38,7 @@ func TestSpecification_Validate_ShouldCallValidator(t *testing.T) {
 
 	spec := &Specification{
 		validators: []interfaces.Validator{mValidator},
-		forType: reflect.TypeOf(ts),
+		forType:    reflect.TypeOf(ts),
 	}
 
 	// test

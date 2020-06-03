@@ -1,9 +1,10 @@
 package specexpress
 
 import (
-	"gitlab.com/govalidate/pkg/interfaces"
 	"reflect"
 	"sync"
+
+	"gitlab.com/govalidate/pkg/interfaces"
 )
 
 const (
@@ -46,8 +47,8 @@ func (c *catalog) Register(s interfaces.SpecificationValidator) {
 // Validate validates something against the catalog of specifications
 func (c *catalog) Validate(something interface{}) error {
 	t := reflect.TypeOf(something)
-	if vs,ok := c.validators[t]; ok {
-		if v,ok := vs[defaultContext];ok {
+	if vs, ok := c.validators[t]; ok {
+		if v, ok := vs[defaultContext]; ok {
 			return v.Validate(something)
 		}
 	}

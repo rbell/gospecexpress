@@ -1,15 +1,16 @@
 package specexpress
 
 import (
-	"gitlab.com/govalidate/internal/validatorBuilder"
+	"reflect"
+
+	"gitlab.com/govalidate/internal/validatorbuilder"
 	"gitlab.com/govalidate/pkg/errors"
 	"gitlab.com/govalidate/pkg/interfaces"
-	"reflect"
 )
 
 // Specification defines a base for specification
 type Specification struct {
-	forType reflect.Type
+	forType    reflect.Type
 	validators []interfaces.Validator
 }
 
@@ -18,7 +19,7 @@ func (s *Specification) ForType(forType interface{}) interfaces.ValidatorBuilder
 	forValue := reflect.ValueOf(forType)
 	s.forType = forValue.Type()
 	s.validators = []interfaces.Validator{}
-	return validatorBuilder.NewValidatorBuilder(&s.validators, forValue)
+	return validatorbuilder.NewValidatorBuilder(&s.validators, forValue)
 }
 
 // GetForType returns the type that the specification is to be applied to

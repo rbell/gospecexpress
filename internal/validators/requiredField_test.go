@@ -1,14 +1,15 @@
 package validators
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestValidate_ValidForPopulatedRequiredField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
-		fieldName:   "FirstName",
+		fieldName: "FirstName",
 	}
 	type testSubectType struct {
 		FirstName string
@@ -25,7 +26,7 @@ func TestValidate_ValidForPopulatedRequiredField(t *testing.T) {
 func TestValidate_NonExportedField_ValidForPopulatedRequiredField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
-		fieldName:   "firstName",
+		fieldName: "firstName",
 	}
 	type testSubectType struct {
 		firstName string
@@ -42,7 +43,7 @@ func TestValidate_NonExportedField_ValidForPopulatedRequiredField(t *testing.T) 
 func TestValidate_NotValidForUnPopulatedRequiredField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
-		fieldName:   "firstName",
+		fieldName: "firstName",
 	}
 	type testSubectType struct {
 		firstName string
@@ -59,7 +60,7 @@ func TestValidate_NotValidForUnPopulatedRequiredField(t *testing.T) {
 func TestValidate_Numeric_ValidForNonZeroField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
-		fieldName:   "Distance",
+		fieldName: "Distance",
 	}
 	type testSubectType struct {
 		Distance int64
@@ -76,7 +77,7 @@ func TestValidate_Numeric_ValidForNonZeroField(t *testing.T) {
 func TestValidate_Numeric_NotValidForZeroField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
-		fieldName:   "Distance",
+		fieldName: "Distance",
 	}
 	type testSubectType struct {
 		Distance int64

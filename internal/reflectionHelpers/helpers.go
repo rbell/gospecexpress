@@ -1,4 +1,4 @@
-package reflectionHelpers
+package reflectionhelpers
 
 import "reflect"
 
@@ -20,8 +20,8 @@ func StructValue(t reflect.Value) (*reflect.Value, bool) {
 // GetFieldValue gets a field value from a struct if the field exists.
 func GetFieldValue(thing interface{}, fieldName string) (*reflect.Value, bool) {
 	tv := reflect.ValueOf(thing)
-	if sv,ok := StructValue(tv); ok {
-		if _,ok := sv.Type().FieldByName(fieldName); ok {
+	if sv, ok := StructValue(tv); ok {
+		if _, ok := sv.Type().FieldByName(fieldName); ok {
 			fv := sv.FieldByName(fieldName)
 			return &fv, true
 		}
