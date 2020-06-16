@@ -6,16 +6,17 @@ import (
 )
 
 func init() {
+	// init runs at first import, registering the specification in the specification catalog
 	specexpress.Catalog().Register(newTestSpec())
-
 }
 
-type TestSpec struct {
+// CustomerSpec defines a specification for a customer
+type CustomerSpec struct {
 	specexpress.Specification
 }
 
-func newTestSpec() *TestSpec {
-	s := &TestSpec{}
+func newTestSpec() *CustomerSpec {
+	s := &CustomerSpec{}
 
 	s.ForType(&testmodels.Customer{}).
 		RequiredField("FirstName").MaxLength(5).

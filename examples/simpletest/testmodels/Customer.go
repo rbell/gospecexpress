@@ -1,5 +1,6 @@
 package testmodels
 
+// Customer is a sample customer model for purposes of validation
 type Customer struct {
 	FirstName  string
 	middleName string
