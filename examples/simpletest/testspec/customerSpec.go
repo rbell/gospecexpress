@@ -5,8 +5,9 @@ import (
 	"gitlab.com/govalidate/pkg/specexpress"
 )
 
+// init functions run at first import, registering the specification in the specification catalog
+// (we can define multiple init functions in the same package and they all will get executed upon import)
 func init() {
-	// init runs at first import, registering the specification in the specification catalog
 	specexpress.Catalog().Register(newTestSpec())
 }
 
