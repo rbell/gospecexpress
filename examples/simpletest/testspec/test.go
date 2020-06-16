@@ -18,10 +18,8 @@ func newTestSpec() *TestSpec {
 	s := &TestSpec{}
 
 	s.ForType(&testmodels.Customer{}).
-		RequiredField("FirstName").
-		RequiredField("LastName").
-		RequiredField("middleName")
+		RequiredField("FirstName").MaxLength(5).
+		RequiredField("LastName").MaxLength(50)
 
 	return s
 }
-

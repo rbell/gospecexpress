@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"gitlab.com/govalidate/examples/simpletest/testmodels"
 	"gitlab.com/govalidate/pkg/specexpress"
 
@@ -10,9 +11,9 @@ import (
 
 func main() {
 	c := &testmodels.Customer{
-		FirstName: "Fred",
-		LastName:  "",
-		Age: 23,
+		FirstName: "Fred Flinstone",
+		LastName:  "Flinstone",
+		Age:       23,
 	}
 	err := specexpress.Catalog().Validate(c)
 	if err == nil {
@@ -21,4 +22,3 @@ func main() {
 		fmt.Printf("Customer is not valid:\n%v", err.Error())
 	}
 }
-

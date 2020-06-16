@@ -11,10 +11,10 @@ func TestValidate_ValidForPopulatedRequiredField(t *testing.T) {
 	validator := &RequiredField{
 		fieldName: "FirstName",
 	}
-	type testSubectType struct {
+	type testSubjectType struct {
 		FirstName string
 	}
-	testSubject := &testSubectType{FirstName: "Fred"}
+	testSubject := &testSubjectType{FirstName: "Fred"}
 
 	// Test
 	result := validator.Validate(testSubject)
@@ -28,10 +28,10 @@ func TestValidate_NonExportedField_ValidForPopulatedRequiredField(t *testing.T) 
 	validator := &RequiredField{
 		fieldName: "firstName",
 	}
-	type testSubectType struct {
+	type testSubjectType struct {
 		firstName string
 	}
-	testSubject := &testSubectType{firstName: "Fred"}
+	testSubject := &testSubjectType{firstName: "Fred"}
 
 	// Test
 	result := validator.Validate(testSubject)
@@ -45,10 +45,10 @@ func TestValidate_NotValidForUnPopulatedRequiredField(t *testing.T) {
 	validator := &RequiredField{
 		fieldName: "firstName",
 	}
-	type testSubectType struct {
+	type testSubjectType struct {
 		firstName string
 	}
-	testSubject := &testSubectType{firstName: ""}
+	testSubject := &testSubjectType{firstName: ""}
 
 	// Test
 	result := validator.Validate(testSubject)
@@ -62,10 +62,10 @@ func TestValidate_Numeric_ValidForNonZeroField(t *testing.T) {
 	validator := &RequiredField{
 		fieldName: "Distance",
 	}
-	type testSubectType struct {
+	type testSubjectType struct {
 		Distance int64
 	}
-	testSubject := &testSubectType{Distance: int64(100)}
+	testSubject := &testSubjectType{Distance: int64(100)}
 
 	// Test
 	result := validator.Validate(testSubject)
@@ -79,10 +79,10 @@ func TestValidate_Numeric_NotValidForZeroField(t *testing.T) {
 	validator := &RequiredField{
 		fieldName: "Distance",
 	}
-	type testSubectType struct {
+	type testSubjectType struct {
 		Distance int64
 	}
-	testSubject := &testSubectType{Distance: int64(0)}
+	testSubject := &testSubjectType{Distance: int64(0)}
 
 	// Test
 	result := validator.Validate(testSubject)
