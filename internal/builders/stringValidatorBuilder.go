@@ -6,8 +6,9 @@ import (
 )
 
 // MaxLength indicates a max length rule should be applied to field
-func (v *validatorBuilder) MaxLength(len int) interfaces.ValidatorBuilder {
-	vals := append(*v.validators, validators.NewMaxLengthValidator(v.fieldName, len))
+func (v *validatorBuilder) MaxLength(length int) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, validators.NewMaxLengthValidator(v.fieldName, length))
 	*v.validators = vals
 	return v
 }
