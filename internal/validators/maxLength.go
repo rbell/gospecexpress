@@ -10,7 +10,7 @@ import (
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
-const defaultMessage = "%v should not have a length greater than %v."
+const defaultMaxLengthMessage = "%v should not have a length greater than %v."
 
 // MaxLength defines a validator testing the length of a field
 type MaxLength struct {
@@ -27,7 +27,7 @@ func NewMaxLengthValidator(fieldName string, maxLen int) interfaces.Validator {
 }
 
 func init() {
-	specificationcatalog.Catalog().MessageStore().StoreMessage("MaxLength", defaultMessage)
+	specificationcatalog.Catalog().MessageStore().StoreMessage("MaxLength", defaultMaxLengthMessage)
 }
 
 // Validate validates the thing ensureing the field specified is populated
