@@ -3,10 +3,10 @@ package specexpress
 import (
 	"reflect"
 
-	"gitlab.com/govalidate/pkg/errors"
+	"gitlab.com/rbell/gospecexpress/pkg/errors"
 
-	"gitlab.com/govalidate/internal/builders"
-	"gitlab.com/govalidate/pkg/interfaces"
+	"gitlab.com/rbell/gospecexpress/internal/builders"
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
 // Specification defines a base for specification

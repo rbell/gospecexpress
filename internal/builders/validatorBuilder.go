@@ -3,7 +3,7 @@ package builders
 import (
 	"reflect"
 
-	"gitlab.com/govalidate/pkg/interfaces"
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
 type validatorBuilder struct {

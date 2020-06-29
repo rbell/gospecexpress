@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/govalidate/pkg/interfaces"
-	"gitlab.com/govalidate/pkg/interfaces/mocks"
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces/mocks"
 )
 
 func TestSpecification_ForType_ShouldReturnValidatorBuilder(t *testing.T) {

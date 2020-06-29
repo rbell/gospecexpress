@@ -1,4 +1,4 @@
-module gitlab.com/govalidate
+module gitlab.com/rbell/gospecexpress
 
 go 1.13
 

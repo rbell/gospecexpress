@@ -3,9 +3,10 @@ package validators
 import (
 	"fmt"
 
-	"gitlab.com/govalidate/internal/reflectionhelpers"
-	"gitlab.com/govalidate/pkg/errors"
-	"gitlab.com/govalidate/pkg/interfaces"
+	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
+
+	"gitlab.com/rbell/gospecexpress/pkg/errors"
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
 // RequiredField defines a validator requiring a field value be populated.

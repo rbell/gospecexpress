@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	"gitlab.com/govalidate/examples/simpletest/testmodels"
-	"gitlab.com/govalidate/pkg/specexpress"
+	"gitlab.com/rbell/gospecexpress/pkg/specificationcatalog"
 
+	"gitlab.com/rbell/gospecexpress/examples/simpletest/testmodels"
 	// import specifications, but not referenced.  Need to do so to execute init methods defined in the package
-	_ "gitlab.com/govalidate/examples/simpletest/testspec"
+	_ "gitlab.com/rbell/gospecexpress/examples/simpletest/testspec"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 
 	// Validate it against the specifications we have registered in the specification catalog
 	// (specification registers itself via init function in testspec/customerSpec.go)
-	err := specexpress.Catalog().Validate(c)
+	err := specificationcatalog.Catalog().Validate(c)
 	if err == nil {
 		fmt.Printf("Customer is valid.")
 	} else {

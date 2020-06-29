@@ -3,10 +3,14 @@ package validators
 import (
 	"fmt"
 
-	"gitlab.com/govalidate/internal/reflectionhelpers"
-	"gitlab.com/govalidate/pkg/errors"
-	"gitlab.com/govalidate/pkg/interfaces"
+	"gitlab.com/rbell/gospecexpress/pkg/specificationcatalog"
+
+	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
+	"gitlab.com/rbell/gospecexpress/pkg/errors"
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
+
+const defaultMessage = "%v should not have a length greater than %v."
 
 // MaxLength defines a validator testing the length of a field
 type MaxLength struct {
@@ -22,12 +26,16 @@ func NewMaxLengthValidator(fieldName string, maxLen int) interfaces.Validator {
 	}
 }
 
+func init() {
+	specificationcatalog.Catalog().MessageStore().StoreMessage("MaxLength", defaultMessage)
+}
+
 // Validate validates the thing ensureing the field specified is populated
 func (v *MaxLength) Validate(thing interface{}) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
 		if fv.Len() > v.maxLen {
 			// TODO: Get message from a msg repository of some sorts
-			return errors.NewValidationError(v.fieldName, fmt.Sprintf("%v should not have a length greater than %v.", v.fieldName, v.maxLen))
+			return errors.NewValidationError(v.fieldName, fmt.Sprintf(specificationcatalog.Catalog().MessageStore().GetMessage("MaxLength"), v.fieldName, v.maxLen))
 		}
 	}
 

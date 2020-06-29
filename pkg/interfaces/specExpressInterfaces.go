@@ -26,3 +26,16 @@ type ValidatorBuilder interface {
 type Validator interface {
 	Validate(thing interface{}) error
 }
+
+// MessageStorer defines interface for getting a message for a validation rule
+type MessageStorer interface {
+	GetMessage(forValidator string) string
+	StoreMessage(forValidator, msg string)
+}
+
+// Cataloger defines interface for a validation catalog
+type Cataloger interface {
+	Register(s SpecificationValidator)
+	Validate(something interface{}) error
+	MessageStore() MessageStorer
+}
