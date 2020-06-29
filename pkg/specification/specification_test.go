@@ -1,4 +1,4 @@
-package specexpress
+package specification
 
 import (
 	"reflect"

@@ -34,7 +34,6 @@ func init() {
 func (v *MaxLength) Validate(thing interface{}) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
 		if fv.Len() > v.maxLen {
-			// TODO: Get message from a msg repository of some sorts
 			return errors.NewValidationError(v.fieldName, fmt.Sprintf(specificationcatalog.Catalog().MessageStore().GetMessage("MaxLength"), v.fieldName, v.maxLen))
 		}
 	}

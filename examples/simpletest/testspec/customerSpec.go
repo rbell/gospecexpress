@@ -2,7 +2,7 @@ package testspec
 
 import (
 	"gitlab.com/rbell/gospecexpress/examples/simpletest/testmodels"
-	"gitlab.com/rbell/gospecexpress/pkg/specexpress"
+	"gitlab.com/rbell/gospecexpress/pkg/specification"
 	"gitlab.com/rbell/gospecexpress/pkg/specificationcatalog"
 )
 
@@ -14,7 +14,7 @@ func init() {
 
 // CustomerSpec defines a specification for a customer
 type CustomerSpec struct {
-	specexpress.Specification
+	specification.Specification
 }
 
 func newTestSpec() *CustomerSpec {
