@@ -1,6 +1,10 @@
 package errormessagestore
 
-import "gitlab.com/rbell/gospecexpress/pkg/interfaces"
+import (
+	"reflect"
+
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
+)
 
 var _ interfaces.MessageStorer = &defaultMessageStore{}
 
@@ -16,14 +20,19 @@ func NewDefaultMessageStore() interfaces.MessageStorer {
 }
 
 // GetMessage gets a message for a validator
-func (d *defaultMessageStore) GetMessage(forValidator string) string {
-	if m, ok := d.messages[forValidator]; ok {
+func (d *defaultMessageStore) GetMessage(validator interfaces.Validator) string {
+	if m, ok := d.messages[typeKey(validator)]; ok {
 		return m
 	}
 	return ""
 }
 
 // StoreMessage stores a message for a validator to use
-func (d *defaultMessageStore) StoreMessage(forValidator, msg string) {
-	d.messages[forValidator] = msg
+func (d *defaultMessageStore) StoreMessage(validator interfaces.Validator, msg string) {
+	d.messages[typeKey(validator)] = msg
+}
+
+func typeKey(validator interfaces.Validator) string {
+	t := reflect.TypeOf(validator).Elem()
+	return t.PkgPath() + "|" + t.Name()
 }

@@ -27,14 +27,14 @@ func NewMaxLengthValidator(fieldName string, maxLen int) interfaces.Validator {
 }
 
 func init() {
-	specificationcatalog.Catalog().MessageStore().StoreMessage("MaxLength", defaultMaxLengthMessage)
+	specificationcatalog.Catalog().MessageStore().StoreMessage(&MaxLength{}, defaultMaxLengthMessage)
 }
 
 // Validate validates the thing ensureing the field specified is populated
 func (v *MaxLength) Validate(thing interface{}) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
 		if fv.Len() > v.maxLen {
-			return errors.NewValidationError(v.fieldName, fmt.Sprintf(specificationcatalog.Catalog().MessageStore().GetMessage("MaxLength"), v.fieldName, v.maxLen))
+			return errors.NewValidationError(v.fieldName, fmt.Sprintf(specificationcatalog.Catalog().MessageStore().GetMessage(v), v.fieldName, v.maxLen))
 		}
 	}
 

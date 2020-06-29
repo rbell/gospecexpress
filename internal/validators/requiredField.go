@@ -26,7 +26,7 @@ func NewRequiredFieldValidator(fieldName string) interfaces.Validator {
 }
 
 func init() {
-	specificationcatalog.Catalog().MessageStore().StoreMessage("RequiredField", defaultRequiredFieldMessage)
+	specificationcatalog.Catalog().MessageStore().StoreMessage(&RequiredField{}, defaultRequiredFieldMessage)
 }
 
 // Validate validates the thing ensureing the field specified is populated
@@ -35,7 +35,7 @@ func (v *RequiredField) Validate(thing interface{}) error {
 		if fv.IsZero() {
 			// TODO: Get message from a msg repository of some sorts
 			// msg := catalog.Registry.GetMsg("en_US", "RequiredField", v.fieldName, forType)
-			return errors.NewValidationError(v.fieldName, fmt.Sprintf(specificationcatalog.Catalog().MessageStore().GetMessage("RequiredField"), v.fieldName))
+			return errors.NewValidationError(v.fieldName, fmt.Sprintf(specificationcatalog.Catalog().MessageStore().GetMessage(v), v.fieldName))
 		}
 	}
 
