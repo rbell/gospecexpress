@@ -1,12 +1,13 @@
-package specexpress
+package specificationcatalog
 
 import (
 	"reflect"
 	"testing"
 
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces/mocks"
+
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/govalidate/pkg/interfaces"
-	"gitlab.com/govalidate/pkg/interfaces/mocks"
 )
 
 func TestCatalog_RegisterForType_ShouldRegisterDefalutSpecForType(t *testing.T) {

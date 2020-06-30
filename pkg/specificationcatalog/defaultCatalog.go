@@ -1,38 +1,36 @@
-package specexpress
+package specificationcatalog
 
 import (
 	"reflect"
 	"sync"
 
-	"gitlab.com/govalidate/pkg/interfaces"
+	"gitlab.com/rbell/gospecexpress/pkg/errormessagestore"
+
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
 const (
 	defaultContext = "default"
 )
 
-// Cataloger defines interface for a validation catalog
-type Cataloger interface {
-	Register(s interfaces.SpecificationValidator)
-	Validate(something interface{}) error
-}
-
-var instance Cataloger
+var instance interfaces.Cataloger
 var instanceOnce = &sync.Once{}
 
-type catalog struct {
-	validators map[reflect.Type]map[string]interfaces.SpecificationValidator
-}
-
 // Catalog gets the singleton instance of the Cataloger
-func Catalog() Cataloger {
+func Catalog() interfaces.Cataloger {
 	instanceOnce.Do(func() {
 		instance = &catalog{
-			validators: make(map[reflect.Type]map[string]interfaces.SpecificationValidator),
+			validators:   make(map[reflect.Type]map[string]interfaces.SpecificationValidator),
+			messageStore: errormessagestore.NewDefaultMessageStore(),
 		}
 	})
 
 	return instance
+}
+
+type catalog struct {
+	validators   map[reflect.Type]map[string]interfaces.SpecificationValidator
+	messageStore interfaces.MessageStorer
 }
 
 // Register registers a specification in the catalog
@@ -55,4 +53,9 @@ func (c *catalog) Validate(something interface{}) error {
 
 	// Catalog does not contain specification for something or it is valid.
 	return nil
+}
+
+// Message Store returns the currently configured MessageStore
+func (c *catalog) MessageStore() interfaces.MessageStorer {
+	return c.messageStore
 }

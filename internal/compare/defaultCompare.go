@@ -4,7 +4,7 @@ import (
 	"errors"
 	"reflect"
 
-	"gitlab.com/govalidate/internal/reflectionhelpers"
+	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
 )
 
 // errUnknownComparisonResult is error returned when comparison cannot be determined

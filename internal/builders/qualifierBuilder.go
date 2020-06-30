@@ -3,8 +3,8 @@ package builders
 import (
 	"reflect"
 
-	"gitlab.com/govalidate/internal/validators"
-	"gitlab.com/govalidate/pkg/interfaces"
+	"gitlab.com/rbell/gospecexpress/internal/validators"
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
 // NewQualifierBuilder creates an initialized ValidatorBuilder
