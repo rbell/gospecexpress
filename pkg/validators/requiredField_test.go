@@ -9,7 +9,9 @@ import (
 func TestValidate_ValidForPopulatedRequiredField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
-		fieldName: "FirstName",
+		AllFieldValidators: &AllFieldValidators{
+			FieldName: "FirstName",
+		},
 	}
 	type testSubjectType struct {
 		FirstName string
@@ -26,7 +28,9 @@ func TestValidate_ValidForPopulatedRequiredField(t *testing.T) {
 func TestValidate_NonExportedField_ValidForPopulatedRequiredField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
-		fieldName: "firstName",
+		AllFieldValidators: &AllFieldValidators{
+			FieldName: "firstName",
+		},
 	}
 	type testSubjectType struct {
 		firstName string
@@ -43,7 +47,9 @@ func TestValidate_NonExportedField_ValidForPopulatedRequiredField(t *testing.T) 
 func TestValidate_NotValidForUnPopulatedRequiredField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
-		fieldName: "firstName",
+		AllFieldValidators: &AllFieldValidators{
+			FieldName: "firstName",
+		},
 	}
 	type testSubjectType struct {
 		firstName string
@@ -60,7 +66,9 @@ func TestValidate_NotValidForUnPopulatedRequiredField(t *testing.T) {
 func TestValidate_Numeric_ValidForNonZeroField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
-		fieldName: "Distance",
+		AllFieldValidators: &AllFieldValidators{
+			FieldName: "Distance",
+		},
 	}
 	type testSubjectType struct {
 		Distance int64
@@ -77,7 +85,9 @@ func TestValidate_Numeric_ValidForNonZeroField(t *testing.T) {
 func TestValidate_Numeric_NotValidForZeroField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
-		fieldName: "Distance",
+		AllFieldValidators: &AllFieldValidators{
+			FieldName: "Distance",
+		},
 	}
 	type testSubjectType struct {
 		Distance int64
