@@ -1,8 +1,8 @@
 package builders
 
 import (
-	"gitlab.com/rbell/gospecexpress/internal/validators"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
+	"gitlab.com/rbell/gospecexpress/pkg/validators"
 )
 
 // MaxLength indicates a max length rule should be applied to field
