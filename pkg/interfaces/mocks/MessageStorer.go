@@ -23,7 +23,7 @@ func (_m *MessageStorer) GetMessage(forValidator string) string {
 	return r0
 }
 
-// StoreMessage provides a mock function with given fields: forValidator, msg
+// SetMessage provides a mock function with given fields: forValidator, msg
 func (_m *MessageStorer) StoreMessage(forValidator string, msg string) {
 	_m.Called(forValidator, msg)
 }

@@ -27,7 +27,7 @@ func NewMaxLengthValidator(fieldName string, maxLen int) interfaces.Validator {
 }
 
 func init() {
-	specificationcatalog.Catalog().MessageStore().StoreMessage(&MaxLength{}, defaultMaxLengthMessage)
+	specificationcatalog.Catalog().MessageStore().SetMessage(&MaxLength{}, defaultMaxLengthMessage)
 }
 
 // Validate validates the thing ensureing the field specified is populated

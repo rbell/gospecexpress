@@ -27,8 +27,8 @@ func (d *defaultMessageStore) GetMessage(validator interfaces.Validator) string 
 	return ""
 }
 
-// StoreMessage stores a message for a validator to use
-func (d *defaultMessageStore) StoreMessage(validator interfaces.Validator, msg string) {
+// SetMessage stores a message for a validator to use
+func (d *defaultMessageStore) SetMessage(validator interfaces.Validator, msg string) {
 	d.messages[typeKey(validator)] = msg
 }
 

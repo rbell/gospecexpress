@@ -26,7 +26,7 @@ func NewRequiredFieldValidator(fieldName string) interfaces.Validator {
 }
 
 func init() {
-	specificationcatalog.Catalog().MessageStore().StoreMessage(&RequiredField{}, defaultRequiredFieldMessage)
+	specificationcatalog.Catalog().MessageStore().SetMessage(&RequiredField{}, defaultRequiredFieldMessage)
 }
 
 // Validate validates the thing ensureing the field specified is populated

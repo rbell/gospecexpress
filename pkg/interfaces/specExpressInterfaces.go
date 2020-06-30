@@ -30,7 +30,7 @@ type Validator interface {
 // MessageStorer defines interface for getting a message for a validation rule
 type MessageStorer interface {
 	GetMessage(validator Validator) string
-	StoreMessage(validator Validator, msg string)
+	SetMessage(validator Validator, msg string)
 }
 
 // Cataloger defines interface for a validation catalog
