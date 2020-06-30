@@ -11,6 +11,11 @@ import (
 )
 
 func main() {
+	// Example of overriding a default message for a specific validator
+	//specificationcatalog.Catalog().MessageStore().SetMessage(&validators.MaxLength{}, func(ctx *errors.ErrorMessageContext) string {
+	//	return "Too Long!!!"
+	//})
+
 	// We have something we need to validate: a customer
 	c := &testmodels.Customer{
 		FirstName: "Fred Flinstone",

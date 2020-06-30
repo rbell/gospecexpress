@@ -15,27 +15,30 @@ const defaultRequiredFieldMessage = "%v is required."
 
 // RequiredField defines a validator requiring a field value be populated.
 type RequiredField struct {
-	fieldName string
+	*AllFieldValidators
 }
 
 // NewRequiredFieldValidator creates an initialized RequiredFieldValidator
 func NewRequiredFieldValidator(fieldName string) interfaces.Validator {
 	return &RequiredField{
-		fieldName: fieldName,
+		AllFieldValidators: &AllFieldValidators{
+			FieldName: fieldName,
+		},
 	}
 }
 
 func init() {
-	specificationcatalog.Catalog().MessageStore().StoreMessage(&RequiredField{}, defaultRequiredFieldMessage)
+	specificationcatalog.Catalog().MessageStore().SetMessage(&RequiredField{}, func(ctx *errors.ErrorMessageContext) string {
+		return fmt.Sprintf(defaultRequiredFieldMessage, ctx.ContextData[0].(string))
+	})
 }
 
 // Validate validates the thing ensureing the field specified is populated
 func (v *RequiredField) Validate(thing interface{}) error {
-	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
+	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.FieldName); ok {
 		if fv.IsZero() {
-			// TODO: Get message from a msg repository of some sorts
-			// msg := catalog.Registry.GetMsg("en_US", "RequiredField", v.fieldName, forType)
-			return errors.NewValidationError(v.fieldName, fmt.Sprintf(specificationcatalog.Catalog().MessageStore().GetMessage(v), v.fieldName))
+			msg := specificationcatalog.Catalog().MessageStore().GetMessage(v, v.AllFieldValidators.ErrorMessageContext(thing))
+			return errors.NewValidationError(v.FieldName, msg)
 		}
 	}
 

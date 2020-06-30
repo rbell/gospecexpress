@@ -9,8 +9,10 @@ import (
 func TestMaxLength_Validate_ShouldReturnNilWhenLengthLessThanMaxLength(t *testing.T) {
 	// setup
 	validator := &MaxLength{
-		fieldName: "FirstName",
-		maxLen:    50,
+		AllFieldValidators: &AllFieldValidators{
+			FieldName: "FirstName",
+		},
+		maxLen: 50,
 	}
 	type testSubjectType struct {
 		FirstName string
@@ -27,8 +29,9 @@ func TestMaxLength_Validate_ShouldReturnNilWhenLengthLessThanMaxLength(t *testin
 func TestMaxLength_Validate_ShouldReturnErrorWhenLengthGreaterThanMaxLength(t *testing.T) {
 	// setup
 	validator := &MaxLength{
-		fieldName: "FirstName",
-		maxLen:    5,
+		AllFieldValidators: &AllFieldValidators{
+			FieldName: "FirstName",
+		}, maxLen: 5,
 	}
 	type testSubjectType struct {
 		FirstName string
