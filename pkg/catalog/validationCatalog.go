@@ -11,8 +11,8 @@ import (
 var instance interfaces.Cataloger
 var instanceOnce = &sync.Once{}
 
-// Catalog gets the singleton instance of the Cataloger
-func Catalog() interfaces.Cataloger {
+// ValidationCatalog gets the singleton instance of the Cataloger
+func ValidationCatalog() interfaces.Cataloger {
 	instanceOnce.Do(func() {
 		instance = catalog.NewDefaultCatalog()
 	})

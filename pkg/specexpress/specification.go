@@ -33,7 +33,7 @@ func (s *Specification) GetForType() reflect.Type {
 func (s *Specification) Validate(thing interface{}) error {
 	var specError *validation.ValidatorError = nil
 	for _, v := range s.validators {
-		if err := v.Validate(thing, catalog.Catalog().MessageStore()); err != nil {
+		if err := v.Validate(thing, catalog.ValidationCatalog().MessageStore()); err != nil {
 			specError = validation.JoinErrors(specError, err)
 		}
 	}

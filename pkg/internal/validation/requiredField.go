@@ -27,7 +27,7 @@ func NewRequiredFieldValidator(fieldName string) interfaces.Validator {
 }
 
 func init() {
-	catalog.Catalog().MessageStore().SetMessage(&RequiredField{}, func(ctx interfaces.ValidatorContextGetter) string {
+	catalog.ValidationCatalog().MessageStore().SetMessage(&RequiredField{}, func(ctx interfaces.ValidatorContextGetter) string {
 		return fmt.Sprintf(defaultRequiredFieldMessage, ctx.GetContextData()[0].(string))
 	})
 }
@@ -36,7 +36,7 @@ func init() {
 func (v *RequiredField) Validate(thing interface{}, messageStore interfaces.MessageStorer) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.FieldName); ok {
 		if fv.IsZero() {
-			msg := catalog.Catalog().MessageStore().GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing))
+			msg := catalog.ValidationCatalog().MessageStore().GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing))
 			return NewValidationError(v.FieldName, msg)
 		}
 	}
