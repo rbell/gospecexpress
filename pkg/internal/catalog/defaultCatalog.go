@@ -10,11 +10,13 @@ const (
 	defaultContext = "default"
 )
 
+// DefaultCatalog is the default validation catalog supported for specexpress
 type DefaultCatalog struct {
 	validators   map[reflect.Type]map[string]interfaces.SpecificationValidator
 	messageStore interfaces.MessageStorer
 }
 
+// NewDefaultCatalog gets an initialized default catalog
 func NewDefaultCatalog() *DefaultCatalog {
 	return &DefaultCatalog{
 		validators:   make(map[reflect.Type]map[string]interfaces.SpecificationValidator),
@@ -44,7 +46,7 @@ func (c *DefaultCatalog) Validate(something interface{}) error {
 	return nil
 }
 
-// Message Store returns the currently configured MessageStore
+// MessageStore returns the currently configured MessageStore
 func (c *DefaultCatalog) MessageStore() interfaces.MessageStorer {
 	return c.messageStore
 }

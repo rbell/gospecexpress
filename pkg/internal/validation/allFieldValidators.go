@@ -6,7 +6,7 @@ type AllFieldValidators struct {
 	DisplayFieldName string
 }
 
-// NewErrorMessageContext gets error message context for instance
+// NewValidatorContext gets error message context for instance
 func (a *AllFieldValidators) NewValidatorContext(instance interface{}, additionalContext ...interface{}) *ValidatorContext {
 	ctx := []interface{}{a.FieldName, a.DisplayFieldName}
 	ctx = append(ctx, additionalContext...)

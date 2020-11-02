@@ -35,6 +35,7 @@ type MessageStorer interface {
 	SetMessage(validator Validator, getterFunc ErrorMessageGetterFunc)
 }
 
+// ValidatorContextGetter gets the context for the validation
 type ValidatorContextGetter interface {
 	GetFieldValue(fieldName string) interface{}
 	GetContextData() []interface{}
