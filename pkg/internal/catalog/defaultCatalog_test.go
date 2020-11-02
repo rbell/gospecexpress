@@ -1,10 +1,11 @@
-package specificationcatalog
+package catalog
 
 import (
 	"reflect"
 	"testing"
 
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
+
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces/mocks"
 
 	"github.com/stretchr/testify/assert"
@@ -12,13 +13,13 @@ import (
 
 func TestCatalog_RegisterForType_ShouldRegisterDefalutSpecForType(t *testing.T) {
 	// setup
-	c := &catalog{validators: make(map[reflect.Type]map[string]interfaces.SpecificationValidator)}
+	c := &DefaultCatalog{validators: make(map[reflect.Type]map[string]interfaces.SpecificationValidator)}
 	mSpec := &mocks.SpecificationValidator{}
 	type fakeStruct struct{}
 	fake := &fakeStruct{}
 	fakeType := reflect.TypeOf(fake)
 
-	mSpec.On("GetForType").Return(fakeType)
+	mSpec.On("getForType").Return(fakeType)
 
 	// test
 	c.Register(mSpec)

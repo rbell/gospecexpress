@@ -2,8 +2,6 @@ package interfaces
 
 import (
 	"reflect"
-
-	"gitlab.com/rbell/gospecexpress/pkg/errors"
 )
 
 // SpecificationValidator defines interface to Validate something
@@ -28,13 +26,18 @@ type ValidatorBuilder interface {
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns
 type Validator interface {
-	Validate(thing interface{}) error
+	Validate(thing interface{}, messageStore MessageStorer) error
 }
 
 // MessageStorer defines interface for getting a message for a validation rule
 type MessageStorer interface {
-	GetMessage(validator Validator, ctx *errors.ErrorMessageContext) string
-	SetMessage(validator Validator, getterFunc errors.ErrorMessageGetterFunc)
+	GetMessage(validator Validator, ctx ValidatorContextGetter) string
+	SetMessage(validator Validator, getterFunc ErrorMessageGetterFunc)
+}
+
+type ValidatorContextGetter interface {
+	GetFieldValue(fieldName string) interface{}
+	GetContextData() []interface{}
 }
 
 // Cataloger defines interface for a validation catalog

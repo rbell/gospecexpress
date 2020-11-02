@@ -1,11 +1,12 @@
-package specification
+package specexpress
 
 import (
 	"reflect"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
+
+	"github.com/stretchr/testify/assert"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces/mocks"
 )
 
