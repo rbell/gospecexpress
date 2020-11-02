@@ -1,13 +1,13 @@
-package validators
+package validation
 
 import (
 	"fmt"
 
-	"gitlab.com/rbell/gospecexpress/pkg/specificationcatalog"
+	"gitlab.com/rbell/gospecexpress/pkg/catalog"
 
-	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
-	"gitlab.com/rbell/gospecexpress/pkg/errors"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
+
+	"gitlab.com/rbell/gospecexpress/pkg/internal/reflectionhelpers"
 )
 
 const defaultMaxLengthMessage = "%v should not have a length greater than %v."
@@ -29,20 +29,20 @@ func NewMaxLengthValidator(fieldName string, maxLen int) interfaces.Validator {
 }
 
 func init() {
-	specificationcatalog.Catalog().MessageStore().SetMessage(&MaxLength{}, func(ctx *errors.ErrorMessageContext) string {
-		fieldValue := ctx.GetFieldValue(ctx.ContextData[0].(string))
+	catalog.ValidationCatalog().MessageStore().SetMessage(&MaxLength{}, func(ctx interfaces.ValidatorContextGetter) string {
+		fieldValue := ctx.GetFieldValue(ctx.GetContextData()[0].(string))
 		//nolint:errcheck // context created in Validate
-		maxLen := ctx.ContextData[2].(int)
+		maxLen := ctx.GetContextData()[2].(int)
 		return fmt.Sprintf(defaultMaxLengthMessage, fieldValue, maxLen)
 	})
 }
 
 // Validate validates the thing ensureing the field specified is populated
-func (v *MaxLength) Validate(thing interface{}) error {
+func (v *MaxLength) Validate(thing interface{}, messageStore interfaces.MessageStorer) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.FieldName); ok {
 		if fv.Len() > v.maxLen {
-			msg := specificationcatalog.Catalog().MessageStore().GetMessage(v, v.AllFieldValidators.ErrorMessageContext(thing, v.maxLen))
-			return errors.NewValidationError(v.FieldName, msg)
+			msg := messageStore.GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, v.maxLen))
+			return NewValidationError(v.FieldName, msg)
 		}
 	}
 

@@ -1,10 +1,11 @@
-package builders
+package specexpress
 
 import (
 	"reflect"
 
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
-	"gitlab.com/rbell/gospecexpress/pkg/validators"
+
+	"gitlab.com/rbell/gospecexpress/pkg/internal/validation"
 )
 
 // NewQualifierBuilder creates an initialized ValidatorBuilder
@@ -24,7 +25,7 @@ type qualifierBuilder struct {
 
 // RequiredField indicates a field is required
 func (b *qualifierBuilder) RequiredField(fieldName string) interfaces.ValidatorBuilder {
-	vals := append(*b.validators, validators.NewRequiredFieldValidator(fieldName))
+	vals := append(*b.validators, validation.NewRequiredFieldValidator(fieldName))
 	*b.validators = vals
 	return NewValidatorBuilder(b.validators, b.forType, fieldName, b)
 }

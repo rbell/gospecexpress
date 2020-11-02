@@ -1,9 +1,7 @@
-package errormessagestore
+package catalog
 
 import (
 	"reflect"
-
-	"gitlab.com/rbell/gospecexpress/pkg/errors"
 
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
@@ -11,18 +9,18 @@ import (
 var _ interfaces.MessageStorer = &defaultMessageStore{}
 
 type defaultMessageStore struct {
-	messages map[string]errors.ErrorMessageGetterFunc
+	messages map[string]interfaces.ErrorMessageGetterFunc
 }
 
 // NewDefaultMessageStore returns an initialized defaultMessageStore
 func NewDefaultMessageStore() interfaces.MessageStorer {
 	return &defaultMessageStore{
-		messages: make(map[string]errors.ErrorMessageGetterFunc),
+		messages: make(map[string]interfaces.ErrorMessageGetterFunc),
 	}
 }
 
 // GetMessage gets a message for a validator
-func (d *defaultMessageStore) GetMessage(validator interfaces.Validator, ctx *errors.ErrorMessageContext) string {
+func (d *defaultMessageStore) GetMessage(validator interfaces.Validator, ctx interfaces.ValidatorContextGetter) string {
 	if m, ok := d.messages[typeKey(validator)]; ok {
 		return m(ctx)
 	}
@@ -30,7 +28,7 @@ func (d *defaultMessageStore) GetMessage(validator interfaces.Validator, ctx *er
 }
 
 // SetMessage stores a message for a validator to use
-func (d *defaultMessageStore) SetMessage(validator interfaces.Validator, getterFunc errors.ErrorMessageGetterFunc) {
+func (d *defaultMessageStore) SetMessage(validator interfaces.Validator, getterFunc interfaces.ErrorMessageGetterFunc) {
 	d.messages[typeKey(validator)] = getterFunc
 }
 

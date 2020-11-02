@@ -1,14 +1,13 @@
-package validators
+package validation
 
 import (
 	"fmt"
 
-	"gitlab.com/rbell/gospecexpress/pkg/specificationcatalog"
+	"gitlab.com/rbell/gospecexpress/pkg/catalog"
 
-	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
-
-	"gitlab.com/rbell/gospecexpress/pkg/errors"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
+
+	"gitlab.com/rbell/gospecexpress/pkg/internal/reflectionhelpers"
 )
 
 const defaultRequiredFieldMessage = "%v is required."
@@ -28,17 +27,17 @@ func NewRequiredFieldValidator(fieldName string) interfaces.Validator {
 }
 
 func init() {
-	specificationcatalog.Catalog().MessageStore().SetMessage(&RequiredField{}, func(ctx *errors.ErrorMessageContext) string {
-		return fmt.Sprintf(defaultRequiredFieldMessage, ctx.ContextData[0].(string))
+	catalog.ValidationCatalog().MessageStore().SetMessage(&RequiredField{}, func(ctx interfaces.ValidatorContextGetter) string {
+		return fmt.Sprintf(defaultRequiredFieldMessage, ctx.GetContextData()[0].(string))
 	})
 }
 
 // Validate validates the thing ensureing the field specified is populated
-func (v *RequiredField) Validate(thing interface{}) error {
+func (v *RequiredField) Validate(thing interface{}, messageStore interfaces.MessageStorer) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.FieldName); ok {
 		if fv.IsZero() {
-			msg := specificationcatalog.Catalog().MessageStore().GetMessage(v, v.AllFieldValidators.ErrorMessageContext(thing))
-			return errors.NewValidationError(v.FieldName, msg)
+			msg := catalog.ValidationCatalog().MessageStore().GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing))
+			return NewValidationError(v.FieldName, msg)
 		}
 	}
 

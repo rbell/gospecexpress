@@ -2,19 +2,19 @@ package testspec
 
 import (
 	"gitlab.com/rbell/gospecexpress/examples/simpletest/testmodels"
-	"gitlab.com/rbell/gospecexpress/pkg/specification"
-	"gitlab.com/rbell/gospecexpress/pkg/specificationcatalog"
+	"gitlab.com/rbell/gospecexpress/pkg/catalog"
+	"gitlab.com/rbell/gospecexpress/pkg/specexpress"
 )
 
 // init functions run at first import, registering the specification in the specification catalog
 // (we can define multiple init functions in the same package and they all will get executed upon import)
 func init() {
-	specificationcatalog.Catalog().Register(newTestSpec())
+	catalog.ValidationCatalog().Register(newTestSpec())
 }
 
 // CustomerSpec defines a specification for a customer
 type CustomerSpec struct {
-	specification.Specification
+	specexpress.Specification
 }
 
 func newTestSpec() *CustomerSpec {
