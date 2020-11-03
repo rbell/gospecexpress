@@ -26,10 +26,18 @@ func init() {
 	})
 }
 
-// LessThanValue creates an initialized MaxLengthValidator
+// LessThanValue creates an initialized LessThan validator comparing the value in the field to a provided value
 func LessThanValue(fieldName string, lessThanValue interface{}) interfaces.Validator {
 	lt := &LessThan{}
 	lt.compareValidator = newCompareValidatorForValue(fieldName, lessThanValue, []int{-1}, lt)
+
+	return lt
+}
+
+// LessThanValueFromContext creates an initialized LessThan validator comparing the value in the field to a value from the context
+func LessThanValueFromContext(fieldName string, valueFromContext interfaces.ValueFromContext) interfaces.Validator {
+	lt := &LessThan{}
+	lt.compareValidator = newCompareValidatorForContext(fieldName, valueFromContext, []int{-1}, lt)
 
 	return lt
 }

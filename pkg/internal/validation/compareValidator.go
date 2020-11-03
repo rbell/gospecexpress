@@ -14,13 +14,17 @@ type compareValidator struct {
 }
 
 func newCompareValidatorForValue(fieldName string, value interface{}, compareValues []int, validatorType interfaces.Validator) *compareValidator {
+	return newCompareValidatorForContext(fieldName, func(ctx interfaces.ValidatorContextGetter) interface{} { return value }, compareValues, validatorType)
+}
+
+func newCompareValidatorForContext(fieldName string, valueFromContext interfaces.ValueFromContext, compareValues []int, validatorType interfaces.Validator) *compareValidator {
 	return &compareValidator{
 		AllFieldValidators: &AllFieldValidators{
 			FieldName: fieldName,
 		},
 		test: func(ctx *ValidatorContext) (result bool, err error) {
 			ctx.AddContextData(ctx.GetFieldValue(fieldName))
-			ctx.AddContextData(value)
+			ctx.AddContextData(valueFromContext(ctx))
 			comparer := compare.NewDefaultComparer(ctx.GetContextData()[2])
 			c, err := comparer.Compare(ctx.GetContextData()[3])
 			if err != nil {
