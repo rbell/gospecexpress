@@ -8,10 +8,10 @@ import (
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
-const defaultLessThanMessage = "%v should be less than %v."
+const defaultLessThanEqualToMessage = "%v should be less than or equal to %v."
 
-// LessThan defines a validator testing a value is less than another
-type LessThan struct {
+// LessThanOrEqual defines a validator testing a value is less than or equal to another
+type LessThanOrEqual struct {
 	*compareValidator
 }
 
@@ -20,16 +20,16 @@ func init() {
 		if compared, ok := ctx.GetContextData()[4].(bool); ok && compared {
 			//nolint:errcheck // context created in Validate
 			valB := ctx.GetContextData()[3]
-			return fmt.Sprintf(defaultLessThanMessage, ctx.GetContextData()[0].(string), valB)
+			return fmt.Sprintf(defaultLessThanEqualToMessage, ctx.GetContextData()[0].(string), valB)
 		}
 		return fmt.Sprintf("Cannot compare %v to %v", ctx.GetContextData()[2], ctx.GetContextData()[3])
 	})
 }
 
-// LessThanValue creates an initialized MaxLengthValidator
-func LessThanValue(fieldName string, lessThanValue interface{}) interfaces.Validator {
+// LessThanOrEqualToValue creates an initialized MaxLengthValidator
+func LessThanOrEqualToValue(fieldName string, lessThanValue interface{}) interfaces.Validator {
 	lt := &LessThan{}
-	lt.compareValidator = newCompareValidatorForValue(fieldName, lessThanValue, []int{-1}, lt)
+	lt.compareValidator = newCompareValidatorForValue(fieldName, lessThanValue, []int{-1, 0}, lt)
 
 	return lt
 }

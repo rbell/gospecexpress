@@ -25,6 +25,7 @@ type ValidatorBuilder interface {
 
 	// Compare Validators
 	LessThan(value interface{}) ValidatorBuilder
+	LessThanOrEqualTo(value interface{}) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns
