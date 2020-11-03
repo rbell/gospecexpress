@@ -5,5 +5,5 @@ type Customer struct {
 	FirstName  string
 	middleName string
 	LastName   string
-	Age        int16
+	Age        int
 }
