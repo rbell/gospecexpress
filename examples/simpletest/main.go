@@ -28,6 +28,7 @@ func main() {
 	// Validate it against the specifications we have registered in the specification catalog
 	// (specification registers itself via init function in testspec/customerSpec.go)
 	err := catalog.ValidationCatalog().Validate(c)
+
 	if err == nil {
 		fmt.Printf("Customer is valid.")
 	} else {

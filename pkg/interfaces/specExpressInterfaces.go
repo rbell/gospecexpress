@@ -28,8 +28,10 @@ type ValidatorBuilder interface {
 
 	// Compare Validators
 	LessThan(value interface{}) ValidatorBuilder
+	LessThanOtherField(otherField string) ValidatorBuilder
 	LessThanValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
 	LessThanOrEqualTo(value interface{}) ValidatorBuilder
+	LessThanOrEqualToOtherField(otherField string) ValidatorBuilder
 	LessThanOrEqualToValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
 }
 

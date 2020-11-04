@@ -3,7 +3,6 @@ package testspec
 import (
 	"gitlab.com/rbell/gospecexpress/examples/simpletest/testmodels"
 	"gitlab.com/rbell/gospecexpress/pkg/catalog"
-	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 	"gitlab.com/rbell/gospecexpress/pkg/specexpress"
 )
 
@@ -25,9 +24,7 @@ func newTestSpec() *CustomerSpec {
 		RequiredField("FirstName").MaxLength(5).
 		RequiredField("LastName").MaxLength(50).
 		RequiredField("Age").LessThan(80).
-		RequiredField("DistanceA").LessThanValueFromContext(func(ctx interfaces.ValidatorContextGetter) interface{} {
-		return ctx.GetFieldValue("DistanceB")
-	})
+		RequiredField("DistanceA").LessThanOtherField("DistanceB")
 
 	return s
 }

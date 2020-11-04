@@ -34,6 +34,14 @@ func LessThanValue(fieldName string, lessThanValue interface{}) interfaces.Valid
 	return lt
 }
 
+// LessThanFieldValue creates an initialized LessThan validator comparing the value in the field to value in another field in the same struct
+func LessThanFieldValue(fieldName, lessThanFieldName string) interfaces.Validator {
+	lt := &LessThan{}
+	lt.compareValidator = newCompareValidatorForValueAgainstOtherField(fieldName, lessThanFieldName, []int{-1}, lt)
+
+	return lt
+}
+
 // LessThanValueFromContext creates an initialized LessThan validator comparing the value in the field to a value from the context
 func LessThanValueFromContext(fieldName string, valueFromContext interfaces.ValueFromContext) interfaces.Validator {
 	lt := &LessThan{}

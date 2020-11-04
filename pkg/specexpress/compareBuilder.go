@@ -13,6 +13,14 @@ func (v *validatorBuilder) LessThan(value interface{}) interfaces.ValidatorBuild
 	return v
 }
 
+// LessThanOtherField indicates a less than rule should be applied to field
+func (v *validatorBuilder) LessThanOtherField(otherField string) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, validation.LessThanFieldValue(v.fieldName, otherField))
+	*v.validators = vals
+	return v
+}
+
 // LessThanValueFromContext indicates a less than rule should be applied to field comparing it to value from context
 func (v *validatorBuilder) LessThanValueFromContext(valueFromContext interfaces.ValueFromContext) interfaces.ValidatorBuilder {
 	//nolint:gocritic // invalid
@@ -25,6 +33,14 @@ func (v *validatorBuilder) LessThanValueFromContext(valueFromContext interfaces.
 func (v *validatorBuilder) LessThanOrEqualTo(value interface{}) interfaces.ValidatorBuilder {
 	//nolint:gocritic // invalid
 	vals := append(*v.validators, validation.LessThanOrEqualToValue(v.fieldName, value))
+	*v.validators = vals
+	return v
+}
+
+// LessThanOrEqualToOtherField indicates a less than rule should be applied to field
+func (v *validatorBuilder) LessThanOrEqualToOtherField(otherField string) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, validation.LessThanOrEqualToFieldValue(v.fieldName, otherField))
 	*v.validators = vals
 	return v
 }
