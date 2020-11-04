@@ -6,4 +6,6 @@ type Customer struct {
 	middleName string
 	LastName   string
 	Age        int
+	DistanceA  int
+	DistanceB  int
 }

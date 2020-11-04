@@ -2,6 +2,7 @@ package compare
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -131,6 +132,57 @@ func TestDefaultComparer_Compare_String_GtShouldReturnOne(t *testing.T) {
 	a := "def"
 	//nolint:goconst // testing
 	b := "abc"
+	aComp := NewDefaultComparer(a)
+
+	// test
+	result, err := aComp.Compare(b)
+
+	// assert
+	assert.Nil(t, err)
+	assert.Equal(t, int(1), result)
+}
+
+func TestDefaultComparer_Compare_Date_EqShouldReturnOne(t *testing.T) {
+	// setup
+
+	//nolint:goconst // testing
+	a := time.Now()
+	//nolint:goconst // testing
+	b := a
+	aComp := NewDefaultComparer(a)
+
+	// test
+	result, err := aComp.Compare(b)
+
+	// assert
+	assert.Nil(t, err)
+	assert.Equal(t, int(0), result)
+}
+
+func TestDefaultComparer_Compare_Date_LTShouldReturnOne(t *testing.T) {
+	// setup
+
+	//nolint:goconst // testing
+	a := time.Now()
+	//nolint:goconst // testing
+	b := time.Now().Add(time.Hour)
+	aComp := NewDefaultComparer(a)
+
+	// test
+	result, err := aComp.Compare(b)
+
+	// assert
+	assert.Nil(t, err)
+	assert.Equal(t, int(-1), result)
+}
+
+func TestDefaultComparer_Compare_Date_GtShouldReturnOne(t *testing.T) {
+	// setup
+
+	//nolint:goconst // testing
+	a := time.Now().Add(time.Hour)
+	//nolint:goconst // testing
+	b := time.Now()
 	aComp := NewDefaultComparer(a)
 
 	// test

@@ -21,6 +21,8 @@ func main() {
 		FirstName: "Fred Flinstone",
 		LastName:  "Flinstone",
 		Age:       23,
+		DistanceA: 20,
+		DistanceB: 30,
 	}
 
 	// Validate it against the specifications we have registered in the specification catalog
