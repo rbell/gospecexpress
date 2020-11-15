@@ -58,7 +58,7 @@ type MessageStorer interface {
 // ValidatorContextGetter gets the context for the validation
 type ValidatorContextGetter interface {
 	GetFieldValue(fieldName string) interface{}
-	GetContextData() []interface{}
+	GetContextData() map[string]interface{}
 }
 
 // Cataloger defines interface for a validation catalog

@@ -1,18 +1,29 @@
 package validation
 
-import "gitlab.com/rbell/gospecexpress/pkg/internal/reflectionhelpers"
+import (
+	"sync"
+
+	"gitlab.com/rbell/gospecexpress/pkg/internal/reflectionhelpers"
+)
+
+const (
+	// ContextFieldNameKey defines the context key name for the Field Name
+	ContextFieldNameKey = "FieldName"
+	// ContextFieldValueKey defines the context key name for the Field Value
+	ContextFieldValueKey = "FieldValue"
+)
 
 // ValidatorContext defines context for function that creates an error message
 type ValidatorContext struct {
 	instance    interface{}
-	contextData []interface{}
+	contextData *sync.Map
 }
 
 // NewValidatorMessageContext creates an initialized ValidatorContext
-func NewValidatorMessageContext(instance interface{}, context ...interface{}) *ValidatorContext {
+func NewValidatorMessageContext(instance interface{}, data map[string]interface{}) *ValidatorContext {
 	return &ValidatorContext{
 		instance:    instance,
-		contextData: context,
+		contextData: mapToSyncMap(data),
 	}
 }
 
@@ -25,11 +36,28 @@ func (e *ValidatorContext) GetFieldValue(fieldName string) interface{} {
 }
 
 // GetContextData gets the context data set at time of validation of an instance
-func (e *ValidatorContext) GetContextData() []interface{} {
-	return e.contextData
+func (e *ValidatorContext) GetContextData() map[string]interface{} {
+	return syncMapToMap(e.contextData)
 }
 
 // AddContextData adds data to the context
-func (e *ValidatorContext) AddContextData(data interface{}) {
-	e.contextData = append(e.contextData, data)
+func (e *ValidatorContext) AddContextData(key string, data interface{}) {
+	e.contextData.Store(key, data)
+}
+
+func mapToSyncMap(m map[string]interface{}) *sync.Map {
+	sm := &sync.Map{}
+	for k, v := range m {
+		sm.Store(k, v)
+	}
+	return sm
+}
+
+func syncMapToMap(sm *sync.Map) map[string]interface{} {
+	m := make(map[string]interface{})
+	sm.Range(func(key, value interface{}) bool {
+		m[key.(string)] = value
+		return true
+	})
+	return m
 }
