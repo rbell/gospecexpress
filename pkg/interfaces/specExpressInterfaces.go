@@ -33,6 +33,9 @@ type ValidatorBuilder interface {
 	LessThanOrEqualTo(value interface{}) ValidatorBuilder
 	LessThanOrEqualToOtherField(otherField string) ValidatorBuilder
 	LessThanOrEqualToValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
+	GreaterThan(value interface{}) ValidatorBuilder
+	GreaterThanOtherField(otherField string) ValidatorBuilder
+	GreaterThanValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns
