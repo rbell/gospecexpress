@@ -11,10 +11,27 @@ import (
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces/mocks"
 )
 
-func TestLessThanOrEqual_Validate_ValueIsLessThan_ShouldReturnNil(t *testing.T) {
+func TestGreaterThanOrEqualTo_Validate_ValueIsGreaterThan_ShouldReturnNil(t *testing.T) {
 	// setup
-	validator := LessThanOrEqualToValue("Distance", 50)
+	validator := GreaterThanOrEqualToValue("Distance", 50)
 	mMessageStore := &mocks.MessageStorer{}
+	type testSubjectType struct {
+		Distance int
+	}
+	testSubject := &testSubjectType{Distance: 60}
+
+	// test
+	result := validator.Validate(testSubject, mMessageStore)
+
+	// assert
+	assert.Nil(t, result)
+}
+
+func TestGreaterThanOrEqualTo_Validate_ValueIsEqual_ShouldReturnNil(t *testing.T) {
+	// setup
+	validator := GreaterThanOrEqualToValue("Distance", 40)
+	mMessageStore := &mocks.MessageStorer{}
+	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.GreaterThanThan"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not GreaterThanThanEqual")
 	type testSubjectType struct {
 		Distance int
 	}
@@ -27,32 +44,15 @@ func TestLessThanOrEqual_Validate_ValueIsLessThan_ShouldReturnNil(t *testing.T) 
 	assert.Nil(t, result)
 }
 
-func TestLessThanOrEqual_Validate_ValueIsEqual_ShouldReturnNil(t *testing.T) {
+func TestGreaterThanOrEqualTo_Validate_ValueIsLess_ShouldReturnErr(t *testing.T) {
 	// setup
-	validator := LessThanOrEqualToValue("Distance", 40)
+	validator := GreaterThanOrEqualToValue("Distance", 40)
 	mMessageStore := &mocks.MessageStorer{}
-	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.LessThan"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not LessThanEqual")
+	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.GreaterThanEqual"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not GreaterThanThanEqual")
 	type testSubjectType struct {
 		Distance int
 	}
-	testSubject := &testSubjectType{Distance: 40}
-
-	// test
-	result := validator.Validate(testSubject, mMessageStore)
-
-	// assert
-	assert.Nil(t, result)
-}
-
-func TestLessThanOrEqual_Validate_ValueIsGreater_ShouldReturnErr(t *testing.T) {
-	// setup
-	validator := LessThanOrEqualToValue("Distance", 40)
-	mMessageStore := &mocks.MessageStorer{}
-	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.LessThan"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not LessThanEqual")
-	type testSubjectType struct {
-		Distance int
-	}
-	testSubject := &testSubjectType{Distance: 50}
+	testSubject := &testSubjectType{Distance: 30}
 
 	// test
 	result := validator.Validate(testSubject, mMessageStore)
@@ -61,9 +61,9 @@ func TestLessThanOrEqual_Validate_ValueIsGreater_ShouldReturnErr(t *testing.T) {
 	assert.NotNil(t, result)
 }
 
-func TestLessThanOrEqualToValueFromContext_Validate_ValueIsLessThan_ShouldReturnNil(t *testing.T) {
+func TestGreaterThanThanOrEqualToValueFromContext_Validate_ValueIsGreaterThan_ShouldReturnNil(t *testing.T) {
 	// setup
-	validator := LessThanOrEqualToValueFromContext("DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
+	validator := GreaterThanOrEqualToValueFromContext("DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
 		return ctx.GetFieldValue("DistanceB")
 	})
 	mMessageStore := &mocks.MessageStorer{}
@@ -73,7 +73,7 @@ func TestLessThanOrEqualToValueFromContext_Validate_ValueIsLessThan_ShouldReturn
 	}
 	testSubject := &testSubjectType{
 		DistanceA: 40,
-		DistanceB: 50,
+		DistanceB: 30,
 	}
 
 	// test
@@ -83,9 +83,9 @@ func TestLessThanOrEqualToValueFromContext_Validate_ValueIsLessThan_ShouldReturn
 	assert.Nil(t, result)
 }
 
-func TestLessThanOrEqualToValueFromContext_Validate_ValueIsEqualTo_ShouldReturnNil(t *testing.T) {
+func TestGreaterThanOrEqualToValueFromContext_Validate_ValueIsEqualTo_ShouldReturnNil(t *testing.T) {
 	// setup
-	validator := LessThanOrEqualToValueFromContext("DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
+	validator := GreaterThanOrEqualToValueFromContext("DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
 		return ctx.GetFieldValue("DistanceB")
 	})
 	mMessageStore := &mocks.MessageStorer{}
@@ -105,19 +105,19 @@ func TestLessThanOrEqualToValueFromContext_Validate_ValueIsEqualTo_ShouldReturnN
 	assert.Nil(t, result)
 }
 
-func TestLessThanOrEqualToValueFromContext_Validate_ValueIsGreaterThan_ShouldReturnErr(t *testing.T) {
+func TestGreaterThanThanOrEqualToValueFromContext_Validate_ValueIsLessThan_ShouldReturnErr(t *testing.T) {
 	// setup
-	validator := LessThanOrEqualToValueFromContext("DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
+	validator := GreaterThanOrEqualToValueFromContext("DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
 		return ctx.GetFieldValue("DistanceB")
 	})
 	mMessageStore := &mocks.MessageStorer{}
-	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.LessThan"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not LessThan")
+	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.GreaterThanEqual"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not GreaterThanThan")
 	type testSubjectType struct {
 		DistanceA int
 		DistanceB int
 	}
 	testSubject := &testSubjectType{
-		DistanceA: 60,
+		DistanceA: 40,
 		DistanceB: 50,
 	}
 
