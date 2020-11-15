@@ -100,3 +100,27 @@ func (v *validatorBuilder) GreaterThanOrEqualToValueFromContext(valueFromContext
 	*v.validators = vals
 	return v
 }
+
+// EqualTo indicates a Greater than rule should be applied to field
+func (v *validatorBuilder) EqualTo(value interface{}) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, validation.EqualToValue(v.fieldName, value))
+	*v.validators = vals
+	return v
+}
+
+// EqualToOtherField indicates a Greater than rule should be applied to field
+func (v *validatorBuilder) EqualToOtherField(otherField string) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, validation.EqualToFieldValue(v.fieldName, otherField))
+	*v.validators = vals
+	return v
+}
+
+// EqualToValueFromContext indicates a Greater than rule should be applied to field comparing it to value from context
+func (v *validatorBuilder) EqualToValueFromContext(valueFromContext interfaces.ValueFromContext) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, validation.EqualToValueFromContext(v.fieldName, valueFromContext))
+	*v.validators = vals
+	return v
+}
