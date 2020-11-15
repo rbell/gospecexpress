@@ -37,7 +37,7 @@ func init() {
 	})
 }
 
-// Validate validates the thing ensureing the field specified is populated
+// Validate validates the thing ensuring the field specified is populated
 func (v *MaxLength) Validate(thing interface{}, messageStore interfaces.MessageStorer) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.FieldName); ok {
 		if fv.Len() > v.maxLen {

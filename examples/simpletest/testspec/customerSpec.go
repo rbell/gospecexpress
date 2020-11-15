@@ -22,7 +22,9 @@ func newTestSpec() *CustomerSpec {
 
 	s.ForType(&testmodels.Customer{}).
 		RequiredField("FirstName").MaxLength(5).
-		RequiredField("LastName").MaxLength(50)
+		RequiredField("LastName").MaxLength(50).
+		RequiredField("Age").LessThan(80).
+		RequiredField("DistanceA").LessThanOtherField("DistanceB")
 
 	return s
 }

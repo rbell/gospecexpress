@@ -8,8 +8,8 @@ type ValidatorContext struct {
 	contextData []interface{}
 }
 
-// NewErrorMessageContext creates an initialized ValidatorContext
-func NewErrorMessageContext(instance interface{}, context ...interface{}) *ValidatorContext {
+// NewValidatorMessageContext creates an initialized ValidatorContext
+func NewValidatorMessageContext(instance interface{}, context ...interface{}) *ValidatorContext {
 	return &ValidatorContext{
 		instance:    instance,
 		contextData: context,
@@ -27,4 +27,9 @@ func (e *ValidatorContext) GetFieldValue(fieldName string) interface{} {
 // GetContextData gets the context data set at time of validation of an instance
 func (e *ValidatorContext) GetContextData() []interface{} {
 	return e.contextData
+}
+
+// AddContextData adds data to the context
+func (e *ValidatorContext) AddContextData(data interface{}) {
+	e.contextData = append(e.contextData, data)
 }

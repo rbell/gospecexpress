@@ -10,5 +10,5 @@ type AllFieldValidators struct {
 func (a *AllFieldValidators) NewValidatorContext(instance interface{}, additionalContext ...interface{}) *ValidatorContext {
 	ctx := []interface{}{a.FieldName, a.DisplayFieldName}
 	ctx = append(ctx, additionalContext...)
-	return NewErrorMessageContext(instance, ctx...)
+	return NewValidatorMessageContext(instance, ctx...)
 }

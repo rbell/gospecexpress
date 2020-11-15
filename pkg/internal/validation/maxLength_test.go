@@ -3,6 +3,8 @@ package validation
 import (
 	"testing"
 
+	"github.com/stretchr/testify/mock"
+
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces/mocks"
 
 	"github.com/stretchr/testify/assert"
@@ -37,6 +39,7 @@ func TestMaxLength_Validate_ShouldReturnErrorWhenLengthGreaterThanMaxLength(t *t
 		}, maxLen: 5,
 	}
 	mMessageStore := &mocks.MessageStorer{}
+	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.MaxLength"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Length Not Less Than")
 	type testSubjectType struct {
 		FirstName string
 	}

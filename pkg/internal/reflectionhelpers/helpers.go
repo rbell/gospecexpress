@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"time"
 )
 
 var (
@@ -24,6 +25,7 @@ const (
 	floatKind
 	stringKind
 	uintKind
+	timeKind
 )
 
 // StructValue gets the Structure value of a Value t.  If t is an interface wrapping a struct or pointer to a struct
@@ -96,6 +98,8 @@ func Eq(arg1 reflect.Value, arg2 ...reflect.Value) (bool, error) {
 				truth = v1.String() == v2.String()
 			case uintKind:
 				truth = v1.Uint() == v2.Uint()
+			case timeKind:
+				truth = v1.Interface().(time.Time).Equal(v2.Interface().(time.Time))
 			default:
 				if v2 == zero {
 					truth = v1 == v2
@@ -156,6 +160,8 @@ func Lt(arg1, arg2 reflect.Value) (bool, error) {
 			truth = v1.String() < v2.String()
 		case uintKind:
 			truth = v1.Uint() < v2.Uint()
+		case timeKind:
+			truth = v1.Interface().(time.Time).Before(v2.Interface().(time.Time))
 		default:
 			panic("invalid kind")
 		}
@@ -208,6 +214,10 @@ func indirectInterface(v reflect.Value) reflect.Value {
 }
 
 func basicKind(v reflect.Value) (kind, error) {
+	if v.Type() == reflect.TypeOf(time.Time{}) {
+		return timeKind, nil
+	}
+
 	switch v.Kind() {
 	case reflect.Bool:
 		return boolKind, nil

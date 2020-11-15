@@ -4,6 +4,9 @@ import (
 	"reflect"
 )
 
+// ValueFromContext defines functor returning a value from a ValidatorContext
+type ValueFromContext func(ctx ValidatorContextGetter) interface{}
+
 // SpecificationValidator defines interface to Validate something
 type SpecificationValidator interface {
 	Validate(interface{}) error
@@ -22,6 +25,23 @@ type ValidatorBuilder interface {
 
 	// String Validators
 	MaxLength(len int) ValidatorBuilder
+
+	// Compare Validators
+	LessThan(value interface{}) ValidatorBuilder
+	LessThanOtherField(otherField string) ValidatorBuilder
+	LessThanValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
+	LessThanOrEqualTo(value interface{}) ValidatorBuilder
+	LessThanOrEqualToOtherField(otherField string) ValidatorBuilder
+	LessThanOrEqualToValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
+	GreaterThan(value interface{}) ValidatorBuilder
+	GreaterThanOtherField(otherField string) ValidatorBuilder
+	GreaterThanValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
+	GreaterThanOrEqualTo(value interface{}) ValidatorBuilder
+	GreaterThanOrEqualToOtherField(otherField string) ValidatorBuilder
+	GreaterThanOrEqualToValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
+	EqualTo(value interface{}) ValidatorBuilder
+	EqualToOtherField(otherField string) ValidatorBuilder
+	EqualToValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns

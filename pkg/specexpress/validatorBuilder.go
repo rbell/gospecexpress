@@ -13,6 +13,8 @@ type validatorBuilder struct {
 	qualifierBuilder interfaces.QualifierBuilder
 }
 
+var _ interfaces.ValidatorBuilder = &validatorBuilder{}
+
 // NewValidatorBuilder creates an initialized ValidatorBuilder
 func NewValidatorBuilder(vals *[]interfaces.Validator, forType reflect.Value, forField string, builder interfaces.QualifierBuilder) interfaces.ValidatorBuilder {
 	return &validatorBuilder{
