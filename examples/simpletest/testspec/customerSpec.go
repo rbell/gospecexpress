@@ -26,14 +26,15 @@ func newTestSpec() *CustomerSpec {
 		RequiredField("LastName").MaxLength(50).
 		RequiredField("Age").LessThan(80).
 		RequiredField("DistanceA").LessThanOtherField("DistanceB").
-		RequiredField("Handicap").LessThanValueFromContext(func(ctx interfaces.ValidatorContextGetter) interface{} {
-		// If a MaximumHandicap was passed in, then make sure customer handicap less than that, otherwise default to 100
-		data := ctx.GetContextData()
-		if maxHandicap, ok := data["MaximumHandicap"]; ok {
-			return maxHandicap
-		}
-		return 100
-	})
+		RequiredField("Handicap").LessThanValueFromContext(
+		func(ctx interfaces.ValidatorContextGetter) interface{} {
+			// If a MaximumHandicap was passed in, then make sure customer handicap less than that, otherwise default to 100
+			data := ctx.GetContextData()
+			if maxHandicap, ok := data["MaximumHandicap"]; ok {
+				return maxHandicap
+			}
+			return 100
+		})
 
 	return s
 }
