@@ -10,7 +10,10 @@ import (
 	"gitlab.com/rbell/gospecexpress/pkg/internal/reflectionhelpers"
 )
 
-const defaultMaxLengthMessage = "%v should not have a length greater than %v."
+const (
+	defaultMaxLengthMessage = "%v should not have a length greater than %v."
+	contextMaxLenKey        = "MaxLength"
+)
 
 // MaxLength defines a validator testing the length of a field
 type MaxLength struct {
@@ -30,9 +33,9 @@ func NewMaxLengthValidator(fieldName string, maxLen int) interfaces.Validator {
 
 func init() {
 	catalog.ValidationCatalog().MessageStore().SetMessage(&MaxLength{}, func(ctx interfaces.ValidatorContextGetter) string {
-		fieldValue := ctx.GetFieldValue(ctx.GetContextData()[0].(string))
+		fieldValue := ctx.GetFieldValue(ctx.GetContextData()[ContextFieldNameKey].(string))
 		//nolint:errcheck // context created in Validate
-		maxLen := ctx.GetContextData()[2].(int)
+		maxLen := ctx.GetContextData()[contextMaxLenKey].(int)
 		return fmt.Sprintf(defaultMaxLengthMessage, fieldValue, maxLen)
 	})
 }
@@ -41,7 +44,9 @@ func init() {
 func (v *MaxLength) Validate(thing interface{}, messageStore interfaces.MessageStorer) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.FieldName); ok {
 		if fv.Len() > v.maxLen {
-			msg := messageStore.GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, v.maxLen))
+			msg := messageStore.GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, map[string]interface{}{
+				contextMaxLenKey: v.maxLen,
+			}))
 			return NewValidationError(v.FieldName, msg)
 		}
 	}

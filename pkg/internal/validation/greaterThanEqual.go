@@ -3,8 +3,6 @@ package validation
 import (
 	"fmt"
 
-	"gitlab.com/rbell/gospecexpress/pkg/catalog"
-
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
@@ -16,13 +14,8 @@ type GreaterThanEqual struct {
 }
 
 func init() {
-	catalog.ValidationCatalog().MessageStore().SetMessage(&GreaterThanEqual{}, func(ctx interfaces.ValidatorContextGetter) string {
-		if compared, ok := ctx.GetContextData()[4].(bool); ok && compared {
-			//nolint:errcheck // context created in Validate
-			valB := ctx.GetContextData()[3]
-			return fmt.Sprintf(defaultGreaterThanOrEqualToMessage, ctx.GetContextData()[0].(string), valB)
-		}
-		return fmt.Sprintf("Cannot compare %v to %v", ctx.GetContextData()[2], ctx.GetContextData()[3])
+	setCompareValidatorMessage(&GreaterThanEqual{}, func(ctx interfaces.ValidatorContextGetter) string {
+		return fmt.Sprintf(defaultGreaterThanOrEqualToMessage, ctx.GetContextData()[ContextFieldValueKey].(string), ctx.GetContextData()[contextCompareToValueKey])
 	})
 }
 

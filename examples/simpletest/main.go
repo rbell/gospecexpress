@@ -21,7 +21,7 @@ func main() {
 		FirstName: "Fred Flinstone",
 		LastName:  "Flinstone",
 		Age:       23,
-		DistanceA: 20,
+		DistanceA: 40,
 		DistanceB: 30,
 	}
 
