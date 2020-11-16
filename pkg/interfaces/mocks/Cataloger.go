@@ -46,3 +46,17 @@ func (_m *Cataloger) Validate(something interface{}) error {
 
 	return r0
 }
+
+// ValidateWithContext provides a mock function with given fields: something, contextData
+func (_m *Cataloger) ValidateWithContext(something interface{}, contextData map[string]interface{}) error {
+	ret := _m.Called(something, contextData)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(interface{}, map[string]interface{}) error); ok {
+		r0 = rf(something, contextData)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}

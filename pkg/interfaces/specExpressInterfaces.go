@@ -9,7 +9,7 @@ type ValueFromContext func(ctx ValidatorContextGetter) interface{}
 
 // SpecificationValidator defines interface to Validate something
 type SpecificationValidator interface {
-	Validate(interface{}) error
+	Validate(subject interface{}, contextData map[string]interface{}) error
 	ForType(forType interface{}) QualifierBuilder
 	GetForType() reflect.Type
 }
@@ -46,7 +46,7 @@ type ValidatorBuilder interface {
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns
 type Validator interface {
-	Validate(thing interface{}, messageStore MessageStorer) error
+	Validate(thing interface{}, contextData map[string]interface{}, messageStore MessageStorer) error
 }
 
 // MessageStorer defines interface for getting a message for a validation rule
@@ -65,5 +65,6 @@ type ValidatorContextGetter interface {
 type Cataloger interface {
 	Register(s SpecificationValidator)
 	Validate(something interface{}) error
+	ValidateWithContext(something interface{}, contextData map[string]interface{}) error
 	MessageStore() MessageStorer
 }

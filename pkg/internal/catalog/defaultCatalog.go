@@ -35,10 +35,16 @@ func (c *DefaultCatalog) Register(s interfaces.SpecificationValidator) {
 
 // Validate validates something against the DefaultCatalog of specifications
 func (c *DefaultCatalog) Validate(something interface{}) error {
+	return c.ValidateWithContext(something, nil)
+}
+
+// ValidateWithContext validates something against the DefaultCatalog, with additional context to be used in the validation
+// The additional context is a map which can be referenced by the registered validators associated with the subject in the catalog
+func (c *DefaultCatalog) ValidateWithContext(something interface{}, contextData map[string]interface{}) error {
 	t := reflect.TypeOf(something)
 	if vs, ok := c.validators[t]; ok {
 		if v, ok := vs[defaultContext]; ok {
-			return v.Validate(something)
+			return v.Validate(something, contextData)
 		}
 	}
 

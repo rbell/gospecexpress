@@ -10,6 +10,8 @@ import (
 	"gitlab.com/rbell/gospecexpress/pkg/internal/reflectionhelpers"
 )
 
+var _ interfaces.Validator = &MaxLength{}
+
 const (
 	defaultMaxLengthMessage = "%v should not have a length greater than %v."
 	contextMaxLenKey        = "MaxLength"
@@ -41,7 +43,7 @@ func init() {
 }
 
 // Validate validates the thing ensuring the field specified is populated
-func (v *MaxLength) Validate(thing interface{}, messageStore interfaces.MessageStorer) error {
+func (v *MaxLength) Validate(thing interface{}, contextData map[string]interface{}, messageStore interfaces.MessageStorer) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.FieldName); ok {
 		if fv.Len() > v.maxLen {
 			msg := messageStore.GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, map[string]interface{}{

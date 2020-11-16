@@ -25,7 +25,7 @@ func TestMaxLength_Validate_ShouldReturnNilWhenLengthLessThanMaxLength(t *testin
 	testSubject := &testSubjectType{FirstName: "Fred"}
 
 	// test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// assert
 	assert.Nil(t, result)
@@ -46,7 +46,7 @@ func TestMaxLength_Validate_ShouldReturnErrorWhenLengthGreaterThanMaxLength(t *t
 	testSubject := &testSubjectType{FirstName: "Fred Flinstone"}
 
 	// test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// assert
 	assert.NotNil(t, result)

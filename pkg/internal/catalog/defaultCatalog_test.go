@@ -19,7 +19,7 @@ func TestCatalog_RegisterForType_ShouldRegisterDefalutSpecForType(t *testing.T) 
 	fake := &fakeStruct{}
 	fakeType := reflect.TypeOf(fake)
 
-	mSpec.On("getForType").Return(fakeType)
+	mSpec.On("GetForType").Return(fakeType)
 
 	// test
 	c.Register(mSpec)

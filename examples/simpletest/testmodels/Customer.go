@@ -8,4 +8,5 @@ type Customer struct {
 	Age        int
 	DistanceA  int
 	DistanceB  int
+	Handicap   int
 }

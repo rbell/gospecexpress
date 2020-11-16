@@ -46,13 +46,13 @@ func (_m *SpecificationValidator) GetForType() reflect.Type {
 	return r0
 }
 
-// Validate provides a mock function with given fields: _a0
-func (_m *SpecificationValidator) Validate(_a0 interface{}) error {
-	ret := _m.Called(_a0)
+// Validate provides a mock function with given fields: subject, contextData
+func (_m *SpecificationValidator) Validate(subject interface{}, contextData map[string]interface{}) error {
+	ret := _m.Called(subject, contextData)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(interface{}) error); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(interface{}, map[string]interface{}) error); ok {
+		r0 = rf(subject, contextData)
 	} else {
 		r0 = ret.Error(0)
 	}

@@ -21,7 +21,7 @@ func TestGreaterThanOrEqualTo_Validate_ValueIsGreaterThan_ShouldReturnNil(t *tes
 	testSubject := &testSubjectType{Distance: 60}
 
 	// test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// assert
 	assert.Nil(t, result)
@@ -38,7 +38,7 @@ func TestGreaterThanOrEqualTo_Validate_ValueIsEqual_ShouldReturnNil(t *testing.T
 	testSubject := &testSubjectType{Distance: 40}
 
 	// test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// assert
 	assert.Nil(t, result)
@@ -55,7 +55,7 @@ func TestGreaterThanOrEqualTo_Validate_ValueIsLess_ShouldReturnErr(t *testing.T)
 	testSubject := &testSubjectType{Distance: 30}
 
 	// test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// assert
 	assert.NotNil(t, result)
@@ -77,7 +77,7 @@ func TestGreaterThanThanOrEqualToValueFromContext_Validate_ValueIsGreaterThan_Sh
 	}
 
 	// test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// assert
 	assert.Nil(t, result)
@@ -99,7 +99,7 @@ func TestGreaterThanOrEqualToValueFromContext_Validate_ValueIsEqualTo_ShouldRetu
 	}
 
 	// test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// assert
 	assert.Nil(t, result)
@@ -122,7 +122,7 @@ func TestGreaterThanThanOrEqualToValueFromContext_Validate_ValueIsLessThan_Shoul
 	}
 
 	// test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// assert
 	assert.NotNil(t, result)

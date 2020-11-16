@@ -22,7 +22,7 @@ func TestValidate_ValidForPopulatedRequiredField(t *testing.T) {
 	testSubject := &testSubjectType{FirstName: "Fred"}
 
 	// Test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// Assert
 	assert.Nil(t, result)
@@ -42,7 +42,7 @@ func TestValidate_NonExportedField_ValidForPopulatedRequiredField(t *testing.T) 
 	testSubject := &testSubjectType{firstName: "Fred"}
 
 	// Test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// Assert
 	assert.Nil(t, result)
@@ -62,7 +62,7 @@ func TestValidate_NotValidForUnPopulatedRequiredField(t *testing.T) {
 	testSubject := &testSubjectType{firstName: ""}
 
 	// Test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// Assert
 	assert.NotNil(t, result)
@@ -82,7 +82,7 @@ func TestValidate_Numeric_ValidForNonZeroField(t *testing.T) {
 	testSubject := &testSubjectType{Distance: int64(100)}
 
 	// Test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// Assert
 	assert.Nil(t, result)
@@ -102,7 +102,7 @@ func TestValidate_Numeric_NotValidForZeroField(t *testing.T) {
 	testSubject := &testSubjectType{Distance: int64(0)}
 
 	// Test
-	result := validator.Validate(testSubject, mMessageStore)
+	result := validator.Validate(testSubject, nil, mMessageStore)
 
 	// Assert
 	assert.NotNil(t, result)

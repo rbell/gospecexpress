@@ -23,11 +23,14 @@ func main() {
 		Age:       23,
 		DistanceA: 40,
 		DistanceB: 30,
+		Handicap:  98,
 	}
 
 	// Validate it against the specifications we have registered in the specification catalog
 	// (specification registers itself via init function in testspec/customerSpec.go)
-	err := catalog.ValidationCatalog().Validate(c)
+	err := catalog.ValidationCatalog().ValidateWithContext(c, map[string]interface{}{
+		"MaximumHandicap": 80,
+	})
 
 	if err == nil {
 		fmt.Printf("Customer is valid.")

@@ -12,13 +12,13 @@ type Validator struct {
 	mock.Mock
 }
 
-// Validate provides a mock function with given fields: thing, messageStore
-func (_m *Validator) Validate(thing interface{}, messageStore interfaces.MessageStorer) error {
-	ret := _m.Called(thing, messageStore)
+// Validate provides a mock function with given fields: thing, contextData, messageStore
+func (_m *Validator) Validate(thing interface{}, contextData map[string]interface{}, messageStore interfaces.MessageStorer) error {
+	ret := _m.Called(thing, contextData, messageStore)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(interface{}, interfaces.MessageStorer) error); ok {
-		r0 = rf(thing, messageStore)
+	if rf, ok := ret.Get(0).(func(interface{}, map[string]interface{}, interfaces.MessageStorer) error); ok {
+		r0 = rf(thing, contextData, messageStore)
 	} else {
 		r0 = ret.Error(0)
 	}

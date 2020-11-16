@@ -30,10 +30,10 @@ func (s *Specification) GetForType() reflect.Type {
 }
 
 // Validate validates an instance of the type
-func (s *Specification) Validate(thing interface{}) error {
+func (s *Specification) Validate(thing interface{}, contextData map[string]interface{}) error {
 	var specError *validation.ValidatorError = nil
 	for _, v := range s.validators {
-		if err := v.Validate(thing, catalog.ValidationCatalog().MessageStore()); err != nil {
+		if err := v.Validate(thing, contextData, catalog.ValidationCatalog().MessageStore()); err != nil {
 			specError = validation.JoinErrors(specError, err)
 		}
 	}

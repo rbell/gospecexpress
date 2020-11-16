@@ -33,7 +33,7 @@ func init() {
 }
 
 // Validate validates the thing ensureing the field specified is populated
-func (v *RequiredField) Validate(thing interface{}, messageStore interfaces.MessageStorer) error {
+func (v *RequiredField) Validate(thing interface{}, contextData map[string]interface{}, messageStore interfaces.MessageStorer) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.FieldName); ok {
 		if fv.IsZero() {
 			msg := catalog.ValidationCatalog().MessageStore().GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, nil))

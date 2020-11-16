@@ -10,15 +10,15 @@ type ValidatorContextGetter struct {
 }
 
 // GetContextData provides a mock function with given fields:
-func (_m *ValidatorContextGetter) GetContextData() []interface{} {
+func (_m *ValidatorContextGetter) GetContextData() map[string]interface{} {
 	ret := _m.Called()
 
-	var r0 []interface{}
-	if rf, ok := ret.Get(0).(func() []interface{}); ok {
+	var r0 map[string]interface{}
+	if rf, ok := ret.Get(0).(func() map[string]interface{}); ok {
 		r0 = rf()
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]interface{})
+			r0 = ret.Get(0).(map[string]interface{})
 		}
 	}
 

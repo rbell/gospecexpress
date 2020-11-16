@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/stretchr/testify/mock"
+
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 
 	"github.com/stretchr/testify/assert"
@@ -35,7 +37,7 @@ func TestSpecification_Validate_ShouldCallValidator(t *testing.T) {
 	}
 	ts := &testSubject{}
 	mValidator := &mocks.Validator{}
-	mValidator.On("Validate", ts).Return(nil)
+	mValidator.On("Validate", ts, map[string]interface{}(nil), mock.Anything).Return(nil)
 
 	spec := &Specification{
 		validators: []interfaces.Validator{mValidator},
@@ -43,7 +45,7 @@ func TestSpecification_Validate_ShouldCallValidator(t *testing.T) {
 	}
 
 	// test
-	err := spec.Validate(ts)
+	err := spec.Validate(ts, nil)
 
 	// assert
 	mValidator.AssertExpectations(t)

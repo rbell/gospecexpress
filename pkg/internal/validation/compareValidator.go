@@ -13,6 +13,8 @@ const (
 	contextIsComparableTypesKey = "IsComparable"
 )
 
+var _ interfaces.Validator = &compareValidator{}
+
 type compareFunc func(ctx *ValidatorContext) (result bool, err error)
 
 type compareValidator struct {
@@ -46,8 +48,9 @@ func newCompareValidatorForContext(fieldName string, valueFromContext interfaces
 		test: func(ctx *ValidatorContext) (result bool, err error) {
 			ctx.AddContextData(ContextFieldValueKey, ctx.GetFieldValue(fieldName))
 			ctx.AddContextData(contextCompareToValueKey, valueFromContext(ctx))
-			comparer := compare.NewDefaultComparer(ctx.GetContextData()[ContextFieldValueKey])
-			c, err := comparer.Compare(ctx.GetContextData()[contextCompareToValueKey])
+			contextData := ctx.GetContextData()
+			comparer := compare.NewDefaultComparer(contextData[ContextFieldValueKey])
+			c, err := comparer.Compare(contextData[contextCompareToValueKey])
 			if err != nil {
 				// not comparable types
 				ctx.AddContextData(contextIsComparableTypesKey, false)
@@ -61,8 +64,8 @@ func newCompareValidatorForContext(fieldName string, valueFromContext interfaces
 	}
 }
 
-func (v *compareValidator) Validate(thing interface{}, messageStore interfaces.MessageStorer) error {
-	ctx := v.AllFieldValidators.NewValidatorContext(thing, nil)
+func (v *compareValidator) Validate(thing interface{}, contextData map[string]interface{}, messageStore interfaces.MessageStorer) error {
+	ctx := v.AllFieldValidators.NewValidatorContext(thing, contextData)
 	//nolint:errcheck // message store returns message if there is an error (based on context)
 	if valid, _ := v.test(ctx); !valid {
 		msg := messageStore.GetMessage(v.validatorType, ctx)
