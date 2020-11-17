@@ -49,6 +49,11 @@ type Validator interface {
 	Validate(thing interface{}, contextData map[string]interface{}, messageStore MessageStorer) error
 }
 
+// MessageOverrider defines interface for something that has ability to override a validation message
+type MessageOverrider interface {
+	GetOverrideErrorMessage(ctx ValidatorContextGetter) string
+}
+
 // MessageStorer defines interface for getting a message for a validation rule
 type MessageStorer interface {
 	GetMessage(validator Validator, ctx ValidatorContextGetter) string

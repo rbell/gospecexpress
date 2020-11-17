@@ -27,7 +27,7 @@ type MaxLength struct {
 func NewMaxLengthValidator(fieldName string, maxLen int) interfaces.Validator {
 	return &MaxLength{
 		AllFieldValidators: &AllFieldValidators{
-			FieldName: fieldName,
+			fieldName: fieldName,
 		},
 		maxLen: maxLen,
 	}
@@ -44,12 +44,12 @@ func init() {
 
 // Validate validates the thing ensuring the field specified is populated
 func (v *MaxLength) Validate(thing interface{}, contextData map[string]interface{}, messageStore interfaces.MessageStorer) error {
-	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.FieldName); ok {
+	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
 		if fv.Len() > v.maxLen {
 			msg := messageStore.GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, map[string]interface{}{
 				contextMaxLenKey: v.maxLen,
 			}))
-			return NewValidationError(v.FieldName, msg)
+			return NewValidationError(v.fieldName, msg)
 		}
 	}
 

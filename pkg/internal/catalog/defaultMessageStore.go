@@ -21,6 +21,11 @@ func NewDefaultMessageStore() interfaces.MessageStorer {
 
 // GetMessage gets a message for a validator
 func (d *defaultMessageStore) GetMessage(validator interfaces.Validator, ctx interfaces.ValidatorContextGetter) string {
+	if overrider, ok := validator.(interfaces.MessageOverrider); ok {
+		if msg := overrider.GetOverrideErrorMessage(ctx); msg != "" {
+			return msg
+		}
+	}
 	if m, ok := d.messages[typeKey(validator)]; ok {
 		return m(ctx)
 	}
