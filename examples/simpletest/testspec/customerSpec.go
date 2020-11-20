@@ -4,7 +4,7 @@ import (
 	"gitlab.com/rbell/gospecexpress/examples/simpletest/testmodels"
 	"gitlab.com/rbell/gospecexpress/pkg/catalog"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
-	"gitlab.com/rbell/gospecexpress/pkg/specexpress"
+	. "gitlab.com/rbell/gospecexpress/pkg/specexpress"
 )
 
 // init functions run at first import, registering the specification in the specification catalog
@@ -15,14 +15,14 @@ func init() {
 
 // CustomerSpec defines a specification for a customer
 type CustomerSpec struct {
-	specexpress.Specification
+	Specification
 }
 
 func newTestSpec() *CustomerSpec {
 	s := &CustomerSpec{}
 
 	s.ForType(&testmodels.Customer{}).
-		RequiredField("FirstName").MaxLength(5).
+		RequiredField("FirstName", OverrideMessage("The First Name is a required field!")).MaxLength(5).
 		RequiredField("LastName").MaxLength(50).
 		RequiredField("Age").LessThan(80).
 		RequiredField("DistanceA").LessThanOtherField("DistanceB").

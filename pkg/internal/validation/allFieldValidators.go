@@ -6,7 +6,7 @@ import "gitlab.com/rbell/gospecexpress/pkg/interfaces"
 type AllFieldValidators struct {
 	fieldName            string
 	displayFieldName     string
-	overrideErrorMessage func(ctx interfaces.ValidatorContextGetter) string
+	overrideErrorMessage interfaces.MessageFormatter
 }
 
 // NewValidatorContext gets error message context for instance
@@ -32,6 +32,11 @@ func (a *AllFieldValidators) GetOverrideErrorMessage(ctx interfaces.ValidatorCon
 		return a.overrideErrorMessage(ctx)
 	}
 	return ""
+}
+
+// SetOverrideErrorMessage gets the overloaded message if overridden
+func (a *AllFieldValidators) SetOverrideErrorMessage(msgFormatter interfaces.MessageFormatter) {
+	a.overrideErrorMessage = msgFormatter
 }
 
 func mergeMap(m1, m2 map[string]interface{}) map[string]interface{} {
