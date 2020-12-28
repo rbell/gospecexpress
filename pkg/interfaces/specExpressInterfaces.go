@@ -16,37 +16,49 @@ type SpecificationValidator interface {
 
 // QualifierBuilder defines interface for starting to qualify an element
 type QualifierBuilder interface {
-	RequiredField(fieldName string) ValidatorBuilder
+	RequiredField(fieldName string, options ...ValidatorOption) ValidatorBuilder
 }
 
 // ValidatorBuilder defines interface methods to build a specification
 type ValidatorBuilder interface {
-	RequiredField(fieldName string) ValidatorBuilder
+	RequiredField(fieldName string, options ...ValidatorOption) ValidatorBuilder
 
 	// String Validators
 	MaxLength(len int) ValidatorBuilder
 
 	// Compare Validators
-	LessThan(value interface{}) ValidatorBuilder
-	LessThanOtherField(otherField string) ValidatorBuilder
-	LessThanValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
-	LessThanOrEqualTo(value interface{}) ValidatorBuilder
-	LessThanOrEqualToOtherField(otherField string) ValidatorBuilder
-	LessThanOrEqualToValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
-	GreaterThan(value interface{}) ValidatorBuilder
-	GreaterThanOtherField(otherField string) ValidatorBuilder
-	GreaterThanValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
-	GreaterThanOrEqualTo(value interface{}) ValidatorBuilder
-	GreaterThanOrEqualToOtherField(otherField string) ValidatorBuilder
-	GreaterThanOrEqualToValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
-	EqualTo(value interface{}) ValidatorBuilder
-	EqualToOtherField(otherField string) ValidatorBuilder
-	EqualToValueFromContext(valueFromContext ValueFromContext) ValidatorBuilder
+	LessThan(value interface{}, options ...ValidatorOption) ValidatorBuilder
+	LessThanOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
+	LessThanValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
+	LessThanOrEqualTo(value interface{}, options ...ValidatorOption) ValidatorBuilder
+	LessThanOrEqualToOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
+	LessThanOrEqualToValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
+	GreaterThan(value interface{}, options ...ValidatorOption) ValidatorBuilder
+	GreaterThanOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
+	GreaterThanValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
+	GreaterThanOrEqualTo(value interface{}, options ...ValidatorOption) ValidatorBuilder
+	GreaterThanOrEqualToOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
+	GreaterThanOrEqualToValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
+	EqualTo(value interface{}, options ...ValidatorOption) ValidatorBuilder
+	EqualToOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
+	EqualToValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns
 type Validator interface {
 	Validate(thing interface{}, contextData map[string]interface{}, messageStore MessageStorer) error
+}
+
+// ValidatorOption is a function signature defining an option on a Validator
+type ValidatorOption func(v Validator)
+
+// MessageFormatter defines a function that returns a message given a ValidatorContextGetter
+type MessageFormatter func(ctx ValidatorContextGetter) string
+
+// MessageOverrider defines interface for something that has ability to override a validation message
+type MessageOverrider interface {
+	GetOverrideErrorMessage(ctx ValidatorContextGetter) string
+	SetOverrideErrorMessage(msgFormatter MessageFormatter)
 }
 
 // MessageStorer defines interface for getting a message for a validation rule

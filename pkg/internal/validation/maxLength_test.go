@@ -14,7 +14,7 @@ func TestMaxLength_Validate_ShouldReturnNilWhenLengthLessThanMaxLength(t *testin
 	// setup
 	validator := &MaxLength{
 		AllFieldValidators: &AllFieldValidators{
-			FieldName: "FirstName",
+			fieldName: "FirstName",
 		},
 		maxLen: 50,
 	}
@@ -35,7 +35,7 @@ func TestMaxLength_Validate_ShouldReturnErrorWhenLengthGreaterThanMaxLength(t *t
 	// setup
 	validator := &MaxLength{
 		AllFieldValidators: &AllFieldValidators{
-			FieldName: "FirstName",
+			fieldName: "FirstName",
 		}, maxLen: 5,
 	}
 	mMessageStore := &mocks.MessageStorer{}

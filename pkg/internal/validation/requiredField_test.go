@@ -12,7 +12,7 @@ func TestValidate_ValidForPopulatedRequiredField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
 		AllFieldValidators: &AllFieldValidators{
-			FieldName: "FirstName",
+			fieldName: "FirstName",
 		},
 	}
 	mMessageStore := &mocks.MessageStorer{}
@@ -32,7 +32,7 @@ func TestValidate_NonExportedField_ValidForPopulatedRequiredField(t *testing.T) 
 	// Setup
 	validator := &RequiredField{
 		AllFieldValidators: &AllFieldValidators{
-			FieldName: "firstName",
+			fieldName: "firstName",
 		},
 	}
 	mMessageStore := &mocks.MessageStorer{}
@@ -52,7 +52,7 @@ func TestValidate_NotValidForUnPopulatedRequiredField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
 		AllFieldValidators: &AllFieldValidators{
-			FieldName: "firstName",
+			fieldName: "firstName",
 		},
 	}
 	mMessageStore := &mocks.MessageStorer{}
@@ -72,7 +72,7 @@ func TestValidate_Numeric_ValidForNonZeroField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
 		AllFieldValidators: &AllFieldValidators{
-			FieldName: "Distance",
+			fieldName: "Distance",
 		},
 	}
 	mMessageStore := &mocks.MessageStorer{}
@@ -92,7 +92,7 @@ func TestValidate_Numeric_NotValidForZeroField(t *testing.T) {
 	// Setup
 	validator := &RequiredField{
 		AllFieldValidators: &AllFieldValidators{
-			FieldName: "Distance",
+			fieldName: "Distance",
 		},
 	}
 	mMessageStore := &mocks.MessageStorer{}

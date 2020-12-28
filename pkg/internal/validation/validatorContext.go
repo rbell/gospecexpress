@@ -8,7 +8,7 @@ import (
 
 const (
 	// ContextFieldNameKey defines the context key name for the Field Name
-	ContextFieldNameKey = "FieldName"
+	ContextFieldNameKey = "fieldName"
 	// ContextFieldValueKey defines the context key name for the Field Value
 	ContextFieldValueKey = "FieldValue"
 )

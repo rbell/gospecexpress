@@ -18,7 +18,7 @@ func main() {
 
 	// We have something we need to validate: a customer
 	c := &testmodels.Customer{
-		FirstName: "Fred Flinstone",
+		FirstName: "",
 		LastName:  "Flinstone",
 		Age:       23,
 		DistanceA: 40,

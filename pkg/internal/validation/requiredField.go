@@ -21,7 +21,7 @@ type RequiredField struct {
 func NewRequiredFieldValidator(fieldName string) interfaces.Validator {
 	return &RequiredField{
 		AllFieldValidators: &AllFieldValidators{
-			FieldName: fieldName,
+			fieldName: fieldName,
 		},
 	}
 }
@@ -34,10 +34,10 @@ func init() {
 
 // Validate validates the thing ensureing the field specified is populated
 func (v *RequiredField) Validate(thing interface{}, contextData map[string]interface{}, messageStore interfaces.MessageStorer) error {
-	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.FieldName); ok {
+	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
 		if fv.IsZero() {
 			msg := catalog.ValidationCatalog().MessageStore().GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, nil))
-			return NewValidationError(v.FieldName, msg)
+			return NewValidationError(v.fieldName, msg)
 		}
 	}
 

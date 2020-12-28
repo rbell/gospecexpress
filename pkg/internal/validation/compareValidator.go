@@ -43,7 +43,7 @@ func newCompareValidatorForValueAgainstOtherField(fieldName, otherFieldName stri
 func newCompareValidatorForContext(fieldName string, valueFromContext interfaces.ValueFromContext, compareValues []int, validatorType interfaces.Validator) *compareValidator {
 	return &compareValidator{
 		AllFieldValidators: &AllFieldValidators{
-			FieldName: fieldName,
+			fieldName: fieldName,
 		},
 		test: func(ctx *ValidatorContext) (result bool, err error) {
 			ctx.AddContextData(ContextFieldValueKey, ctx.GetFieldValue(fieldName))
@@ -69,7 +69,7 @@ func (v *compareValidator) Validate(thing interface{}, contextData map[string]in
 	//nolint:errcheck // message store returns message if there is an error (based on context)
 	if valid, _ := v.test(ctx); !valid {
 		msg := messageStore.GetMessage(v.validatorType, ctx)
-		return NewValidationError(v.FieldName, msg)
+		return NewValidationError(v.fieldName, msg)
 	}
 	return nil
 }
