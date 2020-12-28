@@ -5,6 +5,7 @@ type Customer struct {
 	FirstName  string
 	middleName string
 	LastName   string
+	Country    string
 	Age        int
 	DistanceA  int
 	DistanceB  int

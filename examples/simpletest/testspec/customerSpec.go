@@ -1,6 +1,8 @@
 package testspec
 
 import (
+	"fmt"
+
 	"gitlab.com/rbell/gospecexpress/examples/simpletest/testmodels"
 	"gitlab.com/rbell/gospecexpress/pkg/catalog"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
@@ -12,6 +14,9 @@ import (
 func init() {
 	catalog.ValidationCatalog().Register(newTestSpec())
 }
+
+// Fake some cache of valid countries (i.e. valid ship to countries)
+var validCountriesCache = []string{"US", "CA"}
 
 // CustomerSpec defines a specification for a customer
 type CustomerSpec struct {
@@ -34,7 +39,19 @@ func newTestSpec() *CustomerSpec {
 				return maxHandicap
 			}
 			return 100
-		})
+		}).
+		RequiredField("Country").
+		Expect(
+			func(ctx interfaces.ValidatorContextGetter) error {
+				// Fake business logic where only US or CA valid countries (i.e. valid shipping countries)
+				cntry := ctx.GetFieldValue("Country")
+				for _, c := range validCountriesCache {
+					if c == cntry {
+						return nil
+					}
+				}
+				return fmt.Errorf("Invalid country %v", cntry)
+			})
 
 	return s
 }

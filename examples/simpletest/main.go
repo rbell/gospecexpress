@@ -20,6 +20,7 @@ func main() {
 	c := &testmodels.Customer{
 		FirstName: "",
 		LastName:  "Flinstone",
+		Country:   "UK",
 		Age:       23,
 		DistanceA: 40,
 		DistanceB: 30,
