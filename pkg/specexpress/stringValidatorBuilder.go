@@ -12,3 +12,11 @@ func (v *validatorBuilder) MaxLength(length int) interfaces.ValidatorBuilder {
 	*v.validators = vals
 	return v
 }
+
+// MinLength indicates a max length rule should be applied to field
+func (v *validatorBuilder) MinLength(length int) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, validation.NewMinLengthValidator(v.fieldName, length))
+	*v.validators = vals
+	return v
+}

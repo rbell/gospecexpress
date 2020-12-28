@@ -25,6 +25,7 @@ type ValidatorBuilder interface {
 
 	// String Validators
 	MaxLength(len int) ValidatorBuilder
+	MinLength(len int) ValidatorBuilder
 
 	// Compare Validators
 	LessThan(value interface{}, options ...ValidatorOption) ValidatorBuilder
