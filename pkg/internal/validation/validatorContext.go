@@ -8,9 +8,11 @@ import (
 
 const (
 	// ContextFieldNameKey defines the context key name for the Field Name
-	ContextFieldNameKey = "fieldName"
+	ContextFieldNameKey = "FieldName"
 	// ContextFieldValueKey defines the context key name for the Field Value
 	ContextFieldValueKey = "FieldValue"
+	// ContextInstanceKey defines the context key name for the reference to the instance
+	ContextInstanceKey = "Instance"
 )
 
 // ValidatorContext defines context for function that creates an error message

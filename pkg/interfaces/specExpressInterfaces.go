@@ -43,6 +43,9 @@ type ValidatorBuilder interface {
 	EqualTo(value interface{}, options ...ValidatorOption) ValidatorBuilder
 	EqualToOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
 	EqualToValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
+
+	// Custom Rule which if returned error is not nil, error's message will be included in the validation error
+	Expect(validator func(validationCtx ValidatorContextGetter) error) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns
@@ -71,6 +74,7 @@ type MessageStorer interface {
 // ValidatorContextGetter gets the context for the validation
 type ValidatorContextGetter interface {
 	GetFieldValue(fieldName string) interface{}
+	// ContextData will include
 	GetContextData() map[string]interface{}
 }
 

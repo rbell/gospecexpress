@@ -14,16 +14,13 @@ func (a *AllFieldValidators) NewValidatorContext(instance interface{}, additiona
 	m := map[string]interface{}{
 		ContextFieldNameKey:  a.fieldName,
 		ContextFieldValueKey: a.displayFieldName,
+		ContextInstanceKey:   instance,
 	}
 	if additionalContext != nil {
 		m = mergeMap(m, additionalContext)
 	}
 
 	return NewValidatorMessageContext(instance, m)
-}
-
-func (a *AllFieldValidators) setOverrideErrorMessage(overLoad func(ctx interfaces.ValidatorContextGetter) string) {
-	a.overrideErrorMessage = overLoad
 }
 
 // GetOverrideErrorMessage gets the overloaded message if overridden
@@ -46,7 +43,7 @@ func mergeMap(m1, m2 map[string]interface{}) map[string]interface{} {
 	}
 
 	for k, v := range m2 {
-		if k != ContextFieldNameKey && k != ContextFieldValueKey {
+		if k != ContextFieldNameKey && k != ContextFieldValueKey && k != ContextInstanceKey {
 			merged[k] = v
 		}
 	}
