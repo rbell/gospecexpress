@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"gitlab.com/rbell/gospecexpress/pkg/catalog"
 
@@ -11,27 +12,17 @@ import (
 )
 
 func main() {
-	// Example of overriding a default message for a specific validator
-	//specificationcatalog.ValidationCatalog().MessageStore().SetMessage(&validators.MaxLength{}, func(ctx *errors.ErrorMessageContext) string {
-	//	return "Too Long!!!"
-	//})
-
 	// We have something we need to validate: a customer
 	c := &testmodels.Customer{
-		FirstName: "",
-		LastName:  "Flinstone",
-		Country:   "UK",
-		Age:       23,
-		DistanceA: 40,
-		DistanceB: 30,
-		Handicap:  98,
+		FirstName:      "",
+		LastName:       "Flinstone",
+		Age:            23,
+		MemberSince:    time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+		MemberExpireAt: time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC),
 	}
 
-	// Validate it against the specifications we have registered in the specification catalog
-	// (specification registers itself via init function in testspec/customerSpec.go)
-	err := catalog.ValidationCatalog().ValidateWithContext(c, map[string]interface{}{
-		"MaximumHandicap": 80,
-	})
+	// Validate the instance c against specifications in the catalog
+	err := catalog.ValidationCatalog().Validate(c)
 
 	if err == nil {
 		fmt.Printf("Customer is valid.")
