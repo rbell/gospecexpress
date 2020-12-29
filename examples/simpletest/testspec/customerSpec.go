@@ -28,10 +28,10 @@ func newTestSpec() *CustomerSpec {
 
 	s.ForType(&testmodels.Customer{}).
 		RequiredField("FirstName", OverrideMessage("The First Name is a required field!")).MaxLength(5).
-		RequiredField("LastName").MaxLength(50).
-		RequiredField("Age").LessThan(80).
-		RequiredField("DistanceA").LessThanOtherField("DistanceB").
-		RequiredField("Handicap").LessThanValueFromContext(
+		Required("LastName").MaxLength(50).
+		Required("Age").LessThan(80).
+		Required("DistanceA").LessThanOtherField("DistanceB").
+		Required("Handicap").LessThanValueFromContext(
 		func(ctx interfaces.ValidatorContextGetter) interface{} {
 			// If a MaximumHandicap was passed in, then make sure customer handicap less than that, otherwise default to 100
 			data := ctx.GetContextData()
@@ -40,7 +40,7 @@ func newTestSpec() *CustomerSpec {
 			}
 			return 100
 		}).
-		RequiredField("Country").
+		Required("Country").
 		Expect(
 			func(ctx interfaces.ValidatorContextGetter) error {
 				// Fake business logic where only US or CA valid countries (i.e. valid shipping countries)

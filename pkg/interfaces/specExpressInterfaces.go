@@ -22,16 +22,24 @@ type QualifierBuilder interface {
 // ValidatorBuilder defines interface methods to build a specification
 type ValidatorBuilder interface {
 	// Qualifier Validation
-	RequiredField(fieldName string, options ...ValidatorOption) ValidatorBuilder
-	// OptionalField
+	Required(fieldName string, options ...ValidatorOption) ValidatorBuilder
+	// TODO: Optional
 
 	// String Validators
 	MaxLength(len int) ValidatorBuilder
 	MinLength(len int) ValidatorBuilder
-	//Matches
+	// TODO: Matches
+
+	// Date Validators
+	// TODO: Before
+	// TODO: After
+	// TODO: BeforeOtherField
+	// TODO: AfterOtherField
+	// TODO: BeforeValueFromContext
+	// TODO: AfterValueFromContext
 
 	// Compare Validators
-	// Between
+	// TODO: Between
 	LessThan(value interface{}, options ...ValidatorOption) ValidatorBuilder
 	LessThanOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
 	LessThanValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
@@ -49,14 +57,17 @@ type ValidatorBuilder interface {
 	EqualToValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 
 	// Slice Validators
-	// Contains
-	// CountEqual
-	// CountGreaterThan
-	// CountGreaterThanEqual
-	// CountLessThan
-	// CountLessThanEqual
-	// RangeValidate
-	// RangeExpect
+	// TODO: Contains
+	// TODO: CountEqual
+	// TODO: CountGreaterThan
+	// TODO: CountGreaterThanEqual
+	// TODO: CountLessThan
+	// TODO: CountLessThanEqual
+	// TODO: RangeValidate
+	// TODO: RangeExpect
+
+	// Reference Validators
+	// TODO: Validate
 
 	// Custom Rule which if returned error is not nil, error's message will be included in the validation error
 	Expect(validator func(validationCtx ValidatorContextGetter) error) ValidatorBuilder
