@@ -59,13 +59,10 @@ type ValidatorBuilder interface {
 	EqualToValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 
 	// Slice Validators
+	// MaxLen and MinLen valid for slices
 	// TODO: Contains
 	// TODO: ContainsValueFromContext
 	// TODO: CountEqual
-	// TODO: CountGreaterThan
-	// TODO: CountGreaterThanEqual
-	// TODO: CountLessThan
-	// TODO: CountLessThanEqual
 	// TODO: RangeValidate
 	// TODO: RangeExpect
 
