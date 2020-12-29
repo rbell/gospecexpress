@@ -63,10 +63,14 @@ func joinErrors(e1, e2 error) *specExpressErrors.ValidatorError {
 		ve = specExpressErrors.NewValidationError("", e1.Error())
 	}
 
-	errMap := ve.GetErrorMap()
 	if errors.As(e2, &e) {
-		for key, msg := range e2.(*specExpressErrors.ValidatorError).GetErrorMap() {
+		errMap := ve.GetErrorMap()
+		for key, msg := range e2.(*specExpressErrors.ValidatorError).GetFlatErrorMap() {
 			addMsgs(errMap, key, msg...)
+		}
+		childErrs := ve.GetChildErrors()
+		for key, ve := range e2.(*specExpressErrors.ValidatorError).GetChildErrors() {
+			childErrs[key] = ve
 		}
 	}
 

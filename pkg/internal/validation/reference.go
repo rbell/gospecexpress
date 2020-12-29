@@ -29,7 +29,11 @@ func (v *Reference) Validate(thing interface{}, contextData map[string]interface
 	if val, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
 		err := v.validationCatalog.ValidateWithContext(val.Interface(), contextData)
 		if err != nil {
-			return errors.NewValidationError(v.fieldName, err.Error())
+			if ve, ok := err.(*errors.ValidatorError); ok {
+				return errors.NewValidationErrors(nil, map[string]*errors.ValidatorError{
+					v.fieldName: ve,
+				})
+			}
 		}
 	}
 

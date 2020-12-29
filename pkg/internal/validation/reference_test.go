@@ -45,7 +45,7 @@ func TestReference_Validate_ValidReference_ShouldReturnNil(t *testing.T) {
 	mCataloger.AssertExpectations(t)
 }
 
-func TestReference_Validate_InValidReference_ShouldReturnNil(t *testing.T) {
+func TestReference_Validate_InValidReference_ShouldReturnError(t *testing.T) {
 	// Setup
 	type TestReference struct {
 		Adddress string
@@ -64,7 +64,7 @@ func TestReference_Validate_InValidReference_ShouldReturnNil(t *testing.T) {
 
 	// Mock call to cataloger.ValidateWithContext for reference returning nil (valid)
 	mCataloger := &mocks.Cataloger{}
-	mCataloger.On("ValidateWithContext", testSubj.TestRef, map[string]interface{}(nil)).Return(errors.NewValidationError("TestRef", "Invalid"))
+	mCataloger.On("ValidateWithContext", testSubj.TestRef, map[string]interface{}(nil)).Return(errors.NewValidationError("Address", "Invalid"))
 
 	refValidator := &Reference{
 		AllFieldValidators: &AllFieldValidators{
@@ -81,6 +81,7 @@ func TestReference_Validate_InValidReference_ShouldReturnNil(t *testing.T) {
 	mCataloger.AssertExpectations(t)
 	valErr, ok := result.(*errors.ValidatorError)
 	assert.True(t, ok)
-	assert.Len(t, valErr.GetErrorMap(), 1)
-	assert.Contains(t, valErr.GetErrorMap(), "TestRef")
+	errs := valErr.GetFlatErrorMap()
+	assert.Len(t, errs, 1)
+	assert.Contains(t, errs, "TestRef.Address")
 }
