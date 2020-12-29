@@ -21,7 +21,7 @@ func NewExpectValidator(fieldName string, exp func(ctx interfaces.ValidatorConte
 }
 
 // Validate validates the thing ensuring the field specified is populated
-func (e *Expectation) Validate(thing interface{}, contextData map[string]interface{}, messageStore interfaces.MessageStorer) error {
+func (e *Expectation) Validate(thing interface{}, contextData map[string]interface{}, _ interfaces.MessageStorer) error {
 	ctx := e.AllFieldValidators.NewValidatorContext(thing, contextData)
 	err := e.exp(ctx)
 	if err != nil {
