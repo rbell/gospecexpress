@@ -57,8 +57,8 @@ func TestValidatorError_GetErrorMap_OneChild_ReturnsFlatMap(t *testing.T) {
 	assert.Len(t, result, 2)
 	assert.Contains(t, result, "TestField")
 	assert.Len(t, result["TestField"], 2)
-	assert.Contains(t, result, "ChildTestField")
-	assert.Len(t, result["ChildTestField"], 3)
+	assert.Contains(t, result, "TestRef.ChildTestField")
+	assert.Len(t, result["TestRef.ChildTestField"], 3)
 }
 
 func TestValidatorError_GetErrorMap_OneGrandChild_ReturnsFlatMap(t *testing.T) {
