@@ -40,6 +40,8 @@ type ValidatorBuilder interface {
 
 	// Compare Validators
 	// TODO: Between
+	// TODO: BetweenOtherFields
+	// TODO: BetweenValuesFromContext
 	LessThan(value interface{}, options ...ValidatorOption) ValidatorBuilder
 	LessThanOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
 	LessThanValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
@@ -58,6 +60,7 @@ type ValidatorBuilder interface {
 
 	// Slice Validators
 	// TODO: Contains
+	// TODO: ContainsValueFromContext
 	// TODO: CountEqual
 	// TODO: CountGreaterThan
 	// TODO: CountGreaterThanEqual
