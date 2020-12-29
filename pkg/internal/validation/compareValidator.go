@@ -3,6 +3,8 @@ package validation
 import (
 	"fmt"
 
+	"gitlab.com/rbell/gospecexpress/pkg/errors"
+
 	"gitlab.com/rbell/gospecexpress/pkg/catalog"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 	"gitlab.com/rbell/gospecexpress/pkg/internal/compare"
@@ -69,7 +71,7 @@ func (v *compareValidator) Validate(thing interface{}, contextData map[string]in
 	//nolint:errcheck // message store returns message if there is an error (based on context)
 	if valid, _ := v.test(ctx); !valid {
 		msg := messageStore.GetMessage(v.validatorType, ctx)
-		return NewValidationError(v.fieldName, msg)
+		return errors.NewValidationError(v.fieldName, msg)
 	}
 	return nil
 }

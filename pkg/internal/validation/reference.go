@@ -2,6 +2,7 @@ package validation
 
 import (
 	"gitlab.com/rbell/gospecexpress/pkg/catalog"
+	"gitlab.com/rbell/gospecexpress/pkg/errors"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 	"gitlab.com/rbell/gospecexpress/pkg/internal/reflectionhelpers"
 )
@@ -28,7 +29,7 @@ func (v *Reference) Validate(thing interface{}, contextData map[string]interface
 	if val, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
 		err := v.validationCatalog.ValidateWithContext(val.Interface(), contextData)
 		if err != nil {
-			return NewValidationError(v.fieldName, err.Error())
+			return errors.NewValidationError(v.fieldName, err.Error())
 		}
 	}
 

@@ -1,6 +1,7 @@
 package validation
 
 import (
+	"gitlab.com/rbell/gospecexpress/pkg/errors"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
@@ -25,7 +26,7 @@ func (e *Expectation) Validate(thing interface{}, contextData map[string]interfa
 	ctx := e.AllFieldValidators.NewValidatorContext(thing, contextData)
 	err := e.exp(ctx)
 	if err != nil {
-		return NewValidationError(e.AllFieldValidators.fieldName, err.Error())
+		return errors.NewValidationError(e.AllFieldValidators.fieldName, err.Error())
 	}
 
 	return nil

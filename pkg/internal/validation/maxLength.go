@@ -3,6 +3,8 @@ package validation
 import (
 	"fmt"
 
+	"gitlab.com/rbell/gospecexpress/pkg/errors"
+
 	"gitlab.com/rbell/gospecexpress/pkg/catalog"
 
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
@@ -49,7 +51,7 @@ func (v *MaxLength) Validate(thing interface{}, contextData map[string]interface
 			msg := messageStore.GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, map[string]interface{}{
 				contextMaxLenKey: v.maxLen,
 			}))
-			return NewValidationError(v.fieldName, msg)
+			return errors.NewValidationError(v.fieldName, msg)
 		}
 	}
 

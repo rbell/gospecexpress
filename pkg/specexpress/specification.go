@@ -1,11 +1,12 @@
 package specexpress
 
 import (
+	"errors"
 	"reflect"
 
-	"gitlab.com/rbell/gospecexpress/pkg/catalog"
+	specExpressErrors "gitlab.com/rbell/gospecexpress/pkg/errors"
 
-	"gitlab.com/rbell/gospecexpress/pkg/internal/validation"
+	"gitlab.com/rbell/gospecexpress/pkg/catalog"
 
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
@@ -31,10 +32,10 @@ func (s *Specification) GetForType() reflect.Type {
 
 // Validate validates an instance of the type
 func (s *Specification) Validate(thing interface{}, contextData map[string]interface{}) error {
-	var specError *validation.ValidatorError = nil
+	var specError *specExpressErrors.ValidatorError = nil
 	for _, v := range s.validators {
 		if err := v.Validate(thing, contextData, catalog.ValidationCatalog().MessageStore()); err != nil {
-			specError = validation.JoinErrors(specError, err)
+			specError = joinErrors(specError, err)
 		}
 	}
 
@@ -42,4 +43,39 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 		return nil
 	}
 	return specError
+}
+
+func joinErrors(e1, e2 error) *specExpressErrors.ValidatorError {
+	var e *specExpressErrors.ValidatorError
+	if (e1 == nil || reflect.ValueOf(e1).IsNil()) && e2 != nil {
+		if errors.As(e2, &e) {
+			return e2.(*specExpressErrors.ValidatorError)
+		}
+		return specExpressErrors.NewValidationError("", e2.Error())
+
+	}
+
+	var ve *specExpressErrors.ValidatorError
+	if errors.As(e1, &e) {
+		//nolint:errcheck // above line infers its castable
+		ve = e1.(*specExpressErrors.ValidatorError)
+	} else {
+		ve = specExpressErrors.NewValidationError("", e1.Error())
+	}
+
+	errMap := ve.GetErrorMap()
+	if errors.As(e2, &e) {
+		for key, msg := range e2.(*specExpressErrors.ValidatorError).GetErrorMap() {
+			addMsgs(errMap, key, msg...)
+		}
+	}
+
+	return ve
+}
+
+func addMsgs(errMap map[string][]string, context string, msg ...string) {
+	if _, ok := errMap[context]; !ok {
+		errMap[context] = []string{}
+	}
+	errMap[context] = append(errMap[context], msg...)
 }

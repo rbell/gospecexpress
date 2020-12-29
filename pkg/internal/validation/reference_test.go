@@ -3,6 +3,8 @@ package validation
 import (
 	"testing"
 
+	"gitlab.com/rbell/gospecexpress/pkg/errors"
+
 	"github.com/stretchr/testify/assert"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces/mocks"
 )
@@ -62,7 +64,7 @@ func TestReference_Validate_InValidReference_ShouldReturnNil(t *testing.T) {
 
 	// Mock call to cataloger.ValidateWithContext for reference returning nil (valid)
 	mCataloger := &mocks.Cataloger{}
-	mCataloger.On("ValidateWithContext", testSubj.TestRef, map[string]interface{}(nil)).Return(NewValidationError("TestRef", "Invalid"))
+	mCataloger.On("ValidateWithContext", testSubj.TestRef, map[string]interface{}(nil)).Return(errors.NewValidationError("TestRef", "Invalid"))
 
 	refValidator := &Reference{
 		AllFieldValidators: &AllFieldValidators{
@@ -77,8 +79,8 @@ func TestReference_Validate_InValidReference_ShouldReturnNil(t *testing.T) {
 	// Assert
 	assert.NotNil(t, result)
 	mCataloger.AssertExpectations(t)
-	valErr, ok := result.(*ValidatorError)
+	valErr, ok := result.(*errors.ValidatorError)
 	assert.True(t, ok)
-	assert.Len(t, valErr.errorMap, 1)
-	assert.Contains(t, valErr.errorMap, "TestRef")
+	assert.Len(t, valErr.GetErrorMap(), 1)
+	assert.Contains(t, valErr.GetErrorMap(), "TestRef")
 }

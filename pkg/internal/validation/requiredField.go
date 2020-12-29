@@ -3,6 +3,8 @@ package validation
 import (
 	"fmt"
 
+	"gitlab.com/rbell/gospecexpress/pkg/errors"
+
 	"gitlab.com/rbell/gospecexpress/pkg/catalog"
 
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
@@ -37,7 +39,7 @@ func (v *RequiredField) Validate(thing interface{}, contextData map[string]inter
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
 		if fv.IsZero() {
 			msg := catalog.ValidationCatalog().MessageStore().GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, nil))
-			return NewValidationError(v.fieldName, msg)
+			return errors.NewValidationError(v.fieldName, msg)
 		}
 	}
 
