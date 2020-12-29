@@ -15,17 +15,26 @@ var (
 
 var zero reflect.Value
 
-type kind int
+// Kind defines enumeration for kinds of values
+type Kind int
 
 const (
-	invalidKind kind = iota
-	boolKind
-	complexKind
-	intKind
-	floatKind
-	stringKind
-	uintKind
-	timeKind
+	// InvalidKind indicated an invalid Kind
+	InvalidKind Kind = iota
+	// BoolKind indicates value is a bool Kind
+	BoolKind
+	// ComplexKind indicates value is a complex Kind
+	ComplexKind
+	// IntKind indicates value is an int Kind
+	IntKind
+	// FloatKind indicates value is a float Kind
+	FloatKind
+	// StringKind indicates value is a string Kind
+	StringKind
+	// UintKind indicates value is a uint Kind
+	UintKind
+	// TimeKind indicates value is a time Kind
+	TimeKind
 )
 
 // StructValue gets the Structure value of a Value t.  If t is an interface wrapping a struct or pointer to a struct
@@ -48,7 +57,7 @@ func GetFieldValue(thing interface{}, fieldName string) (*reflect.Value, bool) {
 	tv := reflect.ValueOf(thing)
 	if sv, ok := StructValue(tv); ok {
 		if _, ok := sv.Type().FieldByName(fieldName); ok {
-			fv := sv.FieldByName(fieldName)
+			fv := indirectInterface(sv.FieldByName(fieldName))
 			return &fv, true
 		}
 	}
@@ -67,38 +76,38 @@ func Eq(arg1 reflect.Value, arg2 ...reflect.Value) (bool, error) {
 		return false, errNoComparison
 	}
 	//nolint:errcheck // not interested in err
-	k1, _ := basicKind(v1)
+	k1, _ := BasicKind(v1)
 	for _, arg := range arg2 {
 		//nolint:errcheck // not interested in err
 		v2 := indirectInterface(arg)
 		//nolint:errcheck // not interested in err
-		k2, _ := basicKind(v2)
+		k2, _ := BasicKind(v2)
 		truth := false
 		if k1 != k2 {
 			// Special case: Can compare integer values regardless of type's sign.
 			switch {
-			case k1 == intKind && k2 == uintKind:
+			case k1 == IntKind && k2 == UintKind:
 				truth = v1.Int() >= 0 && uint64(v1.Int()) == v2.Uint()
-			case k1 == uintKind && k2 == intKind:
+			case k1 == UintKind && k2 == IntKind:
 				truth = v2.Int() >= 0 && v1.Uint() == uint64(v2.Int())
 			default:
 				return false, errBadComparison
 			}
 		} else {
 			switch k1 {
-			case boolKind:
+			case BoolKind:
 				truth = v1.Bool() == v2.Bool()
-			case complexKind:
+			case ComplexKind:
 				truth = v1.Complex() == v2.Complex()
-			case floatKind:
+			case FloatKind:
 				truth = v1.Float() == v2.Float()
-			case intKind:
+			case IntKind:
 				truth = v1.Int() == v2.Int()
-			case stringKind:
+			case StringKind:
 				truth = v1.String() == v2.String()
-			case uintKind:
+			case UintKind:
 				truth = v1.Uint() == v2.Uint()
-			case timeKind:
+			case TimeKind:
 				truth = v1.Interface().(time.Time).Equal(v2.Interface().(time.Time))
 			default:
 				if v2 == zero {
@@ -128,12 +137,12 @@ func Ne(arg1, arg2 reflect.Value) (bool, error) {
 // Lt evaluates the comparison a < b.
 func Lt(arg1, arg2 reflect.Value) (bool, error) {
 	v1 := indirectInterface(arg1)
-	k1, err := basicKind(v1)
+	k1, err := BasicKind(v1)
 	if err != nil {
 		return false, err
 	}
 	v2 := indirectInterface(arg2)
-	k2, err := basicKind(v2)
+	k2, err := BasicKind(v2)
 	if err != nil {
 		return false, err
 	}
@@ -141,29 +150,29 @@ func Lt(arg1, arg2 reflect.Value) (bool, error) {
 	if k1 != k2 {
 		// Special case: Can compare integer values regardless of type's sign.
 		switch {
-		case k1 == intKind && k2 == uintKind:
+		case k1 == IntKind && k2 == UintKind:
 			truth = v1.Int() < 0 || uint64(v1.Int()) < v2.Uint()
-		case k1 == uintKind && k2 == intKind:
+		case k1 == UintKind && k2 == IntKind:
 			truth = v2.Int() >= 0 && v1.Uint() < uint64(v2.Int())
 		default:
 			return false, errBadComparison
 		}
 	} else {
 		switch k1 {
-		case boolKind, complexKind:
+		case BoolKind, ComplexKind:
 			return false, errBadComparisonType
-		case floatKind:
+		case FloatKind:
 			truth = v1.Float() < v2.Float()
-		case intKind:
+		case IntKind:
 			truth = v1.Int() < v2.Int()
-		case stringKind:
+		case StringKind:
 			truth = v1.String() < v2.String()
-		case uintKind:
+		case UintKind:
 			truth = v1.Uint() < v2.Uint()
-		case timeKind:
+		case TimeKind:
 			truth = v1.Interface().(time.Time).Before(v2.Interface().(time.Time))
 		default:
-			panic("invalid kind")
+			panic("invalid Kind")
 		}
 	}
 	return truth, nil
@@ -213,24 +222,25 @@ func indirectInterface(v reflect.Value) reflect.Value {
 	return v.Elem()
 }
 
-func basicKind(v reflect.Value) (kind, error) {
+// BasicKind returns the Kind of the value
+func BasicKind(v reflect.Value) (Kind, error) {
 	if v.Type() == reflect.TypeOf(time.Time{}) {
-		return timeKind, nil
+		return TimeKind, nil
 	}
 
 	switch v.Kind() {
 	case reflect.Bool:
-		return boolKind, nil
+		return BoolKind, nil
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return intKind, nil
+		return IntKind, nil
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		return uintKind, nil
+		return UintKind, nil
 	case reflect.Float32, reflect.Float64:
-		return floatKind, nil
+		return FloatKind, nil
 	case reflect.Complex64, reflect.Complex128:
-		return complexKind, nil
+		return ComplexKind, nil
 	case reflect.String:
-		return stringKind, nil
+		return StringKind, nil
 	}
-	return invalidKind, errBadComparisonType
+	return InvalidKind, errBadComparisonType
 }
