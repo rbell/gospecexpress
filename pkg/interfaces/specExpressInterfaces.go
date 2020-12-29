@@ -67,7 +67,7 @@ type ValidatorBuilder interface {
 	// TODO: RangeExpect
 
 	// Reference Validators
-	// TODO: Validate
+	ValidateReference() ValidatorBuilder
 
 	// Custom Rule which if returned error is not nil, error's message will be included in the validation error
 	Expect(validator func(validationCtx ValidatorContextGetter) error) ValidatorBuilder
