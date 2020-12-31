@@ -20,7 +20,7 @@ type SpecificationValidator interface {
 
 // QualifierBuilder defines interface for starting to qualify an element
 type QualifierBuilder interface {
-	RequiredField(fieldName string, options ...ValidatorOption) ValidatorBuilder
+	Required(fieldName string, options ...ValidatorOption) ValidatorBuilder
 }
 
 // ValidatorBuilder defines interface methods to build a specification

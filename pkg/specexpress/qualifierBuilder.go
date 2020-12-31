@@ -28,7 +28,7 @@ type qualifierBuilder struct {
 }
 
 // RequiredField indicates a field is required
-func (b *qualifierBuilder) RequiredField(fieldName string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+func (b *qualifierBuilder) Required(fieldName string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	vals := append(*b.validators, ApplyValidatorOptions(validation.NewRequiredFieldValidator(fieldName), options...))
 	*b.validators = vals
 	return NewValidatorBuilder(b.validators, b.forType, fieldName, b)
