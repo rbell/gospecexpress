@@ -14,8 +14,8 @@ func ApplyValidatorOptions(v interfaces.Validator, options ...interfaces.Validat
 	return v
 }
 
-// OverrideMessageFromContext overrides the error message if the validator fails
-func OverrideMessageFromContext(msgFormatter interfaces.MessageFormatter) func(validator interfaces.Validator) {
+// WithErrorMessageFormatter overrides the error message if the validator fails
+func WithErrorMessageFormatter(msgFormatter interfaces.MessageFormatter) func(validator interfaces.Validator) {
 	return func(validator interfaces.Validator) {
 		if overrider, ok := validator.(interfaces.MessageOverrider); ok {
 			overrider.SetOverrideErrorMessage(msgFormatter)
@@ -23,9 +23,9 @@ func OverrideMessageFromContext(msgFormatter interfaces.MessageFormatter) func(v
 	}
 }
 
-// OverrideMessage overrides the error message if the validator fails
-func OverrideMessage(msg string) func(validator interfaces.Validator) {
-	return OverrideMessageFromContext(func(ctx interfaces.ValidatorContextGetter) string {
+// WithErrorMessage overrides the error message if the validator fails
+func WithErrorMessage(msg string) func(validator interfaces.Validator) {
+	return WithErrorMessageFormatter(func(ctx interfaces.ValidatorContextGetter) string {
 		return msg
 	})
 }

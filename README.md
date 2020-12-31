@@ -55,7 +55,7 @@ func newClubMemberSpec() *ClubMemberSpec {
 	s := &ClubMemberSpec{}
 
 	s.ForType(&ClubMember{}).
-		Required("FirstName", OverrideMessage("The First Name is a required field!")).MaxLength(5).
+		Required("FirstName", WithErrorMessage("The First Name is a required field!")).MaxLength(5).
 		Required("LastName").MaxLength(50).
 		Required("Age").LessThan(80).
 		Required("MemberExpireAt").GreaterThanOtherField("MemberSince")
