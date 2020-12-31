@@ -64,7 +64,7 @@ type ValidatorBuilder interface {
 	MaxLength(len int) ValidatorBuilder
 	MinLength(len int) ValidatorBuilder
 	Contains(thing interface{}) ValidatorBuilder
-	// TODO: ContainsValueFromContext
+	ContainsValueFromContext(fromContext ValueFromContext) ValidatorBuilder
 	// TODO: CountEqual
 	// TODO: RangeValidate
 	// TODO: RangeExpect

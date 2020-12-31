@@ -32,3 +32,11 @@ func (v *validatorBuilder) Contains(thing interface{}) interfaces.ValidatorBuild
 	*v.validators = vals
 	return v
 }
+
+// Contains validates the slice contains some thing
+func (v *validatorBuilder) ContainsValueFromContext(fromContext interfaces.ValueFromContext) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, validation.NewContainsValidatorFromContext(v.fieldName, fromContext))
+	*v.validators = vals
+	return v
+}

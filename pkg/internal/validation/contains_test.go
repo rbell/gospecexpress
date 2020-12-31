@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"testing"
 
+	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
+
 	"github.com/stretchr/testify/mock"
 
 	"github.com/stretchr/testify/assert"
@@ -218,6 +220,57 @@ func TestContains_Validate_SliceTypeDoesNotMatchValueType_ShouldReturnError(t *t
 		},
 		contains:    contains,
 		containsVal: reflect.ValueOf(contains),
+	}
+	mMsgStore := &mocks.MessageStorer{}
+	mMsgStore.On("GetMessage", mock.AnythingOfType("*validation.Contains"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not in slice")
+
+	// Test
+	result := validator.Validate(testSubj, nil, mMsgStore)
+
+	// Assert
+	assert.NotNil(t, result)
+	mMsgStore.AssertExpectations(t)
+}
+
+func TestContains_Validate_SliceContainsValueFromContext_ShouldReturnNil(t *testing.T) {
+	// Setup
+	type testSubjectType struct {
+		TestField string
+	}
+	testSubj := &testSubjectType{TestField: "This is a test"}
+
+	validator := &Contains{
+		AllFieldValidators: &AllFieldValidators{
+			fieldName: "TestField",
+		},
+		fromContext: func(ctx interfaces.ValidatorContextGetter) interface{} {
+			return 's'
+		},
+	}
+	mMsgStore := &mocks.MessageStorer{}
+
+	// Test
+	result := validator.Validate(testSubj, nil, mMsgStore)
+
+	// Assert
+	assert.Nil(t, result)
+	mMsgStore.AssertExpectations(t)
+}
+
+func TestContains_Validate_SliceDoesNotContainValueFromContext_ShouldReturnNil(t *testing.T) {
+	// Setup
+	type testSubjectType struct {
+		TestField string
+	}
+	testSubj := &testSubjectType{TestField: "This is a test"}
+
+	validator := &Contains{
+		AllFieldValidators: &AllFieldValidators{
+			fieldName: "TestField",
+		},
+		fromContext: func(ctx interfaces.ValidatorContextGetter) interface{} {
+			return 'z'
+		},
 	}
 	mMsgStore := &mocks.MessageStorer{}
 	mMsgStore.On("GetMessage", mock.AnythingOfType("*validation.Contains"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not in slice")

@@ -22,6 +22,7 @@ type Contains struct {
 	*AllFieldValidators
 	contains    interface{}
 	containsVal reflect.Value
+	fromContext interfaces.ValueFromContext
 }
 
 // NewContainsValidator returns an initialized contains validator
@@ -32,6 +33,16 @@ func NewContainsValidator(fieldName string, value interface{}) interfaces.Valida
 		},
 		contains:    value,
 		containsVal: reflect.ValueOf(value),
+	}
+}
+
+// NewContainsValidatorFromContext returns an initialized contains validator
+func NewContainsValidatorFromContext(fieldName string, valueFromContext interfaces.ValueFromContext) interfaces.Validator {
+	return &Contains{
+		AllFieldValidators: &AllFieldValidators{
+			fieldName: fieldName,
+		},
+		fromContext: valueFromContext,
 	}
 }
 
@@ -46,6 +57,12 @@ func init() {
 
 // Validate asserts that the value is found in the slice
 func (v *Contains) Validate(thing interface{}, contextData map[string]interface{}, messageStore interfaces.MessageStorer) error {
+	if v.fromContext != nil {
+		ctx := v.AllFieldValidators.NewValidatorContext(thing, contextData)
+		v.contains = v.fromContext(ctx)
+		v.containsVal = reflect.ValueOf(v.contains)
+	}
+
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
 		if fv.Kind() == reflect.Array || fv.Kind() == reflect.Slice || fv.Kind() == reflect.String {
 			for i := 0; i < fv.Len(); i++ {
