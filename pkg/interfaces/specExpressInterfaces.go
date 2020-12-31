@@ -61,11 +61,11 @@ type ValidatorBuilder interface {
 	EqualToValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 
 	// Slice Validators (strings are considered slices)
+	LengthEquals(length int) ValidatorBuilder
 	MaxLength(len int) ValidatorBuilder
 	MinLength(len int) ValidatorBuilder
 	Contains(thing interface{}) ValidatorBuilder
 	ContainsValueFromContext(fromContext ValueFromContext) ValidatorBuilder
-	// TODO: CountEqual
 	// TODO: RangeValidate
 	// TODO: RangeExpect
 

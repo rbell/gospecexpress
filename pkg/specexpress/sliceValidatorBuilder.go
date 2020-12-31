@@ -9,6 +9,14 @@ import (
 	"gitlab.com/rbell/gospecexpress/pkg/internal/validation"
 )
 
+// LengthEquals indicates a lenth equal to rule should be applied to the field
+func (v *validatorBuilder) LengthEquals(length int) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, validation.NewLengthEqualsValidator(v.fieldName, length))
+	*v.validators = vals
+	return v
+}
+
 // MaxLength indicates a max length rule should be applied to field
 func (v *validatorBuilder) MaxLength(length int) interfaces.ValidatorBuilder {
 	//nolint:gocritic // invalid
