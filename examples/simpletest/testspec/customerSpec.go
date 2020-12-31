@@ -1,28 +1,34 @@
+// Copyright ©2021 by Randy R Bell. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package testspec
 
 import (
 	"gitlab.com/rbell/gospecexpress/examples/simpletest/testmodels"
-	"gitlab.com/rbell/gospecexpress/pkg/specification"
-	"gitlab.com/rbell/gospecexpress/pkg/specificationcatalog"
+	"gitlab.com/rbell/gospecexpress/pkg/catalog"
+	. "gitlab.com/rbell/gospecexpress/pkg/specexpress"
 )
 
-// init functions run at first import, registering the specification in the specification catalog
-// (we can define multiple init functions in the same package and they all will get executed upon import)
 func init() {
-	specificationcatalog.Catalog().Register(newTestSpec())
+	// Register the CustomerSpec in the Catalog.
+	// Registering at init ensures the catalog is initialized, however, registration can happen anytime before the catalog is used.
+	catalog.ValidationCatalog().Register(newTestSpec())
 }
 
 // CustomerSpec defines a specification for a customer
 type CustomerSpec struct {
-	specification.Specification
+	Specification
 }
 
 func newTestSpec() *CustomerSpec {
 	s := &CustomerSpec{}
 
 	s.ForType(&testmodels.Customer{}).
-		RequiredField("FirstName").MaxLength(5).
-		RequiredField("LastName").MaxLength(50)
+		RequiredField("FirstName", OverrideMessage("The First Name is a required field!")).MaxLength(5).
+		Required("LastName").MaxLength(50).
+		Required("Age").LessThan(80).
+		Required("MemberExpireAt").GreaterThanOtherField("MemberSince")
 
 	return s
 }

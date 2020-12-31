@@ -1,9 +1,14 @@
+// Copyright ©2021 by Randy R Bell. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package main
 
 import (
 	"fmt"
+	"time"
 
-	"gitlab.com/rbell/gospecexpress/pkg/specificationcatalog"
+	"gitlab.com/rbell/gospecexpress/pkg/catalog"
 
 	"gitlab.com/rbell/gospecexpress/examples/simpletest/testmodels"
 	// import specifications, but not referenced.  Need to do so to execute init methods defined in the package
@@ -11,21 +16,18 @@ import (
 )
 
 func main() {
-	// Example of overriding a default message for a specific validator
-	//specificationcatalog.Catalog().MessageStore().SetMessage(&validators.MaxLength{}, func(ctx *errors.ErrorMessageContext) string {
-	//	return "Too Long!!!"
-	//})
-
 	// We have something we need to validate: a customer
 	c := &testmodels.Customer{
-		FirstName: "Fred Flinstone",
-		LastName:  "Flinstone",
-		Age:       23,
+		FirstName:      "",
+		LastName:       "Flinstone",
+		Age:            23,
+		MemberSince:    time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+		MemberExpireAt: time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC),
 	}
 
-	// Validate it against the specifications we have registered in the specification catalog
-	// (specification registers itself via init function in testspec/customerSpec.go)
-	err := specificationcatalog.Catalog().Validate(c)
+	// Validate the instance c against specifications in the catalog
+	err := catalog.ValidationCatalog().Validate(c)
+
 	if err == nil {
 		fmt.Printf("Customer is valid.")
 	} else {

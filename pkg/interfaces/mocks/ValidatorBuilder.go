@@ -12,6 +12,246 @@ type ValidatorBuilder struct {
 	mock.Mock
 }
 
+// EqualTo provides a mock function with given fields: value
+func (_m *ValidatorBuilder) EqualTo(value interface{}) interfaces.ValidatorBuilder {
+	ret := _m.Called(value)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(interface{}) interfaces.ValidatorBuilder); ok {
+		r0 = rf(value)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// EqualToOtherField provides a mock function with given fields: otherField
+func (_m *ValidatorBuilder) EqualToOtherField(otherField string) interfaces.ValidatorBuilder {
+	ret := _m.Called(otherField)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(string) interfaces.ValidatorBuilder); ok {
+		r0 = rf(otherField)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// EqualToValueFromContext provides a mock function with given fields: valueFromContext
+func (_m *ValidatorBuilder) EqualToValueFromContext(valueFromContext interfaces.ValueFromContext) interfaces.ValidatorBuilder {
+	ret := _m.Called(valueFromContext)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(interfaces.ValueFromContext) interfaces.ValidatorBuilder); ok {
+		r0 = rf(valueFromContext)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// GreaterThan provides a mock function with given fields: value
+func (_m *ValidatorBuilder) GreaterThan(value interface{}) interfaces.ValidatorBuilder {
+	ret := _m.Called(value)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(interface{}) interfaces.ValidatorBuilder); ok {
+		r0 = rf(value)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// GreaterThanOrEqualTo provides a mock function with given fields: value
+func (_m *ValidatorBuilder) GreaterThanOrEqualTo(value interface{}) interfaces.ValidatorBuilder {
+	ret := _m.Called(value)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(interface{}) interfaces.ValidatorBuilder); ok {
+		r0 = rf(value)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// GreaterThanOrEqualToOtherField provides a mock function with given fields: otherField
+func (_m *ValidatorBuilder) GreaterThanOrEqualToOtherField(otherField string) interfaces.ValidatorBuilder {
+	ret := _m.Called(otherField)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(string) interfaces.ValidatorBuilder); ok {
+		r0 = rf(otherField)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// GreaterThanOrEqualToValueFromContext provides a mock function with given fields: valueFromContext
+func (_m *ValidatorBuilder) GreaterThanOrEqualToValueFromContext(valueFromContext interfaces.ValueFromContext) interfaces.ValidatorBuilder {
+	ret := _m.Called(valueFromContext)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(interfaces.ValueFromContext) interfaces.ValidatorBuilder); ok {
+		r0 = rf(valueFromContext)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// GreaterThanOtherField provides a mock function with given fields: otherField
+func (_m *ValidatorBuilder) GreaterThanOtherField(otherField string) interfaces.ValidatorBuilder {
+	ret := _m.Called(otherField)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(string) interfaces.ValidatorBuilder); ok {
+		r0 = rf(otherField)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// GreaterThanValueFromContext provides a mock function with given fields: valueFromContext
+func (_m *ValidatorBuilder) GreaterThanValueFromContext(valueFromContext interfaces.ValueFromContext) interfaces.ValidatorBuilder {
+	ret := _m.Called(valueFromContext)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(interfaces.ValueFromContext) interfaces.ValidatorBuilder); ok {
+		r0 = rf(valueFromContext)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// LessThan provides a mock function with given fields: value
+func (_m *ValidatorBuilder) LessThan(value interface{}) interfaces.ValidatorBuilder {
+	ret := _m.Called(value)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(interface{}) interfaces.ValidatorBuilder); ok {
+		r0 = rf(value)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// LessThanOrEqualTo provides a mock function with given fields: value
+func (_m *ValidatorBuilder) LessThanOrEqualTo(value interface{}) interfaces.ValidatorBuilder {
+	ret := _m.Called(value)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(interface{}) interfaces.ValidatorBuilder); ok {
+		r0 = rf(value)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// LessThanOrEqualToOtherField provides a mock function with given fields: otherField
+func (_m *ValidatorBuilder) LessThanOrEqualToOtherField(otherField string) interfaces.ValidatorBuilder {
+	ret := _m.Called(otherField)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(string) interfaces.ValidatorBuilder); ok {
+		r0 = rf(otherField)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// LessThanOrEqualToValueFromContext provides a mock function with given fields: valueFromContext
+func (_m *ValidatorBuilder) LessThanOrEqualToValueFromContext(valueFromContext interfaces.ValueFromContext) interfaces.ValidatorBuilder {
+	ret := _m.Called(valueFromContext)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(interfaces.ValueFromContext) interfaces.ValidatorBuilder); ok {
+		r0 = rf(valueFromContext)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// LessThanOtherField provides a mock function with given fields: otherField
+func (_m *ValidatorBuilder) LessThanOtherField(otherField string) interfaces.ValidatorBuilder {
+	ret := _m.Called(otherField)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(string) interfaces.ValidatorBuilder); ok {
+		r0 = rf(otherField)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// LessThanValueFromContext provides a mock function with given fields: valueFromContext
+func (_m *ValidatorBuilder) LessThanValueFromContext(valueFromContext interfaces.ValueFromContext) interfaces.ValidatorBuilder {
+	ret := _m.Called(valueFromContext)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func(interfaces.ValueFromContext) interfaces.ValidatorBuilder); ok {
+		r0 = rf(valueFromContext)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
 // MaxLength provides a mock function with given fields: len
 func (_m *ValidatorBuilder) MaxLength(len int) interfaces.ValidatorBuilder {
 	ret := _m.Called(len)
