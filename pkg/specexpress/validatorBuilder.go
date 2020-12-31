@@ -29,7 +29,7 @@ func NewValidatorBuilder(vals *[]interfaces.Validator, forType reflect.Value, fo
 	}
 }
 
-// RequiredField indicates we want to start a new rule chain for a new required field
+// Required indicates we want to start a new rule chain for a new required field
 func (v *validatorBuilder) Required(fieldName string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
-	return v.qualifierBuilder.RequiredField(fieldName, options...)
+	return v.qualifierBuilder.Required(fieldName, options...)
 }
