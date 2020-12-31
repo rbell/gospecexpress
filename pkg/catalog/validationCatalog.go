@@ -23,3 +23,13 @@ func ValidationCatalog() interfaces.Cataloger {
 
 	return instance
 }
+
+// Validate validates an instance against the default validation catalog
+func Validate(something interface{}) error {
+	return ValidationCatalog().Validate(something)
+}
+
+// Register a specification into the default validation catalog
+func Register(spec interfaces.SpecificationValidator) {
+	ValidationCatalog().Register(spec)
+}
