@@ -29,9 +29,7 @@ type ValidatorBuilder interface {
 	Required(fieldName string, options ...ValidatorOption) ValidatorBuilder
 	// TODO: Optional
 
-	// String Validators
-	MaxLength(len int) ValidatorBuilder
-	MinLength(len int) ValidatorBuilder
+	// String Specific Validators
 	// TODO: Matches
 
 	// Date Validators
@@ -62,9 +60,10 @@ type ValidatorBuilder interface {
 	EqualToOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
 	EqualToValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 
-	// Slice Validators
-	// MaxLen and MinLen valid for slices
-	// TODO: Contains
+	// Slice Validators (strings are considered slices)
+	MaxLength(len int) ValidatorBuilder
+	MinLength(len int) ValidatorBuilder
+	Contains(thing interface{}) ValidatorBuilder
 	// TODO: ContainsValueFromContext
 	// TODO: CountEqual
 	// TODO: RangeValidate

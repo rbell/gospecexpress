@@ -24,3 +24,11 @@ func (v *validatorBuilder) MinLength(length int) interfaces.ValidatorBuilder {
 	*v.validators = vals
 	return v
 }
+
+// Contains validates the slice contains some thing
+func (v *validatorBuilder) Contains(thing interface{}) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, validation.NewContainsValidator(v.fieldName, thing))
+	*v.validators = vals
+	return v
+}
