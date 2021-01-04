@@ -55,3 +55,10 @@ func (v *validatorBuilder) RangeValidate() interfaces.ValidatorBuilder {
 	*v.validators = vals
 	return v
 }
+
+// RangeExpect allows a custom validation function to be applied over a slice or array
+func (v *validatorBuilder) RangeExpect(validator func(validationCtx interfaces.ValidatorContextGetter) error) interfaces.ValidatorBuilder {
+	vals := append(*v.validators, validation.NewRangeExpect(v.fieldName, validator))
+	*v.validators = vals
+	return v
+}
