@@ -68,7 +68,6 @@ type ValidatorBuilder interface {
 	ContainsValueFromContext(fromContext ValueFromContext) ValidatorBuilder
 	RangeValidate() ValidatorBuilder
 	RangeExpect(validator func(validationCtx ValidatorContextGetter) error) ValidatorBuilder
-	// TODO: RangeExpect
 
 	// Reference Validators
 	ValidateReference() ValidatorBuilder
