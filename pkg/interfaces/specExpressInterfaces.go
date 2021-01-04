@@ -66,7 +66,7 @@ type ValidatorBuilder interface {
 	MinLength(len int) ValidatorBuilder
 	Contains(thing interface{}) ValidatorBuilder
 	ContainsValueFromContext(fromContext ValueFromContext) ValidatorBuilder
-	// TODO: RangeValidate
+	RangeValidate() ValidatorBuilder
 	// TODO: RangeExpect
 
 	// Reference Validators

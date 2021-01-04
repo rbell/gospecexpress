@@ -48,3 +48,10 @@ func (v *validatorBuilder) ContainsValueFromContext(fromContext interfaces.Value
 	*v.validators = vals
 	return v
 }
+
+// RangeValidate validates each element in the array or slice against the catalog
+func (v *validatorBuilder) RangeValidate() interfaces.ValidatorBuilder {
+	vals := append(*v.validators, validation.NewRangeValidate(v.fieldName))
+	*v.validators = vals
+	return v
+}
