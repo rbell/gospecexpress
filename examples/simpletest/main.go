@@ -15,7 +15,7 @@ import (
 // ClubMember is a sample customer model for purposes of validation
 type ClubMember struct {
 	FirstName      string
-	middleName     string
+	MiddleName     string
 	LastName       string
 	Age            int
 	MemberSince    time.Time
@@ -32,6 +32,7 @@ func newClubMemberSpec() *ClubMemberSpec {
 
 	s.ForType(&ClubMember{}).
 		Required("FirstName", WithErrorMessage("The First Name is a required field!")).MaxLength(5).
+		Optional("MiddleName").MaxLength(10).
 		Required("LastName").MaxLength(50).
 		Required("Age").LessThan(80).
 		Required("MemberExpireAt").GreaterThanOtherField("MemberSince")
