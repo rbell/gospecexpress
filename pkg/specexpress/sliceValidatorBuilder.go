@@ -11,54 +11,42 @@ import (
 
 // LengthEquals indicates a lenth equal to rule should be applied to the field
 func (v *validatorBuilder) LengthEquals(length int) interfaces.ValidatorBuilder {
-	//nolint:gocritic // invalid
-	vals := append(*v.validators, validation.NewLengthEqualsValidator(v.fieldName, length))
-	*v.validators = vals
+	addValidator(v.validators, v.fieldName, validation.NewLengthEqualsValidator(v.fieldName, length))
 	return v
 }
 
 // MaxLength indicates a max length rule should be applied to field
 func (v *validatorBuilder) MaxLength(length int) interfaces.ValidatorBuilder {
-	//nolint:gocritic // invalid
-	vals := append(*v.validators, validation.NewMaxLengthValidator(v.fieldName, length))
-	*v.validators = vals
+	addValidator(v.validators, v.fieldName, validation.NewMaxLengthValidator(v.fieldName, length))
 	return v
 }
 
 // MinLength indicates a max length rule should be applied to field
 func (v *validatorBuilder) MinLength(length int) interfaces.ValidatorBuilder {
-	//nolint:gocritic // invalid
-	vals := append(*v.validators, validation.NewMinLengthValidator(v.fieldName, length))
-	*v.validators = vals
+	addValidator(v.validators, v.fieldName, validation.NewMinLengthValidator(v.fieldName, length))
 	return v
 }
 
 // Contains validates the slice contains some thing
 func (v *validatorBuilder) Contains(thing interface{}) interfaces.ValidatorBuilder {
-	//nolint:gocritic // invalid
-	vals := append(*v.validators, validation.NewContainsValidator(v.fieldName, thing))
-	*v.validators = vals
+	addValidator(v.validators, v.fieldName, validation.NewContainsValidator(v.fieldName, thing))
 	return v
 }
 
 // Contains validates the slice contains some thing
 func (v *validatorBuilder) ContainsValueFromContext(fromContext interfaces.ValueFromContext) interfaces.ValidatorBuilder {
-	//nolint:gocritic // invalid
-	vals := append(*v.validators, validation.NewContainsValidatorFromContext(v.fieldName, fromContext))
-	*v.validators = vals
+	addValidator(v.validators, v.fieldName, validation.NewContainsValidatorFromContext(v.fieldName, fromContext))
 	return v
 }
 
 // RangeValidate validates each element in the array or slice against the catalog
 func (v *validatorBuilder) RangeValidate() interfaces.ValidatorBuilder {
-	vals := append(*v.validators, validation.NewRangeValidate(v.fieldName))
-	*v.validators = vals
+	addValidator(v.validators, v.fieldName, validation.NewRangeValidate(v.fieldName))
 	return v
 }
 
 // RangeExpect allows a custom validation function to be applied over a slice or array
 func (v *validatorBuilder) RangeExpect(validator func(validationCtx interfaces.ValidatorContextGetter) error) interfaces.ValidatorBuilder {
-	vals := append(*v.validators, validation.NewRangeExpect(v.fieldName, validator))
-	*v.validators = vals
+	addValidator(v.validators, v.fieldName, validation.NewRangeExpect(v.fieldName, validator))
 	return v
 }

@@ -22,13 +22,14 @@ type SpecificationValidator interface {
 // QualifierBuilder defines interface for starting to qualify an element
 type QualifierBuilder interface {
 	Required(fieldName string, options ...ValidatorOption) ValidatorBuilder
+	Optional(fieldName string) ValidatorBuilder
 }
 
 // ValidatorBuilder defines interface methods to build a specification
 type ValidatorBuilder interface {
 	// Qualifier Validation
 	Required(fieldName string, options ...ValidatorOption) ValidatorBuilder
-	// TODO: Optional
+	Optional(fieldName string) ValidatorBuilder
 
 	// String Specific Validators
 	Matches(regex *regexp.Regexp, regexDescripton string) ValidatorBuilder

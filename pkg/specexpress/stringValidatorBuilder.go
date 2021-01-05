@@ -9,7 +9,6 @@ import (
 
 // Matches provides a way to enforce a string contains a pattern defined by a regex
 func (v *validatorBuilder) Matches(regex *regexp.Regexp, regexDescripton string) interfaces.ValidatorBuilder {
-	vals := append(*v.validators, validation.NewMatch(v.fieldName, regex, regexDescripton))
-	*v.validators = vals
+	addValidator(v.validators, v.fieldName, validation.NewMatch(v.fieldName, regex, regexDescripton))
 	return v
 }
