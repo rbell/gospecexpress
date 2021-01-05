@@ -84,12 +84,12 @@ func newCompareValidatorForContext(fieldName string, validatorType interfaces.Va
 				// add the compare to value to the context
 				ctx.AddContextData(v.compareToContextKey, v.getValue(ctx))
 
-				v, e := v.evaluate(ctx)
+				isValid, e := v.evaluate(ctx)
 				if e != nil {
 					ctx.AddContextData(contextIsComparableTypesKey, false)
 					return false, e
 				}
-				valid = v
+				valid = isValid
 
 				if !valid {
 					break
