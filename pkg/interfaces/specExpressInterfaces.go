@@ -32,18 +32,10 @@ type ValidatorBuilder interface {
 	// String Specific Validators
 	// TODO: Matches
 
-	// Date Validators
-	// TODO: Before
-	// TODO: After
-	// TODO: BeforeOtherField
-	// TODO: AfterOtherField
-	// TODO: BeforeValueFromContext
-	// TODO: AfterValueFromContext
-
 	// Compare Validators
-	// TODO: Between
-	// TODO: BetweenOtherFields
-	// TODO: BetweenValuesFromContext
+	Between(lower, upper interface{}, options ...ValidatorOption) ValidatorBuilder
+	BetweenOtherFields(lowerField, upperField string, options ...ValidatorOption) ValidatorBuilder
+	BetweenValuesFromContext(lowerGetter, upperGetter ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 	LessThan(value interface{}, options ...ValidatorOption) ValidatorBuilder
 	LessThanOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
 	LessThanValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder

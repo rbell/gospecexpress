@@ -10,7 +10,7 @@ import (
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
-const defaultGreaterThanMessage = "%v should be Greater than %v."
+const defaultGreaterThanMessage = "%v should be greater than %v."
 
 // GreaterThan defines a validator testing a value is Greater than another
 type GreaterThan struct {
@@ -42,7 +42,11 @@ func GreaterThanFieldValue(fieldName, greaterThanFieldName string) interfaces.Va
 // GreaterThanValueFromContext creates an initialized GreaterThan validator comparing the value in the field to a value from the context
 func GreaterThanValueFromContext(fieldName string, valueFromContext interfaces.ValueFromContext) interfaces.Validator {
 	gt := &GreaterThan{}
-	gt.compareValidator = newCompareValidatorForContext(fieldName, valueFromContext, []int{1}, gt)
+	gt.compareValidator = newCompareValidatorForContext(fieldName, gt, &valueCompare{
+		getValue:            valueFromContext,
+		compareToContextKey: contextCompareToValueKey,
+		comparisonValues:    []int{1},
+	})
 
 	return gt
 }

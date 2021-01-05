@@ -42,7 +42,11 @@ func GreaterThanOrEqualToFieldValue(fieldName, greaterThanEqualToFieldName strin
 // GreaterThanOrEqualToValueFromContext creates an initialized GreaterThanThan validator comparing the value in the field to a value from the context
 func GreaterThanOrEqualToValueFromContext(fieldName string, valueFromContext interfaces.ValueFromContext) interfaces.Validator {
 	gt := &GreaterThanEqual{}
-	gt.compareValidator = newCompareValidatorForContext(fieldName, valueFromContext, []int{0, 1}, gt)
+	gt.compareValidator = newCompareValidatorForContext(fieldName, gt, &valueCompare{
+		getValue:            valueFromContext,
+		compareToContextKey: contextCompareToValueKey,
+		comparisonValues:    []int{0, 1},
+	})
 
 	return gt
 }

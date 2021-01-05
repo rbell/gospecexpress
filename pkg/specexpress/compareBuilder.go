@@ -9,6 +9,30 @@ import (
 	"gitlab.com/rbell/gospecexpress/pkg/internal/validation"
 )
 
+// Between ensures the value in the field is between the lower and upper parameters
+func (v *validatorBuilder) Between(lower, upper interface{}, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, ApplyValidatorOptions(validation.BetweenValues(v.fieldName, lower, upper), options...))
+	*v.validators = vals
+	return v
+}
+
+// Between ensures the value in the field is between values stored in the lowerField and upperField parameters
+func (v *validatorBuilder) BetweenOtherFields(lowerField, upperField string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, ApplyValidatorOptions(validation.BetweenOtherFieldValues(v.fieldName, lowerField, upperField), options...))
+	*v.validators = vals
+	return v
+}
+
+// Between ensures the value in the field is between values stored in the validation context
+func (v *validatorBuilder) BetweenValuesFromContext(lowerGetter, upperGetter interfaces.ValueFromContext, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	//nolint:gocritic // invalid
+	vals := append(*v.validators, ApplyValidatorOptions(validation.BetweenValuesFromContext(v.fieldName, lowerGetter, upperGetter), options...))
+	*v.validators = vals
+	return v
+}
+
 // LessThan indicates a less than rule should be applied to field
 func (v *validatorBuilder) LessThan(value interface{}, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	//nolint:gocritic // invalid
