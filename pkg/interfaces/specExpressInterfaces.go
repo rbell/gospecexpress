@@ -6,6 +6,7 @@ package interfaces
 
 import (
 	"reflect"
+	"regexp"
 )
 
 // ValueFromContext defines functor returning a value from a ValidatorContext
@@ -30,7 +31,7 @@ type ValidatorBuilder interface {
 	// TODO: Optional
 
 	// String Specific Validators
-	// TODO: Matches
+	Matches(regex *regexp.Regexp, regexDescripton string) ValidatorBuilder
 
 	// Compare Validators
 	Between(lower, upper interface{}, options ...ValidatorOption) ValidatorBuilder
