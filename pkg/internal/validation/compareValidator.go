@@ -79,23 +79,25 @@ func newCompareValidatorForContext(fieldName string, validatorType interfaces.Va
 		test: func(ctx *ValidatorContext) (result bool, err error) {
 			ctx.AddContextData(ContextFieldValueKey, ctx.GetFieldValue(fieldName))
 
+			valid := false
 			for _, v := range comparisons {
 				// add the compare to value to the context
 				ctx.AddContextData(v.compareToContextKey, v.getValue(ctx))
 
-				valid, err := v.evaluate(ctx)
-				if err != nil {
+				v, e := v.evaluate(ctx)
+				if e != nil {
 					ctx.AddContextData(contextIsComparableTypesKey, false)
-					return false, err
+					return false, e
 				}
+				valid = v
 
 				if !valid {
-					return false, nil
+					break
 				}
 			}
 
 			ctx.AddContextData(contextIsComparableTypesKey, true)
-			return true, nil
+			return valid, nil
 		},
 		validatorType: validatorType,
 	}
