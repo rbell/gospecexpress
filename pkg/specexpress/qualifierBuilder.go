@@ -6,6 +6,7 @@ package specexpress
 
 import (
 	"reflect"
+	"sync"
 
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 
@@ -13,7 +14,7 @@ import (
 )
 
 // NewQualifierBuilder creates an initialized ValidatorBuilder
-func NewQualifierBuilder(vals *[]interfaces.Validator, forType reflect.Value) interfaces.QualifierBuilder {
+func NewQualifierBuilder(vals *sync.Map, forType reflect.Value) interfaces.QualifierBuilder {
 	return &qualifierBuilder{
 		validators: vals,
 		forType:    forType,
@@ -23,13 +24,18 @@ func NewQualifierBuilder(vals *[]interfaces.Validator, forType reflect.Value) in
 var _ interfaces.QualifierBuilder = &qualifierBuilder{}
 
 type qualifierBuilder struct {
-	validators *[]interfaces.Validator
+	validators *sync.Map
 	forType    reflect.Value
 }
 
 // RequiredField indicates a field is required
 func (b *qualifierBuilder) Required(fieldName string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
-	vals := append(*b.validators, ApplyValidatorOptions(validation.NewRequiredFieldValidator(fieldName), options...))
-	*b.validators = vals
+	setOptional(b.validators, fieldName, false)
+	addValidator(b.validators, fieldName, ApplyValidatorOptions(validation.NewRequiredFieldValidator(fieldName), options...))
+	return NewValidatorBuilder(b.validators, b.forType, fieldName, b)
+}
+
+func (b *qualifierBuilder) Optional(fieldName string) interfaces.ValidatorBuilder {
+	setOptional(b.validators, fieldName, true)
 	return NewValidatorBuilder(b.validators, b.forType, fieldName, b)
 }

@@ -23,10 +23,27 @@ var _ interfaces.Validator = &compareValidator{}
 
 type compareFunc func(ctx *ValidatorContext) (result bool, err error)
 
+// compareValidator provides common functionality for all comparison validators (equal, greaterThan, lessThan, etc)
 type compareValidator struct {
 	*AllFieldValidators
 	validatorType interfaces.Validator
 	test          compareFunc
+}
+
+type valueCompare struct {
+	getValue            interfaces.ValueFromContext
+	compareToContextKey string
+	comparisonValues    []int
+}
+
+func (v *valueCompare) evaluate(ctx *ValidatorContext) (bool, error) {
+	contextData := ctx.GetContextData()
+	comparer := compare.NewDefaultComparer(contextData[ContextFieldValueKey])
+	c, err := comparer.Compare(contextData[v.compareToContextKey])
+	if err != nil {
+		return false, err
+	}
+	return intIsIn(c, v.comparisonValues), nil
 }
 
 func setCompareValidatorMessage(validator interfaces.Validator, setter func(ctx interfaces.ValidatorContextGetter) string) {
@@ -34,37 +51,53 @@ func setCompareValidatorMessage(validator interfaces.Validator, setter func(ctx 
 		if compared, ok := ctx.GetContextData()[contextIsComparableTypesKey].(bool); ok && compared {
 			return setter(ctx)
 		}
-		return fmt.Sprintf("Cannot compare %v to %v", ctx.GetContextData()[ContextFieldValueKey], ctx.GetContextData()[contextCompareToValueKey])
+		return fmt.Sprintf("Cannot compare because of incompatible comparative types.")
 	})
 }
 
 func newCompareValidatorForValue(fieldName string, value interface{}, compareValues []int, validatorType interfaces.Validator) *compareValidator {
-	return newCompareValidatorForContext(fieldName, func(ctx interfaces.ValidatorContextGetter) interface{} { return value }, compareValues, validatorType)
+	return newCompareValidatorForContext(fieldName, validatorType, &valueCompare{
+		getValue:            func(ctx interfaces.ValidatorContextGetter) interface{} { return value },
+		comparisonValues:    compareValues,
+		compareToContextKey: contextCompareToValueKey,
+	})
 }
 
 func newCompareValidatorForValueAgainstOtherField(fieldName, otherFieldName string, compareValues []int, validatorType interfaces.Validator) *compareValidator {
-	return newCompareValidatorForContext(fieldName, func(ctx interfaces.ValidatorContextGetter) interface{} { return ctx.GetFieldValue(otherFieldName) }, compareValues, validatorType)
+	return newCompareValidatorForContext(fieldName, validatorType, &valueCompare{
+		getValue:            func(ctx interfaces.ValidatorContextGetter) interface{} { return ctx.GetFieldValue(otherFieldName) },
+		comparisonValues:    compareValues,
+		compareToContextKey: contextCompareToValueKey,
+	})
 }
 
-func newCompareValidatorForContext(fieldName string, valueFromContext interfaces.ValueFromContext, compareValues []int, validatorType interfaces.Validator) *compareValidator {
+func newCompareValidatorForContext(fieldName string, validatorType interfaces.Validator, comparisons ...*valueCompare) *compareValidator {
 	return &compareValidator{
 		AllFieldValidators: &AllFieldValidators{
 			fieldName: fieldName,
 		},
 		test: func(ctx *ValidatorContext) (result bool, err error) {
 			ctx.AddContextData(ContextFieldValueKey, ctx.GetFieldValue(fieldName))
-			ctx.AddContextData(contextCompareToValueKey, valueFromContext(ctx))
-			contextData := ctx.GetContextData()
-			comparer := compare.NewDefaultComparer(contextData[ContextFieldValueKey])
-			c, err := comparer.Compare(contextData[contextCompareToValueKey])
-			if err != nil {
-				// not comparable types
-				ctx.AddContextData(contextIsComparableTypesKey, false)
-				return false, err
+
+			valid := false
+			for _, v := range comparisons {
+				// add the compare to value to the context
+				ctx.AddContextData(v.compareToContextKey, v.getValue(ctx))
+
+				isValid, e := v.evaluate(ctx)
+				if e != nil {
+					ctx.AddContextData(contextIsComparableTypesKey, false)
+					return false, e
+				}
+				valid = isValid
+
+				if !valid {
+					break
+				}
 			}
-			// comparable types
+
 			ctx.AddContextData(contextIsComparableTypesKey, true)
-			return intIsIn(c, compareValues), nil
+			return valid, nil
 		},
 		validatorType: validatorType,
 	}

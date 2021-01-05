@@ -5,28 +5,43 @@
 package specexpress
 
 import (
-	"errors"
 	"reflect"
+	"sync"
+
+	"gitlab.com/rbell/gospecexpress/pkg/internal/reflectionhelpers"
 
 	specExpressErrors "gitlab.com/rbell/gospecexpress/pkg/errors"
+	"gitlab.com/rbell/gospecexpress/pkg/internal/errorhelpers"
 
 	"gitlab.com/rbell/gospecexpress/pkg/catalog"
 
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
+type fieldValidator struct {
+	isOptional bool
+	validators []interfaces.Validator
+	mux        *sync.Mutex
+}
+
+func (v *fieldValidator) addValidator(validator interfaces.Validator) {
+	v.mux.Lock()
+	defer v.mux.Unlock()
+	v.validators = append(v.validators, validator)
+}
+
 // Specification defines a base for specification
 type Specification struct {
 	forType    reflect.Type
-	validators []interfaces.Validator
+	validators *sync.Map
 }
 
 // ForType sets the type that the specification is to be applied to
 func (s *Specification) ForType(forType interface{}) interfaces.QualifierBuilder {
 	forValue := reflect.ValueOf(forType)
 	s.forType = forValue.Type()
-	s.validators = []interfaces.Validator{}
-	return NewQualifierBuilder(&s.validators, forValue)
+	s.validators = &sync.Map{}
+	return NewQualifierBuilder(s.validators, forValue)
 }
 
 // GetForType returns the type that the specification is to be applied to
@@ -37,11 +52,24 @@ func (s *Specification) GetForType() reflect.Type {
 // Validate validates an instance of the type
 func (s *Specification) Validate(thing interface{}, contextData map[string]interface{}) error {
 	var specError *specExpressErrors.ValidatorError = nil
-	for _, v := range s.validators {
-		if err := v.Validate(thing, contextData, catalog.ValidationCatalog().MessageStore()); err != nil {
-			specError = joinErrors(specError, err)
+	s.validators.Range(func(key, value interface{}) bool {
+		//nolint:errcheck // We are in control of key and value types so should no need to check error
+		fieldName, _ := key.(string)
+		//nolint:errcheck // We are in control of key and value types so should no need to check error
+		fv, _ := value.(*fieldValidator)
+		if fieldValue, ok := reflectionhelpers.GetFieldValue(thing, fieldName); ok {
+			if fv.isOptional && fieldValue.IsZero() {
+				// skip any validation since value in field is zero value and the field was optional
+				return true
+			}
+			for _, v := range fv.validators {
+				if err := v.Validate(thing, contextData, catalog.ValidationCatalog().MessageStore()); err != nil {
+					specError = errorhelpers.JoinErrors(specError, err)
+				}
+			}
 		}
-	}
+		return true
+	})
 
 	if specError == nil || reflect.ValueOf(specError).IsNil() {
 		return nil
@@ -49,41 +77,34 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 	return specError
 }
 
-func joinErrors(e1, e2 error) *specExpressErrors.ValidatorError {
-	var e *specExpressErrors.ValidatorError
-	if (e1 == nil || reflect.ValueOf(e1).IsNil()) && e2 != nil {
-		if errors.As(e2, &e) {
-			return e2.(*specExpressErrors.ValidatorError)
-		}
-		return specExpressErrors.NewValidationError("", e2.Error())
-
-	}
-
-	var ve *specExpressErrors.ValidatorError
-	if errors.As(e1, &e) {
-		//nolint:errcheck // above line infers its castable
-		ve = e1.(*specExpressErrors.ValidatorError)
+func addValidator(fieldValidators *sync.Map, fieldName string, validator interfaces.Validator) {
+	var fv *fieldValidator
+	if v, ok := fieldValidators.Load(fieldName); ok {
+		//nolint:errcheck // We are in control of key and value types so should no need to check error
+		fv, _ = v.(*fieldValidator)
 	} else {
-		ve = specExpressErrors.NewValidationError("", e1.Error())
-	}
-
-	if errors.As(e2, &e) {
-		errMap := ve.GetErrorMap()
-		for key, msg := range e2.(*specExpressErrors.ValidatorError).GetFlatErrorMap() {
-			addMsgs(errMap, key, msg...)
-		}
-		childErrs := ve.GetChildErrors()
-		for key, ve := range e2.(*specExpressErrors.ValidatorError).GetChildErrors() {
-			childErrs[key] = ve
+		fv = &fieldValidator{
+			isOptional: false,
+			validators: []interfaces.Validator{},
+			mux:        &sync.Mutex{},
 		}
 	}
-
-	return ve
+	fv.addValidator(validator)
+	fieldValidators.Store(fieldName, fv)
 }
 
-func addMsgs(errMap map[string][]string, context string, msg ...string) {
-	if _, ok := errMap[context]; !ok {
-		errMap[context] = []string{}
+func setOptional(fieldValidators *sync.Map, fieldName string, optional bool) {
+	var fv *fieldValidator
+	if v, ok := fieldValidators.Load(fieldName); ok {
+		//nolint:errcheck // We are in control of key and value types so should no need to check error
+		fv, _ = v.(*fieldValidator)
+	} else {
+		fv = &fieldValidator{
+			isOptional: false,
+			validators: []interfaces.Validator{},
+			mux:        &sync.Mutex{},
+		}
 	}
-	errMap[context] = append(errMap[context], msg...)
+	fv.isOptional = optional
+	fieldValidators.Store(fieldName, fv)
 }

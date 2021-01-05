@@ -42,7 +42,11 @@ func EqualToFieldValue(fieldName, equalToFieldName string) interfaces.Validator 
 // EqualToValueFromContext creates an initialized EqualTo validator comparing the value in the field to a value from the context
 func EqualToValueFromContext(fieldName string, valueFromContext interfaces.ValueFromContext) interfaces.Validator {
 	et := &EqualTo{}
-	et.compareValidator = newCompareValidatorForContext(fieldName, valueFromContext, []int{0}, et)
+	et.compareValidator = newCompareValidatorForContext(fieldName, et, &valueCompare{
+		getValue:            valueFromContext,
+		compareToContextKey: contextCompareToValueKey,
+		comparisonValues:    []int{0},
+	})
 
 	return et
 }

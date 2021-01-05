@@ -6,11 +6,10 @@ package specexpress
 
 import (
 	"reflect"
+	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/mock"
-
-	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 
 	"github.com/stretchr/testify/assert"
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces/mocks"
@@ -23,7 +22,7 @@ func TestSpecification_ForType_ShouldReturnValidatorBuilder(t *testing.T) {
 	}
 	ts := &testSubject{}
 	spec := &Specification{
-		validators: []interfaces.Validator{},
+		validators: &sync.Map{},
 	}
 
 	// test
@@ -44,9 +43,11 @@ func TestSpecification_Validate_ShouldCallValidator(t *testing.T) {
 	mValidator.On("Validate", ts, map[string]interface{}(nil), mock.Anything).Return(nil)
 
 	spec := &Specification{
-		validators: []interfaces.Validator{mValidator},
+		validators: &sync.Map{},
 		forType:    reflect.TypeOf(ts),
 	}
+
+	addValidator(spec.validators, "Name", mValidator)
 
 	// test
 	err := spec.Validate(ts, nil)

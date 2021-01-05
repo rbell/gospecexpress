@@ -6,6 +6,7 @@ package interfaces
 
 import (
 	"reflect"
+	"regexp"
 )
 
 // ValueFromContext defines functor returning a value from a ValidatorContext
@@ -21,31 +22,22 @@ type SpecificationValidator interface {
 // QualifierBuilder defines interface for starting to qualify an element
 type QualifierBuilder interface {
 	Required(fieldName string, options ...ValidatorOption) ValidatorBuilder
+	Optional(fieldName string) ValidatorBuilder
 }
 
 // ValidatorBuilder defines interface methods to build a specification
 type ValidatorBuilder interface {
 	// Qualifier Validation
 	Required(fieldName string, options ...ValidatorOption) ValidatorBuilder
-	// TODO: Optional
+	Optional(fieldName string) ValidatorBuilder
 
-	// String Validators
-	MaxLength(len int) ValidatorBuilder
-	MinLength(len int) ValidatorBuilder
-	// TODO: Matches
-
-	// Date Validators
-	// TODO: Before
-	// TODO: After
-	// TODO: BeforeOtherField
-	// TODO: AfterOtherField
-	// TODO: BeforeValueFromContext
-	// TODO: AfterValueFromContext
+	// String Specific Validators
+	Matches(regex *regexp.Regexp, regexDescripton string) ValidatorBuilder
 
 	// Compare Validators
-	// TODO: Between
-	// TODO: BetweenOtherFields
-	// TODO: BetweenValuesFromContext
+	Between(lower, upper interface{}, options ...ValidatorOption) ValidatorBuilder
+	BetweenOtherFields(lowerField, upperField string, options ...ValidatorOption) ValidatorBuilder
+	BetweenValuesFromContext(lowerGetter, upperGetter ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 	LessThan(value interface{}, options ...ValidatorOption) ValidatorBuilder
 	LessThanOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
 	LessThanValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
@@ -62,13 +54,14 @@ type ValidatorBuilder interface {
 	EqualToOtherField(otherField string, options ...ValidatorOption) ValidatorBuilder
 	EqualToValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 
-	// Slice Validators
-	// MaxLen and MinLen valid for slices
-	// TODO: Contains
-	// TODO: ContainsValueFromContext
-	// TODO: CountEqual
-	// TODO: RangeValidate
-	// TODO: RangeExpect
+	// Slice Validators (strings are considered slices)
+	LengthEquals(length int) ValidatorBuilder
+	MaxLength(len int) ValidatorBuilder
+	MinLength(len int) ValidatorBuilder
+	Contains(thing interface{}) ValidatorBuilder
+	ContainsValueFromContext(fromContext ValueFromContext) ValidatorBuilder
+	RangeValidate() ValidatorBuilder
+	RangeExpect(validator func(validationCtx ValidatorContextGetter) error) ValidatorBuilder
 
 	// Reference Validators
 	ValidateReference() ValidatorBuilder

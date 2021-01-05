@@ -6,13 +6,14 @@ package specexpress
 
 import (
 	"reflect"
+	"sync"
 
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 )
 
 type validatorBuilder struct {
 	fieldName        string
-	validators       *[]interfaces.Validator
+	validators       *sync.Map
 	forType          reflect.Value
 	qualifierBuilder interfaces.QualifierBuilder
 }
@@ -20,7 +21,7 @@ type validatorBuilder struct {
 var _ interfaces.ValidatorBuilder = &validatorBuilder{}
 
 // NewValidatorBuilder creates an initialized ValidatorBuilder
-func NewValidatorBuilder(vals *[]interfaces.Validator, forType reflect.Value, forField string, builder interfaces.QualifierBuilder) interfaces.ValidatorBuilder {
+func NewValidatorBuilder(vals *sync.Map, forType reflect.Value, forField string, builder interfaces.QualifierBuilder) interfaces.ValidatorBuilder {
 	return &validatorBuilder{
 		fieldName:        forField,
 		validators:       vals,
@@ -32,4 +33,8 @@ func NewValidatorBuilder(vals *[]interfaces.Validator, forType reflect.Value, fo
 // Required indicates we want to start a new rule chain for a new required field
 func (v *validatorBuilder) Required(fieldName string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	return v.qualifierBuilder.Required(fieldName, options...)
+}
+
+func (v *validatorBuilder) Optional(fieldName string) interfaces.ValidatorBuilder {
+	return v.qualifierBuilder.Optional(fieldName)
 }

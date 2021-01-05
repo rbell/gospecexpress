@@ -11,7 +11,6 @@ import (
 
 // Expect provides a way to express a function that should be used to validate a field
 func (v *validatorBuilder) Expect(validatorFunc func(valueFromContext interfaces.ValidatorContextGetter) error) interfaces.ValidatorBuilder {
-	vals := append(*v.validators, validation.NewExpectationValidator(v.fieldName, validatorFunc))
-	*v.validators = vals
+	addValidator(v.validators, v.fieldName, validation.NewExpectationValidator(v.fieldName, validatorFunc))
 	return v
 }

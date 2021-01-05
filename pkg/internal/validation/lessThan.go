@@ -42,7 +42,11 @@ func LessThanFieldValue(fieldName, lessThanFieldName string) interfaces.Validato
 // LessThanValueFromContext creates an initialized LessThan validator comparing the value in the field to a value from the context
 func LessThanValueFromContext(fieldName string, valueFromContext interfaces.ValueFromContext) interfaces.Validator {
 	lt := &LessThan{}
-	lt.compareValidator = newCompareValidatorForContext(fieldName, valueFromContext, []int{-1}, lt)
+	lt.compareValidator = newCompareValidatorForContext(fieldName, lt, &valueCompare{
+		getValue:            valueFromContext,
+		compareToContextKey: contextCompareToValueKey,
+		comparisonValues:    []int{-1},
+	})
 
 	return lt
 }
