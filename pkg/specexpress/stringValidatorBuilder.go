@@ -12,7 +12,7 @@ import (
 )
 
 // Matches provides a way to enforce a string contains a pattern defined by a regex
-func (v *validatorBuilder) Matches(regex *regexp.Regexp, regexDescripton string) interfaces.ValidatorBuilder {
-	addValidator(v.validators, v.fieldName, validation.NewMatch(v.fieldName, regex, regexDescripton))
+func (v *validatorBuilder) Matches(regex *regexp.Regexp, regexDescripton string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	addValidator(v.validators, v.fieldName, ApplyValidatorOptions(validation.NewMatch(v.fieldName, regex, regexDescripton), options...))
 	return v
 }

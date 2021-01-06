@@ -13,7 +13,7 @@ import (
 	"gitlab.com/rbell/gospecexpress/pkg/internal/validation"
 )
 
-// NewQualifierBuilder creates an initialized ValidatorBuilder
+// NewQualifierBuilder creates an initialized QualifierBuilder
 func NewQualifierBuilder(vals *sync.Map, forType reflect.Value) interfaces.QualifierBuilder {
 	return &qualifierBuilder{
 		validators: vals,
@@ -23,6 +23,7 @@ func NewQualifierBuilder(vals *sync.Map, forType reflect.Value) interfaces.Quali
 
 var _ interfaces.QualifierBuilder = &qualifierBuilder{}
 
+// qualifierBuilder exists solely for the purpose of supporting code assistance enforcing functions available after `ForType`
 type qualifierBuilder struct {
 	validators *sync.Map
 	forType    reflect.Value

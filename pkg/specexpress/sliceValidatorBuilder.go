@@ -10,43 +10,43 @@ import (
 )
 
 // LengthEquals indicates a lenth equal to rule should be applied to the field
-func (v *validatorBuilder) LengthEquals(length int) interfaces.ValidatorBuilder {
-	addValidator(v.validators, v.fieldName, validation.NewLengthEqualsValidator(v.fieldName, length))
+func (v *validatorBuilder) LengthEquals(length int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	addValidator(v.validators, v.fieldName, ApplyValidatorOptions(validation.NewLengthEqualsValidator(v.fieldName, length), options...))
 	return v
 }
 
 // MaxLength indicates a max length rule should be applied to field
-func (v *validatorBuilder) MaxLength(length int) interfaces.ValidatorBuilder {
-	addValidator(v.validators, v.fieldName, validation.NewMaxLengthValidator(v.fieldName, length))
+func (v *validatorBuilder) MaxLength(length int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	addValidator(v.validators, v.fieldName, ApplyValidatorOptions(validation.NewMaxLengthValidator(v.fieldName, length), options...))
 	return v
 }
 
 // MinLength indicates a max length rule should be applied to field
-func (v *validatorBuilder) MinLength(length int) interfaces.ValidatorBuilder {
-	addValidator(v.validators, v.fieldName, validation.NewMinLengthValidator(v.fieldName, length))
+func (v *validatorBuilder) MinLength(length int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	addValidator(v.validators, v.fieldName, ApplyValidatorOptions(validation.NewMinLengthValidator(v.fieldName, length), options...))
 	return v
 }
 
 // Contains validates the slice contains some thing
-func (v *validatorBuilder) Contains(thing interface{}) interfaces.ValidatorBuilder {
-	addValidator(v.validators, v.fieldName, validation.NewContainsValidator(v.fieldName, thing))
+func (v *validatorBuilder) Contains(thing interface{}, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	addValidator(v.validators, v.fieldName, ApplyValidatorOptions(validation.NewContainsValidator(v.fieldName, thing), options...))
 	return v
 }
 
 // Contains validates the slice contains some thing
-func (v *validatorBuilder) ContainsValueFromContext(fromContext interfaces.ValueFromContext) interfaces.ValidatorBuilder {
-	addValidator(v.validators, v.fieldName, validation.NewContainsValidatorFromContext(v.fieldName, fromContext))
+func (v *validatorBuilder) ContainsValueFromContext(fromContext interfaces.ValueFromContext, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	addValidator(v.validators, v.fieldName, ApplyValidatorOptions(validation.NewContainsValidatorFromContext(v.fieldName, fromContext), options...))
 	return v
 }
 
 // RangeValidate validates each element in the array or slice against the catalog
-func (v *validatorBuilder) RangeValidate() interfaces.ValidatorBuilder {
-	addValidator(v.validators, v.fieldName, validation.NewRangeValidate(v.fieldName))
+func (v *validatorBuilder) RangeValidate(options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	addValidator(v.validators, v.fieldName, ApplyValidatorOptions(validation.NewRangeValidate(v.fieldName), options...))
 	return v
 }
 
 // RangeExpect allows a custom validation function to be applied over a slice or array
-func (v *validatorBuilder) RangeExpect(validator func(validationCtx interfaces.ValidatorContextGetter) error) interfaces.ValidatorBuilder {
-	addValidator(v.validators, v.fieldName, validation.NewRangeExpect(v.fieldName, validator))
+func (v *validatorBuilder) RangeExpect(validator func(validationCtx interfaces.ValidatorContextGetter) error, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	addValidator(v.validators, v.fieldName, ApplyValidatorOptions(validation.NewRangeExpect(v.fieldName, validator), options...))
 	return v
 }

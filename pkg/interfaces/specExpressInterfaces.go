@@ -32,7 +32,7 @@ type ValidatorBuilder interface {
 	Optional(fieldName string) ValidatorBuilder
 
 	// String Specific Validators
-	Matches(regex *regexp.Regexp, regexDescripton string) ValidatorBuilder
+	Matches(regex *regexp.Regexp, regexDescripton string, options ...ValidatorOption) ValidatorBuilder
 
 	// Compare Validators
 	Between(lower, upper interface{}, options ...ValidatorOption) ValidatorBuilder
@@ -55,19 +55,19 @@ type ValidatorBuilder interface {
 	EqualToValueFromContext(valueFromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 
 	// Slice Validators (strings are considered slices)
-	LengthEquals(length int) ValidatorBuilder
-	MaxLength(len int) ValidatorBuilder
-	MinLength(len int) ValidatorBuilder
-	Contains(thing interface{}) ValidatorBuilder
-	ContainsValueFromContext(fromContext ValueFromContext) ValidatorBuilder
-	RangeValidate() ValidatorBuilder
-	RangeExpect(validator func(validationCtx ValidatorContextGetter) error) ValidatorBuilder
+	LengthEquals(length int, options ...ValidatorOption) ValidatorBuilder
+	MaxLength(len int, options ...ValidatorOption) ValidatorBuilder
+	MinLength(len int, options ...ValidatorOption) ValidatorBuilder
+	Contains(thing interface{}, options ...ValidatorOption) ValidatorBuilder
+	ContainsValueFromContext(fromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
+	RangeValidate(options ...ValidatorOption) ValidatorBuilder
+	RangeExpect(validator func(validationCtx ValidatorContextGetter) error, options ...ValidatorOption) ValidatorBuilder
 
 	// Reference Validators
-	ValidateReference() ValidatorBuilder
+	ValidateReference(options ...ValidatorOption) ValidatorBuilder
 
 	// Custom Rule which if returned error is not nil, error's message will be included in the validation error
-	Expect(validator func(validationCtx ValidatorContextGetter) error) ValidatorBuilder
+	Expect(validator func(validationCtx ValidatorContextGetter) error, options ...ValidatorOption) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns
