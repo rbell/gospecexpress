@@ -27,8 +27,8 @@ lint:
     paths:
       - gl-code-quality-report.json
 
-  test:
-    image: golang:1.14
-    extends: .go-cache
-    script:
-      - go test -race -v ./...
+test:
+  image: golang:1.14
+  extends: .go-cache
+  script:
+    - go test -race -v ./...
