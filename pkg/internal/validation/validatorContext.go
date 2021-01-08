@@ -13,6 +13,8 @@ import (
 const (
 	// ContextFieldNameKey defines the context key name for the Field Name
 	ContextFieldNameKey = "FieldName"
+	// ContextFieldAliasKey defines the context key name for the Field Value
+	ContextFieldAliasKey = "FieldAlias"
 	// ContextFieldValueKey defines the context key name for the Field Value
 	ContextFieldValueKey = "FieldValue"
 	// ContextInstanceKey defines the context key name for the reference to the instance

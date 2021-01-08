@@ -28,10 +28,11 @@ type Match struct {
 }
 
 // NewMatch returns an initialized Match validator
-func NewMatch(fieldName string, regex *regexp.Regexp, regexDescription string) interfaces.Validator {
+func NewMatch(fieldName, alias string, regex *regexp.Regexp, regexDescription string) interfaces.Validator {
 	return &Match{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 		regex:            regex,
 		regexDescription: regexDescription,
@@ -40,10 +41,11 @@ func NewMatch(fieldName string, regex *regexp.Regexp, regexDescription string) i
 
 func init() {
 	catalog.ValidationCatalog().MessageStore().SetMessage(&MaxLength{}, func(ctx interfaces.ValidatorContextGetter) string {
-		fieldValue := ctx.GetFieldValue(ctx.GetContextData()[ContextFieldNameKey].(string))
-		//nolint:errcheck // context created in Validate
+		//nolint:errcheck // ignore error
 		desc := ctx.GetContextData()[defaultMatchDescriptionKey].(string)
-		return fmt.Sprintf(defaultMatchMessage, fieldValue, desc)
+		//nolint:errcheck // ignore error
+		alias := ctx.GetContextData()[ContextFieldAliasKey].(string)
+		return fmt.Sprintf(defaultMatchMessage, alias, desc)
 	})
 }
 

@@ -30,10 +30,11 @@ type LengthEquals struct {
 }
 
 // NewLengthEqualsValidator creates an initialized MaxLengthValidator
-func NewLengthEqualsValidator(fieldName string, length int) interfaces.Validator {
+func NewLengthEqualsValidator(fieldName, alias string, length int) interfaces.Validator {
 	return &LengthEquals{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 		lenEq: length,
 	}
@@ -41,10 +42,11 @@ func NewLengthEqualsValidator(fieldName string, length int) interfaces.Validator
 
 func init() {
 	catalog.ValidationCatalog().MessageStore().SetMessage(&LengthEquals{}, func(ctx interfaces.ValidatorContextGetter) string {
-		fieldValue := ctx.GetFieldValue(ctx.GetContextData()[ContextFieldNameKey].(string))
 		//nolint:errcheck // context created in Validate
 		maxLen := ctx.GetContextData()[contextLenEqKey].(int)
-		return fmt.Sprintf(defaultLengthEqualMessage, fieldValue, maxLen)
+		//nolint:errcheck // context created in Validate
+		alias := ctx.GetContextData()[ContextFieldAliasKey].(string)
+		return fmt.Sprintf(defaultLengthEqualMessage, alias, maxLen)
 	})
 }
 

@@ -16,10 +16,11 @@ type Expectation struct {
 }
 
 // NewExpectationValidator returns an initialized Expectation
-func NewExpectationValidator(fieldName string, exp func(ctx interfaces.ValidatorContextGetter) error) interfaces.Validator {
+func NewExpectationValidator(fieldName, alias string, exp func(ctx interfaces.ValidatorContextGetter) error) interfaces.Validator {
 	return &Expectation{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 		exp: exp,
 	}

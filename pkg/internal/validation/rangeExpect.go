@@ -22,10 +22,11 @@ type RangeExpect struct {
 }
 
 // NewRangeExpect returns an initialized RangeExpect
-func NewRangeExpect(fieldName string, exp func(ctx interfaces.ValidatorContextGetter) error) interfaces.Validator {
+func NewRangeExpect(fieldName, alias string, exp func(ctx interfaces.ValidatorContextGetter) error) interfaces.Validator {
 	return &RangeExpect{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 		exp: exp,
 	}

@@ -17,7 +17,7 @@ import (
 
 func TestLessThan_Validate_ValueIsLessThan_ShouldReturnNil(t *testing.T) {
 	// setup
-	validator := LessThanValue("Distance", 50)
+	validator := LessThanValue("Distance", "Distance", 50)
 	mMessageStore := &mocks.MessageStorer{}
 	type testSubjectType struct {
 		Distance int
@@ -33,7 +33,7 @@ func TestLessThan_Validate_ValueIsLessThan_ShouldReturnNil(t *testing.T) {
 
 func TestLessThan_Validate_ValueIsEqual_ShouldReturnErr(t *testing.T) {
 	// setup
-	validator := LessThanValue("Distance", 40)
+	validator := LessThanValue("Distance", "Distance", 40)
 	mMessageStore := &mocks.MessageStorer{}
 	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.LessThan"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not LessThan")
 	type testSubjectType struct {
@@ -50,7 +50,7 @@ func TestLessThan_Validate_ValueIsEqual_ShouldReturnErr(t *testing.T) {
 
 func TestLessThan_Validate_ValueIsGreater_ShouldReturnErr(t *testing.T) {
 	// setup
-	validator := LessThanValue("Distance", 40)
+	validator := LessThanValue("Distance", "Distance", 40)
 	mMessageStore := &mocks.MessageStorer{}
 	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.LessThan"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not LessThan")
 	type testSubjectType struct {
@@ -67,7 +67,7 @@ func TestLessThan_Validate_ValueIsGreater_ShouldReturnErr(t *testing.T) {
 
 func TestLessThanValueFromContext_Validate_ValueIsLessThan_ShouldReturnNil(t *testing.T) {
 	// setup
-	validator := LessThanValueFromContext("DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
+	validator := LessThanValueFromContext("DistanceA", "DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
 		return ctx.GetFieldValue("DistanceB")
 	})
 	mMessageStore := &mocks.MessageStorer{}
@@ -89,7 +89,7 @@ func TestLessThanValueFromContext_Validate_ValueIsLessThan_ShouldReturnNil(t *te
 
 func TestLessThanValueFromContext_Validate_ValueIsEqualTo_ShouldReturnErr(t *testing.T) {
 	// setup
-	validator := LessThanValueFromContext("DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
+	validator := LessThanValueFromContext("DistanceA", "DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
 		return ctx.GetFieldValue("DistanceB")
 	})
 	mMessageStore := &mocks.MessageStorer{}
@@ -112,7 +112,7 @@ func TestLessThanValueFromContext_Validate_ValueIsEqualTo_ShouldReturnErr(t *tes
 
 func TestLessThanValueFromContext_Validate_ValueIsGreaterThan_ShouldReturnErr(t *testing.T) {
 	// setup
-	validator := LessThanValueFromContext("DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
+	validator := LessThanValueFromContext("DistanceA", "DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
 		return ctx.GetFieldValue("DistanceB")
 	})
 	mMessageStore := &mocks.MessageStorer{}

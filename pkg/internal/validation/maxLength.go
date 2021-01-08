@@ -30,10 +30,11 @@ type MaxLength struct {
 }
 
 // NewMaxLengthValidator creates an initialized MaxLengthValidator
-func NewMaxLengthValidator(fieldName string, maxLen int) interfaces.Validator {
+func NewMaxLengthValidator(fieldName, alias string, maxLen int) interfaces.Validator {
 	return &MaxLength{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 		maxLen: maxLen,
 	}
@@ -41,10 +42,11 @@ func NewMaxLengthValidator(fieldName string, maxLen int) interfaces.Validator {
 
 func init() {
 	catalog.ValidationCatalog().MessageStore().SetMessage(&MaxLength{}, func(ctx interfaces.ValidatorContextGetter) string {
-		fieldValue := ctx.GetFieldValue(ctx.GetContextData()[ContextFieldNameKey].(string))
-		//nolint:errcheck // context created in Validate
+		//nolint:errcheck // ignore possible error
 		maxLen := ctx.GetContextData()[contextMaxLenKey].(int)
-		return fmt.Sprintf(defaultMaxLengthMessage, fieldValue, maxLen)
+		//nolint:errcheck // ignore possible error
+		alias := ctx.GetContextData()[ContextFieldAliasKey].(string)
+		return fmt.Sprintf(defaultMaxLengthMessage, alias, maxLen)
 	})
 }
 

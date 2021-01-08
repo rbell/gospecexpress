@@ -8,6 +8,8 @@ import (
 	"reflect"
 	"sync"
 
+	"gitlab.com/rbell/gospecexpress/pkg/internal/reflectionhelpers"
+
 	"gitlab.com/rbell/gospecexpress/pkg/interfaces"
 
 	"gitlab.com/rbell/gospecexpress/pkg/internal/validation"
@@ -32,11 +34,14 @@ type qualifierBuilder struct {
 // RequiredField indicates a field is required
 func (b *qualifierBuilder) Required(fieldName string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	setOptional(b.validators, fieldName, false)
-	addValidator(b.validators, fieldName, ApplyValidatorOptions(validation.NewRequiredFieldValidator(fieldName), options...))
-	return NewValidatorBuilder(b.validators, b.forType, fieldName, b)
+	alias := reflectionhelpers.GetFieldAlias(b.forType, fieldName)
+	addValidator(b.validators, fieldName, alias, ApplyValidatorOptions(validation.NewRequiredFieldValidator(fieldName, alias), options...))
+	return NewValidatorBuilder(b.validators, b.forType, fieldName, alias, b)
 }
 
+// Optional indicates a field is optional
 func (b *qualifierBuilder) Optional(fieldName string) interfaces.ValidatorBuilder {
 	setOptional(b.validators, fieldName, true)
-	return NewValidatorBuilder(b.validators, b.forType, fieldName, b)
+	alias := reflectionhelpers.GetFieldAlias(b.forType, fieldName)
+	return NewValidatorBuilder(b.validators, b.forType, alias, fieldName, b)
 }

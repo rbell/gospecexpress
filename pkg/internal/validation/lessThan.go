@@ -19,30 +19,30 @@ type LessThan struct {
 
 func init() {
 	setCompareValidatorMessage(&LessThan{}, func(ctx interfaces.ValidatorContextGetter) string {
-		return fmt.Sprintf(defaultLessThanMessage, ctx.GetContextData()[ContextFieldNameKey].(string), ctx.GetContextData()[contextCompareToValueKey])
+		return fmt.Sprintf(defaultLessThanMessage, ctx.GetContextData()[ContextFieldAliasKey].(string), ctx.GetContextData()[contextCompareToValueKey])
 	})
 }
 
 // LessThanValue creates an initialized LessThan validator comparing the value in the field to a provided value
-func LessThanValue(fieldName string, lessThanValue interface{}) interfaces.Validator {
+func LessThanValue(fieldName, alias string, lessThanValue interface{}) interfaces.Validator {
 	lt := &LessThan{}
-	lt.compareValidator = newCompareValidatorForValue(fieldName, lessThanValue, []int{-1}, lt)
+	lt.compareValidator = newCompareValidatorForValue(fieldName, alias, lessThanValue, []int{-1}, lt)
 
 	return lt
 }
 
 // LessThanFieldValue creates an initialized LessThan validator comparing the value in the field to value in another field in the same struct
-func LessThanFieldValue(fieldName, lessThanFieldName string) interfaces.Validator {
+func LessThanFieldValue(fieldName, alias, lessThanFieldName string) interfaces.Validator {
 	lt := &LessThan{}
-	lt.compareValidator = newCompareValidatorForValueAgainstOtherField(fieldName, lessThanFieldName, []int{-1}, lt)
+	lt.compareValidator = newCompareValidatorForValueAgainstOtherField(fieldName, alias, lessThanFieldName, []int{-1}, lt)
 
 	return lt
 }
 
 // LessThanValueFromContext creates an initialized LessThan validator comparing the value in the field to a value from the context
-func LessThanValueFromContext(fieldName string, valueFromContext interfaces.ValueFromContext) interfaces.Validator {
+func LessThanValueFromContext(fieldName, alias string, valueFromContext interfaces.ValueFromContext) interfaces.Validator {
 	lt := &LessThan{}
-	lt.compareValidator = newCompareValidatorForContext(fieldName, lt, &valueCompare{
+	lt.compareValidator = newCompareValidatorForContext(fieldName, alias, lt, &valueCompare{
 		getValue:            valueFromContext,
 		compareToContextKey: contextCompareToValueKey,
 		comparisonValues:    []int{-1},

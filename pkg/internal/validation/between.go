@@ -23,31 +23,30 @@ type Between struct {
 
 func init() {
 	setCompareValidatorMessage(&Between{}, func(ctx interfaces.ValidatorContextGetter) string {
-		return fmt.Sprintf(defaultBetweenMessage, ctx.GetContextData()[ContextFieldNameKey], ctx.GetContextData()[lowerContextKey], ctx.GetContextData()[upperContextKey])
+		return fmt.Sprintf(defaultBetweenMessage, ctx.GetContextData()[ContextFieldAliasKey], ctx.GetContextData()[lowerContextKey], ctx.GetContextData()[upperContextKey])
 	})
 }
 
 // BetweenValues creates an initialized Between validator ensuring the value in the field is between the lower and upper parameters
-func BetweenValues(fieldName string, lower, upper interface{}) interfaces.Validator {
-	return BetweenValuesFromContext(fieldName,
+func BetweenValues(fieldName, alias string, lower, upper interface{}) interfaces.Validator {
+	return BetweenValuesFromContext(fieldName, alias,
 		func(ctx interfaces.ValidatorContextGetter) interface{} { return lower },
 		func(ctx interfaces.ValidatorContextGetter) interface{} { return upper },
 	)
-
 }
 
 // BetweenOtherFieldValues creates an initialized Between validator ensuring the value in the field is between values stored in two other fields
-func BetweenOtherFieldValues(fieldName, lowerFieldName, upperFieldName string) interfaces.Validator {
-	return BetweenValuesFromContext(fieldName,
+func BetweenOtherFieldValues(fieldName, alias, lowerFieldName, upperFieldName string) interfaces.Validator {
+	return BetweenValuesFromContext(fieldName, alias,
 		func(ctx interfaces.ValidatorContextGetter) interface{} { return ctx.GetFieldValue(lowerFieldName) },
 		func(ctx interfaces.ValidatorContextGetter) interface{} { return ctx.GetFieldValue(upperFieldName) },
 	)
 }
 
 // BetweenValuesFromContext creates an initialized Between validator ensuring the value in the field is between values retrieved from validation context
-func BetweenValuesFromContext(fieldName string, lowerGetter, upperGetter interfaces.ValueFromContext) interfaces.Validator {
+func BetweenValuesFromContext(fieldName, alias string, lowerGetter, upperGetter interfaces.ValueFromContext) interfaces.Validator {
 	between := &Between{}
-	between.compareValidator = newCompareValidatorForContext(fieldName, between,
+	between.compareValidator = newCompareValidatorForContext(fieldName, alias, between,
 		&valueCompare{
 			getValue:            lowerGetter,
 			comparisonValues:    []int{1},

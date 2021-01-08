@@ -11,7 +11,7 @@ import (
 
 func TestBetweenValues_Validate_FieldValueBetween_ShouldReturnNil(t *testing.T) {
 	// setup
-	validator := BetweenValues("Distance", 50, 100)
+	validator := BetweenValues("Distance", "Distance", 50, 100)
 	mMessageStore := &mocks.MessageStorer{}
 	type testSubjectType struct {
 		Distance int
@@ -28,7 +28,7 @@ func TestBetweenValues_Validate_FieldValueBetween_ShouldReturnNil(t *testing.T) 
 
 func TestBetweenValues_Validate_FieldValueLessThanLower_ShouldReturnError(t *testing.T) {
 	// setup
-	validator := BetweenValues("Distance", 50, 100)
+	validator := BetweenValues("Distance", "Distance", 50, 100)
 	mMessageStore := &mocks.MessageStorer{}
 	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.Between"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not Between")
 	type testSubjectType struct {
@@ -46,7 +46,7 @@ func TestBetweenValues_Validate_FieldValueLessThanLower_ShouldReturnError(t *tes
 
 func TestBetweenValues_Validate_FieldValueGreaterThanUpper_ShouldReturnError(t *testing.T) {
 	// setup
-	validator := BetweenValues("Distance", 50, 100)
+	validator := BetweenValues("Distance", "Distance", 50, 100)
 	mMessageStore := &mocks.MessageStorer{}
 	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.Between"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not Between")
 	type testSubjectType struct {
@@ -64,7 +64,7 @@ func TestBetweenValues_Validate_FieldValueGreaterThanUpper_ShouldReturnError(t *
 
 func TestBetweenOtherFieldValues_Validate_FieldValueBetween_ShouldReturnNil(t *testing.T) {
 	// setup
-	validator := BetweenOtherFieldValues("Distance", "Lower", "Upper")
+	validator := BetweenOtherFieldValues("Distance", "Distance", "Lower", "Upper")
 	mMessageStore := &mocks.MessageStorer{}
 	type testSubjectType struct {
 		Distance int
@@ -83,7 +83,7 @@ func TestBetweenOtherFieldValues_Validate_FieldValueBetween_ShouldReturnNil(t *t
 
 func TestBetweenOtherFieldValues_Validate_FieldValueLessThanLower_ShouldReturnError(t *testing.T) {
 	// setup
-	validator := BetweenOtherFieldValues("Distance", "Lower", "Upper")
+	validator := BetweenOtherFieldValues("Distance", "Distance", "Lower", "Upper")
 	mMessageStore := &mocks.MessageStorer{}
 	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.Between"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not Between")
 	type testSubjectType struct {
@@ -103,7 +103,7 @@ func TestBetweenOtherFieldValues_Validate_FieldValueLessThanLower_ShouldReturnEr
 
 func TestBetweenOtherFieldValues_Validate_FieldValueGreaterThanUpper_ShouldReturnError(t *testing.T) {
 	// setup
-	validator := BetweenOtherFieldValues("Distance", "Lower", "Upper")
+	validator := BetweenOtherFieldValues("Distance", "Distance", "Lower", "Upper")
 	mMessageStore := &mocks.MessageStorer{}
 	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.Between"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Not Between")
 	type testSubjectType struct {

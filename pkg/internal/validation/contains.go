@@ -30,10 +30,11 @@ type Contains struct {
 }
 
 // NewContainsValidator returns an initialized contains validator
-func NewContainsValidator(fieldName string, value interface{}) interfaces.Validator {
+func NewContainsValidator(fieldName, alias string, value interface{}) interfaces.Validator {
 	return &Contains{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 		contains:    value,
 		containsVal: reflect.ValueOf(value),
@@ -41,10 +42,11 @@ func NewContainsValidator(fieldName string, value interface{}) interfaces.Valida
 }
 
 // NewContainsValidatorFromContext returns an initialized contains validator
-func NewContainsValidatorFromContext(fieldName string, valueFromContext interfaces.ValueFromContext) interfaces.Validator {
+func NewContainsValidatorFromContext(fieldName, alias string, valueFromContext interfaces.ValueFromContext) interfaces.Validator {
 	return &Contains{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 		fromContext: valueFromContext,
 	}
@@ -52,10 +54,11 @@ func NewContainsValidatorFromContext(fieldName string, valueFromContext interfac
 
 func init() {
 	catalog.ValidationCatalog().MessageStore().SetMessage(&Contains{}, func(ctx interfaces.ValidatorContextGetter) string {
-		fieldValue := ctx.GetFieldValue(ctx.GetContextData()[ContextFieldNameKey].(string))
-		//nolint:errcheck // context created in Validate
+		//nolint:errcheck // ignore error
 		val := ctx.GetContextData()[contextMaxLenKey]
-		return fmt.Sprintf(defaultContainsMessage, fieldValue, val)
+		//nolint:errcheck // ignore error
+		alias := ctx.GetContextData()[ContextFieldAliasKey].(string)
+		return fmt.Sprintf(defaultContainsMessage, alias, val)
 	})
 }
 

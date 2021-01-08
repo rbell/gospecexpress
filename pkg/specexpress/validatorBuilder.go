@@ -13,6 +13,7 @@ import (
 
 type validatorBuilder struct {
 	fieldName        string
+	fieldAlias       string
 	validators       *sync.Map
 	forType          reflect.Value
 	qualifierBuilder interfaces.QualifierBuilder
@@ -21,9 +22,10 @@ type validatorBuilder struct {
 var _ interfaces.ValidatorBuilder = &validatorBuilder{}
 
 // NewValidatorBuilder creates an initialized ValidatorBuilder
-func NewValidatorBuilder(vals *sync.Map, forType reflect.Value, forField string, builder interfaces.QualifierBuilder) interfaces.ValidatorBuilder {
+func NewValidatorBuilder(vals *sync.Map, forType reflect.Value, forField, alias string, builder interfaces.QualifierBuilder) interfaces.ValidatorBuilder {
 	return &validatorBuilder{
 		fieldName:        forField,
+		fieldAlias:       alias,
 		validators:       vals,
 		forType:          forType,
 		qualifierBuilder: builder,

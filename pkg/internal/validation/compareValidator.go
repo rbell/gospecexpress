@@ -55,26 +55,27 @@ func setCompareValidatorMessage(validator interfaces.Validator, setter func(ctx 
 	})
 }
 
-func newCompareValidatorForValue(fieldName string, value interface{}, compareValues []int, validatorType interfaces.Validator) *compareValidator {
-	return newCompareValidatorForContext(fieldName, validatorType, &valueCompare{
+func newCompareValidatorForValue(fieldName, alias string, value interface{}, compareValues []int, validatorType interfaces.Validator) *compareValidator {
+	return newCompareValidatorForContext(fieldName, alias, validatorType, &valueCompare{
 		getValue:            func(ctx interfaces.ValidatorContextGetter) interface{} { return value },
 		comparisonValues:    compareValues,
 		compareToContextKey: contextCompareToValueKey,
 	})
 }
 
-func newCompareValidatorForValueAgainstOtherField(fieldName, otherFieldName string, compareValues []int, validatorType interfaces.Validator) *compareValidator {
-	return newCompareValidatorForContext(fieldName, validatorType, &valueCompare{
+func newCompareValidatorForValueAgainstOtherField(fieldName, alias, otherFieldName string, compareValues []int, validatorType interfaces.Validator) *compareValidator {
+	return newCompareValidatorForContext(fieldName, alias, validatorType, &valueCompare{
 		getValue:            func(ctx interfaces.ValidatorContextGetter) interface{} { return ctx.GetFieldValue(otherFieldName) },
 		comparisonValues:    compareValues,
 		compareToContextKey: contextCompareToValueKey,
 	})
 }
 
-func newCompareValidatorForContext(fieldName string, validatorType interfaces.Validator, comparisons ...*valueCompare) *compareValidator {
+func newCompareValidatorForContext(fieldName, alias string, validatorType interfaces.Validator, comparisons ...*valueCompare) *compareValidator {
 	return &compareValidator{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 		test: func(ctx *ValidatorContext) (result bool, err error) {
 			ctx.AddContextData(ContextFieldValueKey, ctx.GetFieldValue(fieldName))

@@ -20,6 +20,7 @@ import (
 
 type fieldValidator struct {
 	isOptional bool
+	alias      string
 	validators []interfaces.Validator
 	mux        *sync.Mutex
 }
@@ -77,7 +78,7 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 	return specError
 }
 
-func addValidator(fieldValidators *sync.Map, fieldName string, validator interfaces.Validator) {
+func addValidator(fieldValidators *sync.Map, fieldName, alias string, validator interfaces.Validator) {
 	var fv *fieldValidator
 	if v, ok := fieldValidators.Load(fieldName); ok {
 		//nolint:errcheck // We are in control of key and value types so should no need to check error
@@ -85,6 +86,7 @@ func addValidator(fieldValidators *sync.Map, fieldName string, validator interfa
 	} else {
 		fv = &fieldValidator{
 			isOptional: false,
+			alias:      alias,
 			validators: []interfaces.Validator{},
 			mux:        &sync.Mutex{},
 		}

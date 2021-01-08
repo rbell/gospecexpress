@@ -30,10 +30,11 @@ type MinLength struct {
 }
 
 // NewMinLengthValidator creates an initialized MaxLengthValidator
-func NewMinLengthValidator(fieldName string, minLen int) interfaces.Validator {
+func NewMinLengthValidator(fieldName, alias string, minLen int) interfaces.Validator {
 	return &MinLength{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 		minLen: minLen,
 	}
@@ -41,10 +42,11 @@ func NewMinLengthValidator(fieldName string, minLen int) interfaces.Validator {
 
 func init() {
 	catalog.ValidationCatalog().MessageStore().SetMessage(&MinLength{}, func(ctx interfaces.ValidatorContextGetter) string {
-		fieldValue := ctx.GetFieldValue(ctx.GetContextData()[ContextFieldNameKey].(string))
-		//nolint:errcheck // context created in Validate
+		//nolint:errcheck // ignore possible error
 		minLen := ctx.GetContextData()[contextMinLenKey].(int)
-		return fmt.Sprintf(defaultMinLengthMessage, fieldValue, minLen)
+		//nolint:errcheck // ignore possible error
+		alias := ctx.GetContextData()[ContextFieldAliasKey].(string)
+		return fmt.Sprintf(defaultMinLengthMessage, alias, minLen)
 	})
 }
 

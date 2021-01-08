@@ -24,17 +24,18 @@ type RequiredField struct {
 }
 
 // NewRequiredFieldValidator creates an initialized RequiredFieldValidator
-func NewRequiredFieldValidator(fieldName string) interfaces.Validator {
+func NewRequiredFieldValidator(fieldName, alias string) interfaces.Validator {
 	return &RequiredField{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 	}
 }
 
 func init() {
 	catalog.ValidationCatalog().MessageStore().SetMessage(&RequiredField{}, func(ctx interfaces.ValidatorContextGetter) string {
-		return fmt.Sprintf(defaultRequiredFieldMessage, ctx.GetContextData()[ContextFieldNameKey].(string))
+		return fmt.Sprintf(defaultRequiredFieldMessage, ctx.GetContextData()[ContextFieldAliasKey].(string))
 	})
 }
 

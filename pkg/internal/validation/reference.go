@@ -18,10 +18,11 @@ type Reference struct {
 }
 
 // NewReferenceValidator returns an initialized Reference validator
-func NewReferenceValidator(fieldName string) interfaces.Validator {
+func NewReferenceValidator(fieldName, alias string) interfaces.Validator {
 	return &Reference{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 		validationCatalog: catalog.ValidationCatalog(),
 	}

@@ -22,10 +22,11 @@ type RangeValidate struct {
 }
 
 // NewRangeValidate creates an initialized RangeValidate
-func NewRangeValidate(fieldName string) interfaces.Validator {
+func NewRangeValidate(fieldName, alias string) interfaces.Validator {
 	return &Reference{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: fieldName,
+			fieldName:  fieldName,
+			fieldAlias: alias,
 		},
 		validationCatalog: catalog.ValidationCatalog(),
 	}

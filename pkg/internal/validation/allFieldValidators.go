@@ -9,7 +9,7 @@ import "gitlab.com/rbell/gospecexpress/pkg/interfaces"
 // AllFieldValidators defines functionality shared across all Field Validators
 type AllFieldValidators struct {
 	fieldName            string
-	displayFieldName     string
+	fieldAlias           string
 	overrideErrorMessage interfaces.MessageFormatter
 }
 
@@ -17,7 +17,7 @@ type AllFieldValidators struct {
 func (a *AllFieldValidators) NewValidatorContext(instance interface{}, additionalContext map[string]interface{}) *ValidatorContext {
 	m := map[string]interface{}{
 		ContextFieldNameKey:  a.fieldName,
-		ContextFieldValueKey: a.displayFieldName,
+		ContextFieldAliasKey: a.fieldAlias,
 		ContextInstanceKey:   instance,
 	}
 	if additionalContext != nil {
