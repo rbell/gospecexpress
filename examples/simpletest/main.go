@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"time"
 
-	"gitlab.com/rbell/gospecexpress/pkg/catalog"
-	. "gitlab.com/rbell/gospecexpress/pkg/specexpress"
+	"gitlab.com/rbell/gospecexpress/catalog"
+	. "gitlab.com/rbell/gospecexpress/specexpress"
 )
 
 // ClubMember is a sample customer model for purposes of validation
