@@ -16,7 +16,7 @@ Go 1.14 or above
 # Installation
 Run the following to install the package:
 ```
-go get gitlab.com/rbell/gospecexpress
+go get github.com/rbell/gospecexpress
 ```
 
 # Quick Start
@@ -32,8 +32,8 @@ import (
 	"fmt"
 	"time"
 
-	"gitlab.com/rbell/gospecexpress/pkg/catalog"
-	. "gitlab.com/rbell/gospecexpress/pkg/specexpress"
+	"github.com/rbell/gospecexpress/catalog"
+	"github.com/rbell/gospecexpress/specexpress"
 )
 
 // ClubMember is a sample customer model for purposes of validation
@@ -49,7 +49,7 @@ type ClubMember struct {
 
 // ClubMemberSpec defines a specification for a customer
 type ClubMemberSpec struct {
-	Specification
+	specexpress.Specification
 }
 
 func newClubMemberSpec() *ClubMemberSpec {
@@ -58,7 +58,7 @@ func newClubMemberSpec() *ClubMemberSpec {
 	s.ForType(&ClubMember{}).
 		Required("FirstName").MaxLength(50).
 		Optional("MiddleName").MaxLength(20).
-		Required("LastName", WithErrorMessage("Sir Name is a required field!")).MaxLength(50).
+		Required("LastName", specexpress.WithErrorMessage("Sir Name is a required field!")).MaxLength(50).
 		Required("Age").LessThan(80).
 		Required("MemberExpireAt").GreaterThanOtherField("MemberSince")
 
@@ -91,6 +91,7 @@ func main() {
 		fmt.Printf("ClubMember is not valid:\n%v", err.Error())
 	}
 }
+
 
 ```
 Output:

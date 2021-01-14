@@ -11,8 +11,8 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
+	"github.com/rbell/gospecexpress/interfaces/mocks"
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/rbell/gospecexpress/interfaces/mocks"
 )
 
 func TestSpecification_ForType_ShouldReturnValidatorBuilder(t *testing.T) {

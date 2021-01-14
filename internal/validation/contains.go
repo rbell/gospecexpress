@@ -8,12 +8,12 @@ import (
 	"fmt"
 	"reflect"
 
-	"gitlab.com/rbell/gospecexpress/errors"
+	"github.com/rbell/gospecexpress/errors"
 
-	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
+	"github.com/rbell/gospecexpress/internal/reflectionhelpers"
 
-	"gitlab.com/rbell/gospecexpress/catalog"
-	"gitlab.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/catalog"
+	"github.com/rbell/gospecexpress/interfaces"
 )
 
 const (

@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
+	"github.com/rbell/gospecexpress/interfaces/mocks"
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/rbell/gospecexpress/interfaces/mocks"
 )
 
 func TestBetweenValues_Validate_FieldValueBetween_ShouldReturnNil(t *testing.T) {

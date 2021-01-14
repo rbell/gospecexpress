@@ -8,11 +8,11 @@ import (
 	"reflect"
 	"sync"
 
-	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
+	"github.com/rbell/gospecexpress/internal/reflectionhelpers"
 
-	"gitlab.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/interfaces"
 
-	"gitlab.com/rbell/gospecexpress/internal/validation"
+	"github.com/rbell/gospecexpress/internal/validation"
 )
 
 // NewQualifierBuilder creates an initialized QualifierBuilder

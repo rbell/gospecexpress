@@ -9,7 +9,7 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
-	"gitlab.com/rbell/gospecexpress/interfaces/mocks"
+	"github.com/rbell/gospecexpress/interfaces/mocks"
 
 	"github.com/stretchr/testify/assert"
 )

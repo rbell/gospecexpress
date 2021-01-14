@@ -7,9 +7,9 @@ package catalog
 import (
 	"sync"
 
-	"gitlab.com/rbell/gospecexpress/internal/catalog"
+	"github.com/rbell/gospecexpress/internal/catalog"
 
-	"gitlab.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/interfaces"
 )
 
 var instance interfaces.Cataloger

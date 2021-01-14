@@ -7,8 +7,8 @@ package specexpress
 import (
 	"regexp"
 
-	"gitlab.com/rbell/gospecexpress/interfaces"
-	"gitlab.com/rbell/gospecexpress/internal/validation"
+	"github.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/internal/validation"
 )
 
 // Matches provides a way to enforce a string contains a pattern defined by a regex

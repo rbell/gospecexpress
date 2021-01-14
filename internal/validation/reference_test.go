@@ -7,10 +7,10 @@ package validation
 import (
 	"testing"
 
-	"gitlab.com/rbell/gospecexpress/errors"
+	"github.com/rbell/gospecexpress/errors"
 
+	"github.com/rbell/gospecexpress/interfaces/mocks"
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/rbell/gospecexpress/interfaces/mocks"
 )
 
 func TestReference_Validate_ValidReference_ShouldReturnNil(t *testing.T) {

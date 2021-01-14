@@ -7,7 +7,7 @@ package validation
 import (
 	"sync"
 
-	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
+	"github.com/rbell/gospecexpress/internal/reflectionhelpers"
 )
 
 const (

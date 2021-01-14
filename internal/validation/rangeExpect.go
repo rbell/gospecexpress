@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"reflect"
 
-	"gitlab.com/rbell/gospecexpress/errors"
-	"gitlab.com/rbell/gospecexpress/internal/errorhelpers"
+	"github.com/rbell/gospecexpress/errors"
+	"github.com/rbell/gospecexpress/internal/errorhelpers"
 
-	"gitlab.com/rbell/gospecexpress/interfaces"
-	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
+	"github.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/internal/reflectionhelpers"
 )
 
 // RangeExpect allows a custom validation function to be applied over slice or array

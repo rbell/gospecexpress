@@ -13,9 +13,9 @@ import (
 	"reflect"
 	"testing"
 
-	"gitlab.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/interfaces"
 
-	"gitlab.com/rbell/gospecexpress/interfaces/mocks"
+	"github.com/rbell/gospecexpress/interfaces/mocks"
 
 	"github.com/stretchr/testify/assert"
 )

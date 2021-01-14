@@ -4,7 +4,7 @@
 
 package specexpress
 
-import "gitlab.com/rbell/gospecexpress/interfaces"
+import "github.com/rbell/gospecexpress/interfaces"
 
 // ApplyValidatorOptions applies options to a validator, returning the optioned validator
 func ApplyValidatorOptions(v interfaces.Validator, options ...interfaces.ValidatorOption) interfaces.Validator {

@@ -7,7 +7,7 @@ package validation
 import (
 	"fmt"
 
-	"gitlab.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/interfaces"
 )
 
 const defaultLessThanMessage = "%v should be less than %v."

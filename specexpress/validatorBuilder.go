@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"sync"
 
-	"gitlab.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/interfaces"
 )
 
 type validatorBuilder struct {

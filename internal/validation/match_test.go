@@ -12,7 +12,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"gitlab.com/rbell/gospecexpress/interfaces/mocks"
+	"github.com/rbell/gospecexpress/interfaces/mocks"
 )
 
 func TestMatch_Validate_MatchesRegex_ShouldReturnNil(t *testing.T) {

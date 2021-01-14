@@ -7,11 +7,11 @@ package validation
 import (
 	"testing"
 
-	"gitlab.com/rbell/gospecexpress/errors"
+	"github.com/rbell/gospecexpress/errors"
 
+	"github.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/interfaces/mocks"
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/rbell/gospecexpress/interfaces"
-	"gitlab.com/rbell/gospecexpress/interfaces/mocks"
 )
 
 func TestRangeExect_Validate_ValidSlice_ShouldReturnNil(t *testing.T) {
