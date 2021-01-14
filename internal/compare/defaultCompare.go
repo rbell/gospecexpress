@@ -8,7 +8,7 @@ import (
 	"errors"
 	"reflect"
 
-	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
+	"github.com/rbell/gospecexpress/internal/reflectionhelpers"
 )
 
 // errUnknownComparisonResult is error returned when comparison cannot be determined

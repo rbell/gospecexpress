@@ -5,8 +5,8 @@
 package validation
 
 import (
-	"gitlab.com/rbell/gospecexpress/errors"
-	"gitlab.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/errors"
+	"github.com/rbell/gospecexpress/interfaces"
 )
 
 // Expectation is a validator wrapping a function used to validate a field

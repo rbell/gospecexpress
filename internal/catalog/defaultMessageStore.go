@@ -7,7 +7,7 @@ package catalog
 import (
 	"reflect"
 
-	"gitlab.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/interfaces"
 )
 
 var _ interfaces.MessageStorer = &defaultMessageStore{}

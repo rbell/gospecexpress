@@ -7,7 +7,7 @@ package validation
 import (
 	"testing"
 
-	"gitlab.com/rbell/gospecexpress/interfaces/mocks"
+	"github.com/rbell/gospecexpress/interfaces/mocks"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -5,10 +5,10 @@
 package validation
 
 import (
-	"gitlab.com/rbell/gospecexpress/catalog"
-	"gitlab.com/rbell/gospecexpress/errors"
-	"gitlab.com/rbell/gospecexpress/interfaces"
-	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
+	"github.com/rbell/gospecexpress/catalog"
+	"github.com/rbell/gospecexpress/errors"
+	"github.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/internal/reflectionhelpers"
 )
 
 // Reference validates a struct's reference to another type (i.e. Order.ShipAddress)

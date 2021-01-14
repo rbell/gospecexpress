@@ -8,13 +8,13 @@ import (
 	"reflect"
 	"testing"
 
-	"gitlab.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/interfaces"
 
 	"github.com/stretchr/testify/mock"
 
 	"github.com/stretchr/testify/assert"
 
-	"gitlab.com/rbell/gospecexpress/interfaces/mocks"
+	"github.com/rbell/gospecexpress/interfaces/mocks"
 )
 
 func TestContains_Validate_StringContainsValue_ShouldReturnNil(t *testing.T) {

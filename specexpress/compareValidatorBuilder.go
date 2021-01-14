@@ -5,8 +5,8 @@
 package specexpress
 
 import (
-	"gitlab.com/rbell/gospecexpress/interfaces"
-	"gitlab.com/rbell/gospecexpress/internal/validation"
+	"github.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/internal/validation"
 )
 
 // Between ensures the value in the field is between the lower and upper parameters

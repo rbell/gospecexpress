@@ -7,11 +7,11 @@ package validation
 import (
 	"fmt"
 
-	"gitlab.com/rbell/gospecexpress/errors"
+	"github.com/rbell/gospecexpress/errors"
 
-	"gitlab.com/rbell/gospecexpress/catalog"
-	"gitlab.com/rbell/gospecexpress/interfaces"
-	"gitlab.com/rbell/gospecexpress/internal/compare"
+	"github.com/rbell/gospecexpress/catalog"
+	"github.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/internal/compare"
 )
 
 const (

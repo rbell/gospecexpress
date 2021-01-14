@@ -8,14 +8,14 @@ import (
 	"reflect"
 	"sync"
 
-	"gitlab.com/rbell/gospecexpress/internal/reflectionhelpers"
+	"github.com/rbell/gospecexpress/internal/reflectionhelpers"
 
-	specExpressErrors "gitlab.com/rbell/gospecexpress/errors"
-	"gitlab.com/rbell/gospecexpress/internal/errorhelpers"
+	specExpressErrors "github.com/rbell/gospecexpress/errors"
+	"github.com/rbell/gospecexpress/internal/errorhelpers"
 
-	"gitlab.com/rbell/gospecexpress/catalog"
+	"github.com/rbell/gospecexpress/catalog"
 
-	"gitlab.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/interfaces"
 )
 
 type fieldValidator struct {

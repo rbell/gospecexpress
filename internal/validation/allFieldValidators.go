@@ -4,7 +4,7 @@
 
 package validation
 
-import "gitlab.com/rbell/gospecexpress/interfaces"
+import "github.com/rbell/gospecexpress/interfaces"
 
 // AllFieldValidators defines functionality shared across all Field Validators
 type AllFieldValidators struct {

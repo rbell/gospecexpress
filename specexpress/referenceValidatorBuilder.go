@@ -5,8 +5,8 @@
 package specexpress
 
 import (
-	"gitlab.com/rbell/gospecexpress/interfaces"
-	"gitlab.com/rbell/gospecexpress/internal/validation"
+	"github.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/internal/validation"
 )
 
 // ValidateReference forces validating the value against the catalog (i.e. validate the address struct referenced by customer in the customer's Address field)

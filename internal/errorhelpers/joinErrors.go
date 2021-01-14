@@ -8,7 +8,7 @@ import (
 	"errors"
 	"reflect"
 
-	specExpressErrors "gitlab.com/rbell/gospecexpress/errors"
+	specExpressErrors "github.com/rbell/gospecexpress/errors"
 )
 
 // JoinErrors joins two errors together into a ValidatorError

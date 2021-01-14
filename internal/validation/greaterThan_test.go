@@ -7,12 +7,12 @@ package validation
 import (
 	"testing"
 
-	"gitlab.com/rbell/gospecexpress/interfaces"
+	"github.com/rbell/gospecexpress/interfaces"
 
 	"github.com/stretchr/testify/mock"
 
+	"github.com/rbell/gospecexpress/interfaces/mocks"
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/rbell/gospecexpress/interfaces/mocks"
 )
 
 func TestGreaterThan_Validate_ValueIsGreaterThan_ShouldReturnNil(t *testing.T) {
