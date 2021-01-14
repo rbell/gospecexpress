@@ -8,13 +8,14 @@ import (
 	"fmt"
 	"time"
 
-	"gitlab.com/rbell/gospecexpress/pkg/catalog"
-	. "gitlab.com/rbell/gospecexpress/pkg/specexpress"
+	"gitlab.com/rbell/gospecexpress/catalog"
+	. "gitlab.com/rbell/gospecexpress/specexpress"
 )
 
 // ClubMember is a sample customer model for purposes of validation
+// Field names can be tagged with a user readable field name used when referencing the field in error messaging
 type ClubMember struct {
-	FirstName      string
+	FirstName      string `spec:"First Name"`
 	MiddleName     string
 	LastName       string
 	Age            int
@@ -31,9 +32,9 @@ func newClubMemberSpec() *ClubMemberSpec {
 	s := &ClubMemberSpec{}
 
 	s.ForType(&ClubMember{}).
-		Required("FirstName", WithErrorMessage("The First Name is a required field!")).MaxLength(50).
+		Required("FirstName").MaxLength(50).
 		Optional("MiddleName").MaxLength(20).
-		Required("LastName").MaxLength(50).
+		Required("LastName", WithErrorMessage("Sir Name is a required field!")).MaxLength(50).
 		Required("Age").LessThan(80).
 		Required("MemberExpireAt").GreaterThanOtherField("MemberSince")
 
