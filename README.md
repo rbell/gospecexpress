@@ -32,8 +32,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/rbell/gospecexpress"
+
 	"github.com/rbell/gospecexpress/catalog"
-	"github.com/rbell/gospecexpress/specexpress"
 )
 
 // ClubMember is a sample customer model for purposes of validation
@@ -49,7 +50,7 @@ type ClubMember struct {
 
 // ClubMemberSpec defines a specification for a customer
 type ClubMemberSpec struct {
-	specexpress.Specification
+	gospecexpress.Specification
 }
 
 func newClubMemberSpec() *ClubMemberSpec {
@@ -58,7 +59,7 @@ func newClubMemberSpec() *ClubMemberSpec {
 	s.ForType(&ClubMember{}).
 		Required("FirstName").MaxLength(50).
 		Optional("MiddleName").MaxLength(20).
-		Required("LastName", specexpress.WithErrorMessage("Sir Name is a required field!")).MaxLength(50).
+		Required("LastName", gospecexpress.WithErrorMessage("Sir Name is a required field!")).MaxLength(50).
 		Required("Age").LessThan(80).
 		Required("MemberExpireAt").GreaterThanOtherField("MemberSince")
 
@@ -91,7 +92,6 @@ func main() {
 		fmt.Printf("ClubMember is not valid:\n%v", err.Error())
 	}
 }
-
 
 ```
 Output:
