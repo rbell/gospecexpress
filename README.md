@@ -1,4 +1,7 @@
 # Go SpecExpress
+---
+[![Build Status](https://travis-ci.com/rbell/gospecexpress.svg?branch=master)](https://travis-ci.com/rbell/gospecexpress) [![Go Report Card](https://goreportcard.com/badge/github.com/rbell/gospecexpress)](https://goreportcard.com/report/github.com/rbell/gospecexpress)
+
 Go SpecExpress is a fluent validation library for Go that makes it easy to consolidate the aspect of validation into specifications.
 
 # Features
