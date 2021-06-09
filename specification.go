@@ -22,6 +22,7 @@ type fieldValidator struct {
 	isOptional bool
 	alias      string
 	validators []interfaces.Validator
+	condition  interfaces.FieldValidationCondition
 	mux        *sync.Mutex
 }
 
@@ -58,14 +59,16 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 		fieldName, _ := key.(string)
 		//nolint:errcheck // We are in control of key and value types so should no need to check error
 		fv, _ := value.(*fieldValidator)
-		if fieldValue, ok := reflectionhelpers.GetFieldValue(thing, fieldName); ok {
-			if fv.isOptional && fieldValue.IsZero() {
-				// skip any validation since value in field is zero value and the field was optional
-				return true
-			}
-			for _, v := range fv.validators {
-				if err := v.Validate(thing, contextData, catalog.ValidationCatalog().MessageStore()); err != nil {
-					specError = errorhelpers.JoinErrors(specError, err)
+		if fv.condition == nil || fv.condition(thing, contextData) {
+			if fieldValue, ok := reflectionhelpers.GetFieldValue(thing, fieldName); ok {
+				if fv.isOptional && fieldValue.IsZero() {
+					// skip any validation since value in field is zero value and the field was optional
+					return true
+				}
+				for _, v := range fv.validators {
+					if err := v.Validate(thing, contextData, catalog.ValidationCatalog().MessageStore()); err != nil {
+						specError = errorhelpers.JoinErrors(specError, err)
+					}
 				}
 			}
 		}
@@ -108,5 +111,21 @@ func setOptional(fieldValidators *sync.Map, fieldName string, optional bool) {
 		}
 	}
 	fv.isOptional = optional
+	fieldValidators.Store(fieldName, fv)
+}
+
+func setCondition(fieldValidators *sync.Map, fieldName string, condition interfaces.FieldValidationCondition) {
+	var fv *fieldValidator
+	if v, ok := fieldValidators.Load(fieldName); ok {
+		//nolint:errcheck // We are in control of key and value types so should no need to check error
+		fv, _ = v.(*fieldValidator)
+	} else {
+		fv = &fieldValidator{
+			isOptional: false,
+			validators: []interfaces.Validator{},
+			mux:        &sync.Mutex{},
+		}
+	}
+	fv.condition = condition
 	fieldValidators.Store(fieldName, fv)
 }

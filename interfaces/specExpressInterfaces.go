@@ -9,6 +9,9 @@ import (
 	"regexp"
 )
 
+// FieldValidationCondition defines a function returning bool, determining if rules should be enforced for field
+type FieldValidationCondition func(thing interface{}, contextData map[string]interface{}) bool
+
 // ValueFromContext defines functor returning a value from a ValidatorContext
 type ValueFromContext func(ctx ValidatorContextGetter) interface{}
 
@@ -30,6 +33,9 @@ type ValidatorBuilder interface {
 	// Qualifier Validation
 	Required(fieldName string, options ...ValidatorOption) ValidatorBuilder
 	Optional(fieldName string) ValidatorBuilder
+
+	// Conditional Validation
+	If(condition FieldValidationCondition) ValidatorBuilder
 
 	// String Specific Validators
 	Matches(regex *regexp.Regexp, regexDescripton string, options ...ValidatorOption) ValidatorBuilder

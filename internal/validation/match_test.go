@@ -21,7 +21,7 @@ func TestMatch_Validate_MatchesRegex_ShouldReturnNil(t *testing.T) {
 		AllFieldValidators: &AllFieldValidators{
 			fieldName: "ID",
 		},
-		regex:            regexp.MustCompile(`^\d-\d\d\d$`),
+		regex:            regexp.MustCompile(`^\d-\d{3}$`),
 		regexDescription: "ID matching #-###",
 	}
 
@@ -46,7 +46,7 @@ func TestMatch_Validate_DoesNotMatchRegex_ShouldReturnNil(t *testing.T) {
 		AllFieldValidators: &AllFieldValidators{
 			fieldName: "ID",
 		},
-		regex:            regexp.MustCompile(`^\d-\d\d\d$`),
+		regex:            regexp.MustCompile(`^\d-\d{3}$`),
 		regexDescription: "ID matching #-###",
 	}
 
