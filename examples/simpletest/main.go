@@ -22,6 +22,7 @@ type ClubMember struct {
 	Age            int
 	MemberSince    time.Time
 	MemberExpireAt time.Time
+	Guardian       string
 }
 
 // ClubMemberSpec defines a specification for a customer
@@ -37,7 +38,13 @@ func newClubMemberSpec() *ClubMemberSpec {
 		Optional("MiddleName").MaxLength(20).
 		Required("LastName", gospecexpress.WithErrorMessage("Sir Name is a required field!")).MaxLength(50).
 		Required("Age").LessThan(80).
-		Required("MemberExpireAt").GreaterThanOtherField("MemberSince")
+		Required("MemberExpireAt").GreaterThanOtherField("MemberSince").
+		Required("Guardian").If(func(thing interface{}, contextData map[string]interface{}) bool {
+		if cm, ok := thing.(*ClubMember); ok {
+			return cm.Age < 18
+		}
+		return false
+	})
 
 	return s
 }
@@ -53,7 +60,7 @@ func main() {
 	c := &ClubMember{
 		FirstName:      "",
 		LastName:       "Flinstone",
-		Age:            23,
+		Age:            20,
 		MemberSince:    time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
 		MemberExpireAt: time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC),
 	}
