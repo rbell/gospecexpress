@@ -73,7 +73,7 @@ type ValidatorBuilder interface {
 	ValidateReference(options ...ValidatorOption) ValidatorBuilder
 
 	// Custom Rule which if returned error is not nil, error's message will be included in the validation error
-	Expect(validator func(validationCtx ValidatorContextGetter) error, options ...ValidatorOption) ValidatorBuilder
+	Expect(validator func(thing interface{}, ctx ValidatorContextGetter) error, options ...ValidatorOption) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns

@@ -71,7 +71,6 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 					}
 				}
 			}
-		}
 		return true
 	})
 
