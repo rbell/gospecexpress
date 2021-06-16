@@ -25,7 +25,7 @@ func WithErrorMessageFormatter(msgFormatter interfaces.MessageFormatter) func(va
 
 // WithErrorMessage overrides the error message if the validator fails
 func WithErrorMessage(msg string) func(validator interfaces.Validator) {
-	return WithErrorMessageFormatter(func(ctx interfaces.ValidatorContextGetter) string {
+	return WithErrorMessageFormatter(func(ctx interfaces.FieldValidatorContextGetter) string {
 		return msg
 	})
 }

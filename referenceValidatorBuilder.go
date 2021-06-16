@@ -11,6 +11,6 @@ import (
 
 // ValidateReference forces validating the value against the catalog (i.e. validate the address struct referenced by customer in the customer's Address field)
 func (v *validatorBuilder) ValidateReference(options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
-	addValidator(v.validators, v.fieldName, v.fieldAlias, ApplyValidatorOptions(validation.NewReferenceValidator(v.fieldName, v.fieldAlias), options...))
+	addFieldValidator(v.validators, v.fieldName, v.fieldAlias, ApplyValidatorOptions(validation.NewReferenceValidator(v.fieldName, v.fieldAlias), options...))
 	return v
 }

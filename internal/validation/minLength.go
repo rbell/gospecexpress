@@ -41,7 +41,7 @@ func NewMinLengthValidator(fieldName, alias string, minLen int) interfaces.Valid
 }
 
 func init() {
-	catalog.ValidationCatalog().MessageStore().SetMessage(&MinLength{}, func(ctx interfaces.ValidatorContextGetter) string {
+	catalog.ValidationCatalog().MessageStore().SetMessage(&MinLength{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		//nolint:errcheck // ignore possible error
 		minLen := ctx.GetContextData()[contextMinLenKey].(int)
 		//nolint:errcheck // ignore possible error

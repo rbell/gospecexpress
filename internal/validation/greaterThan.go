@@ -18,7 +18,7 @@ type GreaterThan struct {
 }
 
 func init() {
-	setCompareValidatorMessage(&GreaterThan{}, func(ctx interfaces.ValidatorContextGetter) string {
+	setCompareValidatorMessage(&GreaterThan{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		return fmt.Sprintf(defaultGreaterThanMessage, ctx.GetContextData()[ContextFieldAliasKey].(string), ctx.GetContextData()[contextCompareToValueKey])
 	})
 }

@@ -18,11 +18,11 @@ import (
 // RangeExpect allows a custom validation function to be applied over slice or array
 type RangeExpect struct {
 	*AllFieldValidators
-	exp func(ctx interfaces.ValidatorContextGetter) error
+	exp func(ctx interfaces.FieldValidatorContextGetter) error
 }
 
 // NewRangeExpect returns an initialized RangeExpect
-func NewRangeExpect(fieldName, alias string, exp func(ctx interfaces.ValidatorContextGetter) error) interfaces.Validator {
+func NewRangeExpect(fieldName, alias string, exp func(ctx interfaces.FieldValidatorContextGetter) error) interfaces.Validator {
 	return &RangeExpect{
 		AllFieldValidators: &AllFieldValidators{
 			fieldName:  fieldName,

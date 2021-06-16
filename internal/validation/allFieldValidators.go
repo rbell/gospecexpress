@@ -28,7 +28,7 @@ func (a *AllFieldValidators) NewValidatorContext(instance interface{}, additiona
 }
 
 // GetOverrideErrorMessage gets the overloaded message if overridden
-func (a *AllFieldValidators) GetOverrideErrorMessage(ctx interfaces.ValidatorContextGetter) string {
+func (a *AllFieldValidators) GetOverrideErrorMessage(ctx interfaces.FieldValidatorContextGetter) string {
 	if a.overrideErrorMessage != nil {
 		return a.overrideErrorMessage(ctx)
 	}

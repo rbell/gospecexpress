@@ -46,8 +46,8 @@ func (v *valueCompare) evaluate(ctx *ValidatorContext) (bool, error) {
 	return intIsIn(c, v.comparisonValues), nil
 }
 
-func setCompareValidatorMessage(validator interfaces.Validator, setter func(ctx interfaces.ValidatorContextGetter) string) {
-	catalog.ValidationCatalog().MessageStore().SetMessage(validator, func(ctx interfaces.ValidatorContextGetter) string {
+func setCompareValidatorMessage(validator interfaces.Validator, setter func(ctx interfaces.FieldValidatorContextGetter) string) {
+	catalog.ValidationCatalog().MessageStore().SetMessage(validator, func(ctx interfaces.FieldValidatorContextGetter) string {
 		if compared, ok := ctx.GetContextData()[contextIsComparableTypesKey].(bool); ok && compared {
 			return setter(ctx)
 		}
@@ -57,7 +57,7 @@ func setCompareValidatorMessage(validator interfaces.Validator, setter func(ctx 
 
 func newCompareValidatorForValue(fieldName, alias string, value interface{}, compareValues []int, validatorType interfaces.Validator) *compareValidator {
 	return newCompareValidatorForContext(fieldName, alias, validatorType, &valueCompare{
-		getValue:            func(ctx interfaces.ValidatorContextGetter) interface{} { return value },
+		getValue:            func(ctx interfaces.FieldValidatorContextGetter) interface{} { return value },
 		comparisonValues:    compareValues,
 		compareToContextKey: contextCompareToValueKey,
 	})
@@ -65,7 +65,7 @@ func newCompareValidatorForValue(fieldName, alias string, value interface{}, com
 
 func newCompareValidatorForValueAgainstOtherField(fieldName, alias, otherFieldName string, compareValues []int, validatorType interfaces.Validator) *compareValidator {
 	return newCompareValidatorForContext(fieldName, alias, validatorType, &valueCompare{
-		getValue:            func(ctx interfaces.ValidatorContextGetter) interface{} { return ctx.GetFieldValue(otherFieldName) },
+		getValue:            func(ctx interfaces.FieldValidatorContextGetter) interface{} { return ctx.GetFieldValue(otherFieldName) },
 		comparisonValues:    compareValues,
 		compareToContextKey: contextCompareToValueKey,
 	})
