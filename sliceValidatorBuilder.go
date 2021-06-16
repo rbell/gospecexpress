@@ -46,7 +46,7 @@ func (v *validatorBuilder) RangeValidate(options ...interfaces.ValidatorOption) 
 }
 
 // RangeExpect allows a custom validation function to be applied over a slice or array
-func (v *validatorBuilder) RangeExpect(validator func(validationCtx interfaces.ValidatorContextGetter) error, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+func (v *validatorBuilder) RangeExpect(validator func(validationCtx interfaces.FieldValidatorContextGetter) error, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	addFieldValidator(v.validators, v.fieldName, v.fieldAlias, ApplyValidatorOptions(validation.NewRangeExpect(v.fieldName, v.fieldAlias, validator), options...))
 	return v
 }

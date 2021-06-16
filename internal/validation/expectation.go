@@ -12,11 +12,11 @@ import (
 // Expectation is a validator wrapping a function used to validate a field
 type Expectation struct {
 	*AllFieldValidators
-	exp func(thing interface{}, getter interfaces.ValidatorContextGetter) error
+	exp interfaces.FieldValidationExpression
 }
 
 // NewExpectationValidator returns an initialized Expectation
-func NewExpectationValidator(fieldName, alias string, exp interfaces.ValidationExpression) interfaces.Validator {
+func NewExpectationValidator(fieldName, alias string, exp interfaces.FieldValidationExpression) interfaces.Validator {
 	return &Expectation{
 		AllFieldValidators: &AllFieldValidators{
 			fieldName:  fieldName,

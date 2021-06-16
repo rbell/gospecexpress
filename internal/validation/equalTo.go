@@ -18,7 +18,7 @@ type EqualTo struct {
 }
 
 func init() {
-	setCompareValidatorMessage(&EqualTo{}, func(ctx interfaces.ValidatorContextGetter) string {
+	setCompareValidatorMessage(&EqualTo{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		return fmt.Sprintf(defaultEqualToMessage, ctx.GetContextData()[ContextFieldAliasKey].(string), ctx.GetContextData()[contextCompareToValueKey])
 	})
 }

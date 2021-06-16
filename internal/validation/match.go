@@ -40,7 +40,7 @@ func NewMatch(fieldName, alias string, regex *regexp.Regexp, regexDescription st
 }
 
 func init() {
-	catalog.ValidationCatalog().MessageStore().SetMessage(&MaxLength{}, func(ctx interfaces.ValidatorContextGetter) string {
+	catalog.ValidationCatalog().MessageStore().SetMessage(&MaxLength{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		//nolint:errcheck // ignore error
 		desc := ctx.GetContextData()[defaultMatchDescriptionKey].(string)
 		//nolint:errcheck // ignore error

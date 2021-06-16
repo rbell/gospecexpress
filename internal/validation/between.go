@@ -22,7 +22,7 @@ type Between struct {
 }
 
 func init() {
-	setCompareValidatorMessage(&Between{}, func(ctx interfaces.ValidatorContextGetter) string {
+	setCompareValidatorMessage(&Between{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		return fmt.Sprintf(defaultBetweenMessage, ctx.GetContextData()[ContextFieldAliasKey], ctx.GetContextData()[lowerContextKey], ctx.GetContextData()[upperContextKey])
 	})
 }
@@ -30,16 +30,16 @@ func init() {
 // BetweenValues creates an initialized Between validator ensuring the value in the field is between the lower and upper parameters
 func BetweenValues(fieldName, alias string, lower, upper interface{}) interfaces.Validator {
 	return BetweenValuesFromContext(fieldName, alias,
-		func(ctx interfaces.ValidatorContextGetter) interface{} { return lower },
-		func(ctx interfaces.ValidatorContextGetter) interface{} { return upper },
+		func(ctx interfaces.FieldValidatorContextGetter) interface{} { return lower },
+		func(ctx interfaces.FieldValidatorContextGetter) interface{} { return upper },
 	)
 }
 
 // BetweenOtherFieldValues creates an initialized Between validator ensuring the value in the field is between values stored in two other fields
 func BetweenOtherFieldValues(fieldName, alias, lowerFieldName, upperFieldName string) interfaces.Validator {
 	return BetweenValuesFromContext(fieldName, alias,
-		func(ctx interfaces.ValidatorContextGetter) interface{} { return ctx.GetFieldValue(lowerFieldName) },
-		func(ctx interfaces.ValidatorContextGetter) interface{} { return ctx.GetFieldValue(upperFieldName) },
+		func(ctx interfaces.FieldValidatorContextGetter) interface{} { return ctx.GetFieldValue(lowerFieldName) },
+		func(ctx interfaces.FieldValidatorContextGetter) interface{} { return ctx.GetFieldValue(upperFieldName) },
 	)
 }
 

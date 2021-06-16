@@ -15,11 +15,11 @@ type ValidationExpression struct {
 }
 
 // Execute provides a mock function with given fields: thing, ctx
-func (_m *ValidationExpression) Execute(thing interface{}, ctx interfaces.ValidatorContextGetter) *errors.ValidatorError {
+func (_m *ValidationExpression) Execute(thing interface{}, ctx interfaces.FieldValidatorContextGetter) *errors.ValidatorError {
 	ret := _m.Called(thing, ctx)
 
 	var r0 *errors.ValidatorError
-	if rf, ok := ret.Get(0).(func(interface{}, interfaces.ValidatorContextGetter) *errors.ValidatorError); ok {
+	if rf, ok := ret.Get(0).(func(interface{}, interfaces.FieldValidatorContextGetter) *errors.ValidatorError); ok {
 		r0 = rf(thing, ctx)
 	} else {
 		if ret.Get(0) != nil {

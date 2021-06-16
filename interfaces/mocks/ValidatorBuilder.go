@@ -199,7 +199,7 @@ func (_m *ValidatorBuilder) EqualToValueFromContext(valueFromContext interfaces.
 }
 
 // Expect provides a mock function with given fields: validator, options
-func (_m *ValidatorBuilder) Expect(validator func(interface{}, interfaces.ValidatorContextGetter) error, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+func (_m *ValidatorBuilder) Expect(validator func(interface{}, interfaces.FieldValidatorContextGetter) error, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	_va := make([]interface{}, len(options))
 	for _i := range options {
 		_va[_i] = options[_i]
@@ -210,7 +210,7 @@ func (_m *ValidatorBuilder) Expect(validator func(interface{}, interfaces.Valida
 	ret := _m.Called(_ca...)
 
 	var r0 interfaces.ValidatorBuilder
-	if rf, ok := ret.Get(0).(func(func(interface{}, interfaces.ValidatorContextGetter) error, ...interfaces.ValidatorOption) interfaces.ValidatorBuilder); ok {
+	if rf, ok := ret.Get(0).(func(func(interface{}, interfaces.FieldValidatorContextGetter) error, ...interfaces.ValidatorOption) interfaces.ValidatorBuilder); ok {
 		r0 = rf(validator, options...)
 	} else {
 		if ret.Get(0) != nil {
@@ -622,7 +622,7 @@ func (_m *ValidatorBuilder) Optional(fieldName string) interfaces.ValidatorBuild
 }
 
 // RangeExpect provides a mock function with given fields: validator, options
-func (_m *ValidatorBuilder) RangeExpect(validator func(interfaces.ValidatorContextGetter) error, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+func (_m *ValidatorBuilder) RangeExpect(validator func(interfaces.FieldValidatorContextGetter) error, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	_va := make([]interface{}, len(options))
 	for _i := range options {
 		_va[_i] = options[_i]
@@ -633,7 +633,7 @@ func (_m *ValidatorBuilder) RangeExpect(validator func(interfaces.ValidatorConte
 	ret := _m.Called(_ca...)
 
 	var r0 interfaces.ValidatorBuilder
-	if rf, ok := ret.Get(0).(func(func(interfaces.ValidatorContextGetter) error, ...interfaces.ValidatorOption) interfaces.ValidatorBuilder); ok {
+	if rf, ok := ret.Get(0).(func(func(interfaces.FieldValidatorContextGetter) error, ...interfaces.ValidatorOption) interfaces.ValidatorBuilder); ok {
 		r0 = rf(validator, options...)
 	} else {
 		if ret.Get(0) != nil {

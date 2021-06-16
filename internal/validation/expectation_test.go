@@ -19,7 +19,7 @@ func TestExpectation_Validate_Expectations_Pass_ShouldReturn_Nil(t *testing.T) {
 		AllFieldValidators: &AllFieldValidators{
 			fieldName: "Country",
 		},
-		exp: func(thing interface{}, ctx interfaces.ValidatorContextGetter) error {
+		exp: func(thing interface{}, ctx interfaces.FieldValidatorContextGetter) error {
 			// Fake business logic where only US or CA valid countries (i.e. valid shipping countries)
 			cntry := ctx.GetFieldValue("Country")
 			if !(cntry == "US" || cntry == "CA") {
@@ -47,7 +47,7 @@ func TestExpectation_Validate_Expectations_DoesNotPass_ShouldReturn_error(t *tes
 		AllFieldValidators: &AllFieldValidators{
 			fieldName: "Country",
 		},
-		exp: func(thing interface{}, ctx interfaces.ValidatorContextGetter) error {
+		exp: func(thing interface{}, ctx interfaces.FieldValidatorContextGetter) error {
 			// Fake business logic where only US or CA valid countries (i.e. valid shipping countries)
 			cntry := ctx.GetFieldValue("Country")
 			if !(cntry == "US" || cntry == "CA") {

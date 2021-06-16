@@ -67,7 +67,7 @@ func TestEqualTo_Validate_ValueIsLess_ShouldReturnErr(t *testing.T) {
 
 func TestEqualToValueFromContext_Validate_ValueIsEqual_ShouldReturnNil(t *testing.T) {
 	// setup
-	validator := EqualToValueFromContext("DistanceA", "DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
+	validator := EqualToValueFromContext("DistanceA", "DistanceA", func(ctx interfaces.FieldValidatorContextGetter) interface{} {
 		return ctx.GetFieldValue("DistanceB")
 	})
 	mMessageStore := &mocks.MessageStorer{}
@@ -89,7 +89,7 @@ func TestEqualToValueFromContext_Validate_ValueIsEqual_ShouldReturnNil(t *testin
 
 func TestEqualToValueFromContext_Validate_ValueIsGreaterThan_ShouldReturnNil(t *testing.T) {
 	// setup
-	validator := EqualToValueFromContext("DistanceA", "DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
+	validator := EqualToValueFromContext("DistanceA", "DistanceA", func(ctx interfaces.FieldValidatorContextGetter) interface{} {
 		return ctx.GetFieldValue("DistanceB")
 	})
 	mMessageStore := &mocks.MessageStorer{}
@@ -112,7 +112,7 @@ func TestEqualToValueFromContext_Validate_ValueIsGreaterThan_ShouldReturnNil(t *
 
 func TestEqualToValueFromContext_Validate_ValueIsLessThan_ShouldReturnErr(t *testing.T) {
 	// setup
-	validator := EqualToValueFromContext("DistanceA", "DistanceA", func(ctx interfaces.ValidatorContextGetter) interface{} {
+	validator := EqualToValueFromContext("DistanceA", "DistanceA", func(ctx interfaces.FieldValidatorContextGetter) interface{} {
 		return ctx.GetFieldValue("DistanceB")
 	})
 	mMessageStore := &mocks.MessageStorer{}

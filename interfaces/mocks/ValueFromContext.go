@@ -13,11 +13,11 @@ type ValueFromContext struct {
 }
 
 // Execute provides a mock function with given fields: ctx
-func (_m *ValueFromContext) Execute(ctx interfaces.ValidatorContextGetter) interface{} {
+func (_m *ValueFromContext) Execute(ctx interfaces.FieldValidatorContextGetter) interface{} {
 	ret := _m.Called(ctx)
 
 	var r0 interface{}
-	if rf, ok := ret.Get(0).(func(interfaces.ValidatorContextGetter) interface{}); ok {
+	if rf, ok := ret.Get(0).(func(interfaces.FieldValidatorContextGetter) interface{}); ok {
 		r0 = rf(ctx)
 	} else {
 		if ret.Get(0) != nil {

@@ -32,7 +32,7 @@ func TestRangeExect_Validate_ValidSlice_ShouldReturnNil(t *testing.T) {
 		AllFieldValidators: &AllFieldValidators{
 			fieldName: "TestField",
 		},
-		exp: func(ctx interfaces.ValidatorContextGetter) error {
+		exp: func(ctx interfaces.FieldValidatorContextGetter) error {
 			return nil
 		},
 	}
@@ -64,7 +64,7 @@ func TestRangeExect_Validate_InvalidValidSlice_ShouldReturnNil(t *testing.T) {
 		AllFieldValidators: &AllFieldValidators{
 			fieldName: "TestField",
 		},
-		exp: func(ctx interfaces.ValidatorContextGetter) error {
+		exp: func(ctx interfaces.FieldValidatorContextGetter) error {
 			return errors.NewValidationError("TestField", "Invalid")
 		},
 	}

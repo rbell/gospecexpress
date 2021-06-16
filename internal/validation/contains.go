@@ -53,7 +53,7 @@ func NewContainsValidatorFromContext(fieldName, alias string, valueFromContext i
 }
 
 func init() {
-	catalog.ValidationCatalog().MessageStore().SetMessage(&Contains{}, func(ctx interfaces.ValidatorContextGetter) string {
+	catalog.ValidationCatalog().MessageStore().SetMessage(&Contains{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		//nolint:errcheck // ignore error
 		val := ctx.GetContextData()[contextMaxLenKey]
 		//nolint:errcheck // ignore error

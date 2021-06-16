@@ -12,11 +12,14 @@ import (
 // FieldValidationCondition defines a function returning bool, determining if rules should be enforced for field
 type FieldValidationCondition func(thing interface{}, contextData map[string]interface{}) bool
 
-// ValidationExpression defines a function that, given thing to be validated and additional context, returns a validaation error
-type ValidationExpression func(thing interface{}, ctx ValidatorContextGetter) error
+// ValidationExpression defines a function that, given thing to be validated and additional context, returns an error
+type ValidationExpression func(thing interface{}, contextData map[string]interface{}) error
+
+// FieldValidationExpression defines a function that, given thing to be validated and context for a field, returns an error
+type FieldValidationExpression func(thing interface{}, ctx FieldValidatorContextGetter) error
 
 // ValueFromContext defines functor returning a value from a ValidatorContext
-type ValueFromContext func(ctx ValidatorContextGetter) interface{}
+type ValueFromContext func(ctx FieldValidatorContextGetter) interface{}
 
 // SpecificationValidator defines interface to Validate something
 type SpecificationValidator interface {
@@ -71,13 +74,13 @@ type ValidatorBuilder interface {
 	Contains(thing interface{}, options ...ValidatorOption) ValidatorBuilder
 	ContainsValueFromContext(fromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 	RangeValidate(options ...ValidatorOption) ValidatorBuilder
-	RangeExpect(validator func(validationCtx ValidatorContextGetter) error, options ...ValidatorOption) ValidatorBuilder
+	RangeExpect(validator func(validationCtx FieldValidatorContextGetter) error, options ...ValidatorOption) ValidatorBuilder
 
 	// Reference Validators
 	ValidateReference(options ...ValidatorOption) ValidatorBuilder
 
 	// Custom Rule which if returned error is not nil, error's message will be included in the validation error
-	Expect(validator ValidationExpression, options ...ValidatorOption) ValidatorBuilder
+	Expect(validator FieldValidationExpression, options ...ValidatorOption) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns
@@ -88,23 +91,23 @@ type Validator interface {
 // ValidatorOption is a function signature defining an option on a Validator
 type ValidatorOption func(v Validator)
 
-// MessageFormatter defines a function that returns a message given a ValidatorContextGetter
-type MessageFormatter func(ctx ValidatorContextGetter) string
+// MessageFormatter defines a function that returns a message given a FieldValidatorContextGetter
+type MessageFormatter func(ctx FieldValidatorContextGetter) string
 
 // MessageOverrider defines interface for something that has ability to override a validation message
 type MessageOverrider interface {
-	GetOverrideErrorMessage(ctx ValidatorContextGetter) string
+	GetOverrideErrorMessage(ctx FieldValidatorContextGetter) string
 	SetOverrideErrorMessage(msgFormatter MessageFormatter)
 }
 
 // MessageStorer defines interface for getting a message for a validation rule
 type MessageStorer interface {
-	GetMessage(validator Validator, ctx ValidatorContextGetter) string
+	GetMessage(validator Validator, ctx FieldValidatorContextGetter) string
 	SetMessage(validator Validator, getterFunc ErrorMessageGetterFunc)
 }
 
-// ValidatorContextGetter gets the context for the validation
-type ValidatorContextGetter interface {
+// FieldValidatorContextGetter gets the context for the validation
+type FieldValidatorContextGetter interface {
 	GetFieldValue(fieldName string) interface{}
 	// ContextData will include
 	GetContextData() map[string]interface{}

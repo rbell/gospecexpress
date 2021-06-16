@@ -13,11 +13,11 @@ type MessageStorer struct {
 }
 
 // GetMessage provides a mock function with given fields: validator, ctx
-func (_m *MessageStorer) GetMessage(validator interfaces.Validator, ctx interfaces.ValidatorContextGetter) string {
+func (_m *MessageStorer) GetMessage(validator interfaces.Validator, ctx interfaces.FieldValidatorContextGetter) string {
 	ret := _m.Called(validator, ctx)
 
 	var r0 string
-	if rf, ok := ret.Get(0).(func(interfaces.Validator, interfaces.ValidatorContextGetter) string); ok {
+	if rf, ok := ret.Get(0).(func(interfaces.Validator, interfaces.FieldValidatorContextGetter) string); ok {
 		r0 = rf(validator, ctx)
 	} else {
 		r0 = ret.Get(0).(string)
