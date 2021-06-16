@@ -41,7 +41,7 @@ func NewMaxLengthValidator(fieldName, alias string, maxLen int) interfaces.Valid
 }
 
 func init() {
-	catalog.ValidationCatalog().MessageStore().SetMessage(&MaxLength{}, func(ctx interfaces.ValidatorContextGetter) string {
+	catalog.ValidationCatalog().MessageStore().SetMessage(&MaxLength{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		//nolint:errcheck // ignore possible error
 		maxLen := ctx.GetContextData()[contextMaxLenKey].(int)
 		//nolint:errcheck // ignore possible error

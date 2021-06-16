@@ -6,7 +6,6 @@ package gospecexpress
 
 import (
 	"reflect"
-	"sync"
 
 	"github.com/rbell/gospecexpress/internal/reflectionhelpers"
 
@@ -16,10 +15,10 @@ import (
 )
 
 // NewQualifierBuilder creates an initialized QualifierBuilder
-func NewQualifierBuilder(vals *sync.Map, forType reflect.Value) interfaces.QualifierBuilder {
+func NewQualifierBuilder(spec *Specification, forType reflect.Value) interfaces.QualifierBuilder {
 	return &qualifierBuilder{
-		validators: vals,
-		forType:    forType,
+		spec:    spec,
+		forType: forType,
 	}
 }
 
@@ -27,21 +26,26 @@ var _ interfaces.QualifierBuilder = &qualifierBuilder{}
 
 // qualifierBuilder exists solely for the purpose of supporting code assistance enforcing functions available after `ForType`
 type qualifierBuilder struct {
-	validators *sync.Map
-	forType    reflect.Value
+	spec    *Specification
+	forType reflect.Value
 }
 
 // RequiredField indicates a field is required
 func (b *qualifierBuilder) Required(fieldName string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
-	setOptional(b.validators, fieldName, false)
+	setOptional(b.spec.fieldValidators, fieldName, false)
 	alias := reflectionhelpers.GetFieldAlias(b.forType, fieldName)
-	addValidator(b.validators, fieldName, alias, ApplyValidatorOptions(validation.NewRequiredFieldValidator(fieldName, alias), options...))
-	return NewValidatorBuilder(b.validators, b.forType, fieldName, alias, b)
+	addFieldValidator(b.spec.fieldValidators, fieldName, alias, ApplyValidatorOptions(validation.NewRequiredFieldValidator(fieldName, alias), options...))
+	return NewValidatorBuilder(b.spec.fieldValidators, b.forType, fieldName, alias, b)
 }
 
 // Optional indicates a field is optional
 func (b *qualifierBuilder) Optional(fieldName string) interfaces.ValidatorBuilder {
-	setOptional(b.validators, fieldName, true)
+	setOptional(b.spec.fieldValidators, fieldName, true)
 	alias := reflectionhelpers.GetFieldAlias(b.forType, fieldName)
-	return NewValidatorBuilder(b.validators, b.forType, alias, fieldName, b)
+	return NewValidatorBuilder(b.spec.fieldValidators, b.forType, alias, fieldName, b)
+}
+
+func (b *qualifierBuilder) Custom(exp interfaces.ValidationExpression) interfaces.QualifierBuilder {
+	b.spec.customExpressions = append(b.spec.customExpressions, exp)
+	return b
 }

@@ -18,32 +18,19 @@ import (
 	"github.com/rbell/gospecexpress/interfaces"
 )
 
-type fieldValidator struct {
-	isOptional bool
-	alias      string
-	validators []interfaces.Validator
-	condition  interfaces.FieldValidationCondition
-	mux        *sync.Mutex
-}
-
-func (v *fieldValidator) addValidator(validator interfaces.Validator) {
-	v.mux.Lock()
-	defer v.mux.Unlock()
-	v.validators = append(v.validators, validator)
-}
-
 // Specification defines a base for specification
 type Specification struct {
-	forType    reflect.Type
-	validators *sync.Map
+	forType           reflect.Type
+	fieldValidators   *sync.Map
+	customExpressions []interfaces.ValidationExpression
 }
 
 // ForType sets the type that the specification is to be applied to
 func (s *Specification) ForType(forType interface{}) interfaces.QualifierBuilder {
 	forValue := reflect.ValueOf(forType)
 	s.forType = forValue.Type()
-	s.validators = &sync.Map{}
-	return NewQualifierBuilder(s.validators, forValue)
+	s.fieldValidators = &sync.Map{}
+	return NewQualifierBuilder(s, forValue)
 }
 
 // GetForType returns the type that the specification is to be applied to
@@ -54,7 +41,16 @@ func (s *Specification) GetForType() reflect.Type {
 // Validate validates an instance of the type
 func (s *Specification) Validate(thing interface{}, contextData map[string]interface{}) error {
 	var specError *specExpressErrors.ValidatorError = nil
-	s.validators.Range(func(key, value interface{}) bool {
+
+	// Validate customExpressions (expressions applied to structure as a whole)
+	for _, exp := range s.customExpressions {
+		if err := exp(thing, contextData); err != nil {
+			specError = errorhelpers.JoinErrors(specError, err)
+		}
+	}
+
+	// Validate field validators defined for the structure
+	s.fieldValidators.Range(func(key, value interface{}) bool {
 		//nolint:errcheck // We are in control of key and value types so should no need to check error
 		fieldName, _ := key.(string)
 		//nolint:errcheck // We are in control of key and value types so should no need to check error
@@ -71,6 +67,7 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 					}
 				}
 			}
+		}
 		return true
 	})
 
@@ -80,7 +77,7 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 	return specError
 }
 
-func addValidator(fieldValidators *sync.Map, fieldName, alias string, validator interfaces.Validator) {
+func addFieldValidator(fieldValidators *sync.Map, fieldName, alias string, validator interfaces.Validator) {
 	var fv *fieldValidator
 	if v, ok := fieldValidators.Load(fieldName); ok {
 		//nolint:errcheck // We are in control of key and value types so should no need to check error
@@ -94,37 +91,5 @@ func addValidator(fieldValidators *sync.Map, fieldName, alias string, validator 
 		}
 	}
 	fv.addValidator(validator)
-	fieldValidators.Store(fieldName, fv)
-}
-
-func setOptional(fieldValidators *sync.Map, fieldName string, optional bool) {
-	var fv *fieldValidator
-	if v, ok := fieldValidators.Load(fieldName); ok {
-		//nolint:errcheck // We are in control of key and value types so should no need to check error
-		fv, _ = v.(*fieldValidator)
-	} else {
-		fv = &fieldValidator{
-			isOptional: false,
-			validators: []interfaces.Validator{},
-			mux:        &sync.Mutex{},
-		}
-	}
-	fv.isOptional = optional
-	fieldValidators.Store(fieldName, fv)
-}
-
-func setCondition(fieldValidators *sync.Map, fieldName string, condition interfaces.FieldValidationCondition) {
-	var fv *fieldValidator
-	if v, ok := fieldValidators.Load(fieldName); ok {
-		//nolint:errcheck // We are in control of key and value types so should no need to check error
-		fv, _ = v.(*fieldValidator)
-	} else {
-		fv = &fieldValidator{
-			isOptional: false,
-			validators: []interfaces.Validator{},
-			mux:        &sync.Mutex{},
-		}
-	}
-	fv.condition = condition
 	fieldValidators.Store(fieldName, fv)
 }

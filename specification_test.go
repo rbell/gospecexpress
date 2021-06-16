@@ -22,7 +22,7 @@ func TestSpecification_ForType_ShouldReturnValidatorBuilder(t *testing.T) {
 	}
 	ts := &testSubject{}
 	spec := &Specification{
-		validators: &sync.Map{},
+		fieldValidators: &sync.Map{},
 	}
 
 	// test
@@ -43,11 +43,11 @@ func TestSpecification_Validate_ShouldCallValidator(t *testing.T) {
 	mValidator.On("Validate", ts, map[string]interface{}(nil), mock.Anything).Return(nil)
 
 	spec := &Specification{
-		validators: &sync.Map{},
-		forType:    reflect.TypeOf(ts),
+		fieldValidators: &sync.Map{},
+		forType:         reflect.TypeOf(ts),
 	}
 
-	addValidator(spec.validators, "Name", "Alias0", mValidator)
+	addFieldValidator(spec.fieldValidators, "Name", "Alias0", mValidator)
 
 	// test
 	err := spec.Validate(ts, nil)

@@ -18,7 +18,7 @@ type LessThan struct {
 }
 
 func init() {
-	setCompareValidatorMessage(&LessThan{}, func(ctx interfaces.ValidatorContextGetter) string {
+	setCompareValidatorMessage(&LessThan{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		return fmt.Sprintf(defaultLessThanMessage, ctx.GetContextData()[ContextFieldAliasKey].(string), ctx.GetContextData()[contextCompareToValueKey])
 	})
 }

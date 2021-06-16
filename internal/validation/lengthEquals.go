@@ -41,7 +41,7 @@ func NewLengthEqualsValidator(fieldName, alias string, length int) interfaces.Va
 }
 
 func init() {
-	catalog.ValidationCatalog().MessageStore().SetMessage(&LengthEquals{}, func(ctx interfaces.ValidatorContextGetter) string {
+	catalog.ValidationCatalog().MessageStore().SetMessage(&LengthEquals{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		//nolint:errcheck // context created in Validate
 		maxLen := ctx.GetContextData()[contextLenEqKey].(int)
 		//nolint:errcheck // context created in Validate

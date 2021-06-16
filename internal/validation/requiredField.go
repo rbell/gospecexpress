@@ -34,7 +34,7 @@ func NewRequiredFieldValidator(fieldName, alias string) interfaces.Validator {
 }
 
 func init() {
-	catalog.ValidationCatalog().MessageStore().SetMessage(&RequiredField{}, func(ctx interfaces.ValidatorContextGetter) string {
+	catalog.ValidationCatalog().MessageStore().SetMessage(&RequiredField{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		return fmt.Sprintf(defaultRequiredFieldMessage, ctx.GetContextData()[ContextFieldAliasKey].(string))
 	})
 }

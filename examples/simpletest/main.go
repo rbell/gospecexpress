@@ -34,6 +34,9 @@ func newClubMemberSpec() *ClubMemberSpec {
 	s := &ClubMemberSpec{}
 
 	s.ForType(&ClubMember{}).
+		Custom(func(thing interface{}, contextData map[string]interface{}) error {
+			return fmt.Errorf("This is a test custom validation error returned for the structure as a whole")
+		}).
 		Required("FirstName").MaxLength(50).
 		Optional("MiddleName").MaxLength(20).
 		Required("LastName", gospecexpress.WithErrorMessage("Sir Name is a required field!")).MaxLength(50).

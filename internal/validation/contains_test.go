@@ -247,7 +247,7 @@ func TestContains_Validate_SliceContainsValueFromContext_ShouldReturnNil(t *test
 		AllFieldValidators: &AllFieldValidators{
 			fieldName: "TestField",
 		},
-		fromContext: func(ctx interfaces.ValidatorContextGetter) interface{} {
+		fromContext: func(ctx interfaces.FieldValidatorContextGetter) interface{} {
 			return 's'
 		},
 	}
@@ -272,7 +272,7 @@ func TestContains_Validate_SliceDoesNotContainValueFromContext_ShouldReturnNil(t
 		AllFieldValidators: &AllFieldValidators{
 			fieldName: "TestField",
 		},
-		fromContext: func(ctx interfaces.ValidatorContextGetter) interface{} {
+		fromContext: func(ctx interfaces.FieldValidatorContextGetter) interface{} {
 			return 'z'
 		},
 	}

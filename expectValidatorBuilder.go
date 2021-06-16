@@ -10,7 +10,7 @@ import (
 )
 
 // Expect provides a way to express a function that should be used to validate a field
-func (v *validatorBuilder) Expect(validatorFunc func(thing interface{}, getter interfaces.ValidatorContextGetter) error, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
-	addValidator(v.validators, v.fieldName, v.fieldAlias, ApplyValidatorOptions(validation.NewExpectationValidator(v.fieldName, v.fieldAlias, validatorFunc), options...))
+func (v *validatorBuilder) Expect(validatorFunc interfaces.FieldValidationExpression, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	addFieldValidator(v.validators, v.fieldName, v.fieldAlias, ApplyValidatorOptions(validation.NewExpectationValidator(v.fieldName, v.fieldAlias, validatorFunc), options...))
 	return v
 }
