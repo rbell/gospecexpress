@@ -10,7 +10,7 @@ type fieldValidator struct {
 	isOptional bool
 	alias      string
 	validators []interfaces.Validator
-	condition  interfaces.ValidationPredicate
+	condition  interfaces.FieldValidationCondition
 	mux        *sync.Mutex
 }
 
@@ -36,7 +36,7 @@ func setOptional(fieldValidators *sync.Map, fieldName string, optional bool) {
 	fieldValidators.Store(fieldName, fv)
 }
 
-func setCondition(fieldValidators *sync.Map, fieldName string, condition interfaces.ValidationPredicate) {
+func setCondition(fieldValidators *sync.Map, fieldName string, condition interfaces.FieldValidationCondition) {
 	var fv *fieldValidator
 	if v, ok := fieldValidators.Load(fieldName); ok {
 		//nolint:errcheck // We are in control of key and value types so should no need to check error

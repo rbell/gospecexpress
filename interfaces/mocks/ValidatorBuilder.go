@@ -360,11 +360,11 @@ func (_m *ValidatorBuilder) GreaterThanValueFromContext(valueFromContext interfa
 }
 
 // If provides a mock function with given fields: condition
-func (_m *ValidatorBuilder) If(condition interfaces.ValidationPredicate) interfaces.ValidatorBuilder {
+func (_m *ValidatorBuilder) If(condition interfaces.FieldValidationCondition) interfaces.ValidatorBuilder {
 	ret := _m.Called(condition)
 
 	var r0 interfaces.ValidatorBuilder
-	if rf, ok := ret.Get(0).(func(interfaces.ValidationPredicate) interfaces.ValidatorBuilder); ok {
+	if rf, ok := ret.Get(0).(func(validationCondition interfaces.FieldValidationCondition) interfaces.ValidatorBuilder); ok {
 		r0 = rf(condition)
 	} else {
 		if ret.Get(0) != nil {
