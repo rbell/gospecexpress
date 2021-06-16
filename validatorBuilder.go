@@ -37,6 +37,13 @@ func (v *validatorBuilder) Required(fieldName string, options ...interfaces.Vali
 	return v.qualifierBuilder.Required(fieldName, options...)
 }
 
+// Optional indicates we want to start a new rule chain for a field that is optional (not required).
 func (v *validatorBuilder) Optional(fieldName string) interfaces.ValidatorBuilder {
 	return v.qualifierBuilder.Optional(fieldName)
+}
+
+// If adds a condition as to when the rules for the rules we are building should be applied when validating
+func (v *validatorBuilder) If(condition interfaces.FieldValidationCondition) interfaces.ValidatorBuilder {
+	setCondition(v.validators, v.fieldName, condition)
+	return v
 }
