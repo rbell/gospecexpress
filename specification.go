@@ -71,6 +71,7 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 					}
 				}
 			}
+		}
 		return true
 	})
 
@@ -80,7 +81,7 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 	return specError
 }
 
-func addValidator(fieldValidators *sync.Map, fieldName, alias string, validator interfaces.Validator) {
+func addFieldValidator(fieldValidators *sync.Map, fieldName, alias string, validator interfaces.Validator) {
 	var fv *fieldValidator
 	if v, ok := fieldValidators.Load(fieldName); ok {
 		//nolint:errcheck // We are in control of key and value types so should no need to check error

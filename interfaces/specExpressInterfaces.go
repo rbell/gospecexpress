@@ -12,6 +12,9 @@ import (
 // FieldValidationCondition defines a function returning bool, determining if rules should be enforced for field
 type FieldValidationCondition func(thing interface{}, contextData map[string]interface{}) bool
 
+// ValidationExpression defines a function that, given thing to be validated and additional context, returns a validaation error
+type ValidationExpression func(thing interface{}, ctx ValidatorContextGetter) error
+
 // ValueFromContext defines functor returning a value from a ValidatorContext
 type ValueFromContext func(ctx ValidatorContextGetter) interface{}
 
@@ -26,6 +29,7 @@ type SpecificationValidator interface {
 type QualifierBuilder interface {
 	Required(fieldName string, options ...ValidatorOption) ValidatorBuilder
 	Optional(fieldName string) ValidatorBuilder
+	Custom(exp ValidationExpression) QualifierBuilder
 }
 
 // ValidatorBuilder defines interface methods to build a specification
@@ -73,7 +77,7 @@ type ValidatorBuilder interface {
 	ValidateReference(options ...ValidatorOption) ValidatorBuilder
 
 	// Custom Rule which if returned error is not nil, error's message will be included in the validation error
-	Expect(validator func(thing interface{}, ctx ValidatorContextGetter) error, options ...ValidatorOption) ValidatorBuilder
+	Expect(validator ValidationExpression, options ...ValidatorOption) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns

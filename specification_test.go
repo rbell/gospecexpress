@@ -47,7 +47,7 @@ func TestSpecification_Validate_ShouldCallValidator(t *testing.T) {
 		forType:    reflect.TypeOf(ts),
 	}
 
-	addValidator(spec.validators, "Name", "Alias0", mValidator)
+	addFieldValidator(spec.validators, "Name", "Alias0", mValidator)
 
 	// test
 	err := spec.Validate(ts, nil)

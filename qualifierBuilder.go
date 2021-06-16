@@ -35,7 +35,7 @@ type qualifierBuilder struct {
 func (b *qualifierBuilder) Required(fieldName string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	setOptional(b.validators, fieldName, false)
 	alias := reflectionhelpers.GetFieldAlias(b.forType, fieldName)
-	addValidator(b.validators, fieldName, alias, ApplyValidatorOptions(validation.NewRequiredFieldValidator(fieldName, alias), options...))
+	addFieldValidator(b.validators, fieldName, alias, ApplyValidatorOptions(validation.NewRequiredFieldValidator(fieldName, alias), options...))
 	return NewValidatorBuilder(b.validators, b.forType, fieldName, alias, b)
 }
 
@@ -44,4 +44,10 @@ func (b *qualifierBuilder) Optional(fieldName string) interfaces.ValidatorBuilde
 	setOptional(b.validators, fieldName, true)
 	alias := reflectionhelpers.GetFieldAlias(b.forType, fieldName)
 	return NewValidatorBuilder(b.validators, b.forType, alias, fieldName, b)
+}
+
+func (b *qualifierBuilder) Custom(exp interfaces.ValidationExpression) interfaces.QualifierBuilder {
+	// add special validator for the instance as a whole to the list of validators
+
+	return b
 }
