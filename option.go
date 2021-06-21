@@ -4,7 +4,9 @@
 
 package gospecexpress
 
-import "github.com/rbell/gospecexpress/interfaces"
+import (
+	"github.com/rbell/gospecexpress/interfaces"
+)
 
 // ApplyValidatorOptions applies options to a validator, returning the optioned validator
 func ApplyValidatorOptions(v interfaces.Validator, options ...interfaces.ValidatorOption) interfaces.Validator {
@@ -28,4 +30,14 @@ func WithErrorMessage(msg string) func(validator interfaces.Validator) {
 	return WithErrorMessageFormatter(func(ctx interfaces.FieldValidatorContextGetter) string {
 		return msg
 	})
+}
+
+// WithWarning indicates that any resulting failed validation should result in a warning
+func WithWarning() func(validator interfaces.Validator) {
+	return func(validator interfaces.Validator) {
+		if warningSetter, ok := validator.(interfaces.WarningSetter); ok {
+			warningSetter.ValidateAsWarning()
+		}
+
+	}
 }

@@ -120,3 +120,8 @@ type Cataloger interface {
 	ValidateWithContext(something interface{}, contextData map[string]interface{}) error
 	MessageStore() MessageStorer
 }
+
+// WarningSetter defines interface for indicating that the validation should result in a warning instead of an error
+type WarningSetter interface {
+	ValidateAsWarning()
+}

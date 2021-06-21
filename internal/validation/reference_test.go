@@ -68,7 +68,7 @@ func TestReference_Validate_InValidReference_ShouldReturnError(t *testing.T) {
 
 	// Mock call to cataloger.ValidateWithContext for reference returning nil (valid)
 	mCataloger := &mocks.Cataloger{}
-	mCataloger.On("ValidateWithContext", testSubj.TestRef, map[string]interface{}(nil)).Return(errors.NewValidationError("Address", "Invalid"))
+	mCataloger.On("ValidateWithContext", testSubj.TestRef, map[string]interface{}(nil)).Return(errors.NewValidationError("Address", "Invalid", false))
 
 	refValidator := &Reference{
 		AllFieldValidators: &AllFieldValidators{
