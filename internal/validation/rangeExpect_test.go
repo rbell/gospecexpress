@@ -65,7 +65,7 @@ func TestRangeExect_Validate_InvalidValidSlice_ShouldReturnNil(t *testing.T) {
 			fieldName: "TestField",
 		},
 		exp: func(ctx interfaces.FieldValidatorContextGetter) error {
-			return errors.NewValidationError("TestField", "Invalid")
+			return errors.NewValidationError("TestField", "Invalid", false)
 		},
 	}
 	mMsgStore := &mocks.MessageStorer{}

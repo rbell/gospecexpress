@@ -109,7 +109,7 @@ func (v *compareValidator) Validate(thing interface{}, contextData map[string]in
 	//nolint:errcheck // message store returns message if there is an error (based on context)
 	if valid, _ := v.test(ctx); !valid {
 		msg := messageStore.GetMessage(v.validatorType, ctx)
-		return errors.NewValidationError(v.fieldName, msg)
+		return errors.NewValidationError(v.fieldName, msg, v.shouldWarn)
 	}
 	return nil
 }

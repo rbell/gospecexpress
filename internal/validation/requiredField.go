@@ -44,7 +44,7 @@ func (v *RequiredField) Validate(thing interface{}, contextData map[string]inter
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
 		if fv.IsZero() {
 			msg := catalog.ValidationCatalog().MessageStore().GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, nil))
-			return errors.NewValidationError(v.fieldName, msg)
+			return errors.NewValidationError(v.fieldName, msg, v.shouldWarn)
 		}
 	}
 

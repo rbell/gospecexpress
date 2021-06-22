@@ -56,7 +56,7 @@ func (v *Match) Validate(thing interface{}, contextData map[string]interface{}, 
 			msg := messageStore.GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, map[string]interface{}{
 				defaultMatchDescriptionKey: v.regexDescription,
 			}))
-			return errors.NewValidationError(v.fieldName, msg)
+			return errors.NewValidationError(v.fieldName, msg, v.shouldWarn)
 		}
 	}
 	return nil

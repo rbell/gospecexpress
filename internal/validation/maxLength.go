@@ -57,7 +57,7 @@ func (v *MaxLength) Validate(thing interface{}, contextData map[string]interface
 			msg := messageStore.GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, map[string]interface{}{
 				contextMaxLenKey: v.maxLen,
 			}))
-			return errors.NewValidationError(v.fieldName, msg)
+			return errors.NewValidationError(v.fieldName, msg, v.shouldWarn)
 		}
 	}
 
