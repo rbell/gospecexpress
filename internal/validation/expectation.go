@@ -31,7 +31,7 @@ func (e *Expectation) Validate(thing interface{}, contextData map[string]interfa
 	ctx := e.AllFieldValidators.NewValidatorContext(thing, contextData)
 	err := e.exp(thing, ctx)
 	if err != nil {
-		return errors.NewValidationError(e.AllFieldValidators.fieldName, err.Error())
+		return errors.NewValidationError(e.AllFieldValidators.fieldName, err.Error(), e.shouldWarn)
 	}
 
 	return nil

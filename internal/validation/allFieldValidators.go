@@ -10,6 +10,7 @@ import "github.com/rbell/gospecexpress/interfaces"
 type AllFieldValidators struct {
 	fieldName            string
 	fieldAlias           string
+	shouldWarn           bool
 	overrideErrorMessage interfaces.MessageFormatter
 }
 
@@ -38,6 +39,11 @@ func (a *AllFieldValidators) GetOverrideErrorMessage(ctx interfaces.FieldValidat
 // SetOverrideErrorMessage gets the overloaded message if overridden
 func (a *AllFieldValidators) SetOverrideErrorMessage(msgFormatter interfaces.MessageFormatter) {
 	a.overrideErrorMessage = msgFormatter
+}
+
+// ValidateAsWarning indicates that a failed validation should result in a warning
+func (a *AllFieldValidators) ValidateAsWarning() {
+	a.shouldWarn = true
 }
 
 func mergeMap(m1, m2 map[string]interface{}) map[string]interface{} {

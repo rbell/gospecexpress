@@ -87,7 +87,7 @@ func (v *Contains) Validate(thing interface{}, contextData map[string]interface{
 		msg := messageStore.GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, map[string]interface{}{
 			contextContainsKey: v.contains,
 		}))
-		return errors.NewValidationError(v.fieldName, msg)
+		return errors.NewValidationError(v.fieldName, msg, v.shouldWarn)
 	}
 
 	return nil

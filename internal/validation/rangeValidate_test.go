@@ -64,7 +64,7 @@ func TestRangeValidate_Validate_InvalidSliceElementZero_ShouldReturnError(t *tes
 
 	// Mock call to cataloger.ValidateWithContext for reference returning nil (valid)
 	mCataloger := &mocks.Cataloger{}
-	mCataloger.On("ValidateWithContext", testSubj.TestField[0], map[string]interface{}(nil)).Return(errors.NewValidationError("Name", "Invalid"))
+	mCataloger.On("ValidateWithContext", testSubj.TestField[0], map[string]interface{}(nil)).Return(errors.NewValidationError("Name", "Invalid", false))
 
 	validator := &RangeValidate{
 		AllFieldValidators: &AllFieldValidators{
@@ -104,7 +104,7 @@ func TestRangeValidate_Validate_InvalidSliceElementOne_ShouldReturnError(t *test
 	// Mock call to cataloger.ValidateWithContext for reference returning nil (valid)
 	mCataloger := &mocks.Cataloger{}
 	mCataloger.On("ValidateWithContext", testSubj.TestField[0], map[string]interface{}(nil)).Return(nil)
-	mCataloger.On("ValidateWithContext", testSubj.TestField[1], map[string]interface{}(nil)).Return(errors.NewValidationError("Name", "Invalid"))
+	mCataloger.On("ValidateWithContext", testSubj.TestField[1], map[string]interface{}(nil)).Return(errors.NewValidationError("Name", "Invalid", false))
 
 	validator := &RangeValidate{
 		AllFieldValidators: &AllFieldValidators{

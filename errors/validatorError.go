@@ -11,16 +11,20 @@ import (
 
 // ValidatorError contains any validation errors.  Each error is associated with a some validation context (i.e. field name error is for, etc)
 type ValidatorError struct {
-	errorMap map[string][]string
+	errorMap   map[string][]string
+	warningMap map[string][]string
 	// children contains errors for fields that reference another validated structure
 	children map[string]*ValidatorError
 }
 
 // NewValidationError returns a new validation error
-func NewValidationError(context, msg string) *ValidatorError {
+func NewValidationError(context, msg string, isWarning bool) *ValidatorError {
 	em := make(map[string][]string)
 	em[context] = []string{msg}
-	return &ValidatorError{errorMap: em}
+	if isWarning {
+		return &ValidatorError{warningMap: em, errorMap: make(map[string][]string)}
+	}
+	return &ValidatorError{errorMap: em, warningMap: make(map[string][]string)}
 }
 
 // NewValidationErrors returns a new validation error for a map of error messages
@@ -36,7 +40,12 @@ func (e *ValidatorError) Error() string {
 	sb := strings.Builder{}
 	for _, ee := range e.GetFlatErrorMap() {
 		for _, e := range ee {
-			sb.WriteString(fmt.Sprintf("%v\n", e))
+			sb.WriteString(fmt.Sprintf("ERROR: %v\n", e))
+		}
+	}
+	for _, ee := range e.GetFlatWarningMap() {
+		for _, e := range ee {
+			sb.WriteString(fmt.Sprintf("WARNING: %v\n", e))
 		}
 	}
 	return sb.String()
@@ -46,7 +55,19 @@ func (e *ValidatorError) Error() string {
 func (e *ValidatorError) GetFlatErrorMap() map[string][]string {
 	flatMap := e.errorMap
 	for k, v := range e.children {
-		childErrors := getFlattenedMap(k, v)
+		childErrors := getFlattenedMap(k, v, false)
+		for ek, e := range childErrors {
+			addMsgs(flatMap, ek, e...)
+		}
+	}
+	return flatMap
+}
+
+// GetFlatWarningMap gets a map of warning messages mapped by field
+func (e *ValidatorError) GetFlatWarningMap() map[string][]string {
+	flatMap := e.warningMap
+	for k, v := range e.children {
+		childErrors := getFlattenedMap(k, v, true)
 		for ek, e := range childErrors {
 			addMsgs(flatMap, ek, e...)
 		}
@@ -59,16 +80,24 @@ func (e *ValidatorError) GetErrorMap() map[string][]string {
 	return e.errorMap
 }
 
+// GetWarningMap returns the top level warning messages
+func (e *ValidatorError) GetWarningMap() map[string][]string {
+	return e.warningMap
+}
+
 // GetChildErrors returns errors of structs referenced by the struct being validated
 func (e *ValidatorError) GetChildErrors() map[string]*ValidatorError {
 	return e.children
 }
 
-func getFlattenedMap(key string, ve *ValidatorError) map[string][]string {
+func getFlattenedMap(key string, ve *ValidatorError, getWarnings bool) map[string][]string {
 	flatMap := prefixKeys(ve.errorMap, key+".")
+	if getWarnings {
+		flatMap = prefixKeys(ve.warningMap, key+".")
+	}
 	for childKey, child := range ve.children {
 		// resursively call geFlattenedMap
-		childMap := getFlattenedMap(key+"."+childKey, child)
+		childMap := getFlattenedMap(key+"."+childKey, child, getWarnings)
 		for k, e := range childMap {
 			addMsgs(flatMap, k, e...)
 		}

@@ -57,7 +57,7 @@ func (v *LengthEquals) Validate(thing interface{}, contextData map[string]interf
 			msg := messageStore.GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, map[string]interface{}{
 				contextLenEqKey: v.lenEq,
 			}))
-			return errors.NewValidationError(v.fieldName, msg)
+			return errors.NewValidationError(v.fieldName, msg, v.shouldWarn)
 		}
 	}
 

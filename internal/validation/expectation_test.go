@@ -67,6 +67,6 @@ func TestExpectation_Validate_Expectations_DoesNotPass_ShouldReturn_error(t *tes
 
 	// Assert
 	assert.NotNil(t, result)
-	assert.Equal(t, "Invalid country UK\n", result.Error())
+	assert.Equal(t, "ERROR: Invalid country UK\n", result.Error())
 
 }
