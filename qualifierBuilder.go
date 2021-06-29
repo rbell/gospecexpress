@@ -32,17 +32,16 @@ type qualifierBuilder struct {
 
 // RequiredField indicates a field is required
 func (b *qualifierBuilder) Required(fieldName string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
-	setOptional(b.spec.fieldValidators, fieldName, false)
 	alias := reflectionhelpers.GetFieldAlias(b.forType, fieldName)
-	addFieldValidator(b.spec.fieldValidators, fieldName, alias, ApplyValidatorOptions(validation.NewRequiredFieldValidator(fieldName, alias), options...))
-	return NewValidatorBuilder(b.spec.fieldValidators, b.forType, fieldName, alias, b)
+	addFieldExpression(b.spec.fieldExpressions, fieldName, alias, ApplyValidatorOptions(validation.NewRequiredFieldValidator(fieldName, alias), options...))
+	return NewValidatorBuilder(b.spec.fieldExpressions, b.forType, fieldName, alias, b)
 }
 
 // Optional indicates a field is optional
 func (b *qualifierBuilder) Optional(fieldName string) interfaces.ValidatorBuilder {
-	setOptional(b.spec.fieldValidators, fieldName, true)
 	alias := reflectionhelpers.GetFieldAlias(b.forType, fieldName)
-	return NewValidatorBuilder(b.spec.fieldValidators, b.forType, alias, fieldName, b)
+	addOptionalFieldExpression(b.spec.fieldExpressions, fieldName, alias)
+	return NewValidatorBuilder(b.spec.fieldExpressions, b.forType, alias, fieldName, b)
 }
 
 func (b *qualifierBuilder) Custom(exp interfaces.ValidationExpression) interfaces.QualifierBuilder {
