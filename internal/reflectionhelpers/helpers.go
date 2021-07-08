@@ -69,7 +69,7 @@ func init() {
 		if (aDec == nil && bDec != nil) || (aDec != nil && bDec != nil && aDec.LessThan(*bDec)) {
 			return -1
 		}
-		if (aDec != nil && bDec == nil) || (aDec != nil && bDec != nil && bDec.GreaterThan(*bDec)) {
+		if (aDec != nil && bDec == nil) || (aDec != nil && bDec != nil && aDec.GreaterThan(*bDec)) {
 			return 1
 		}
 		return 0
