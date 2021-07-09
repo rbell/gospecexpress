@@ -5,7 +5,6 @@
 package validation
 
 import (
-	"regexp"
 	"testing"
 
 	"github.com/stretchr/testify/mock"
@@ -15,22 +14,21 @@ import (
 	"github.com/rbell/gospecexpress/interfaces/mocks"
 )
 
-func TestMatch_Validate_MatchesRegex_ShouldReturnNil(t *testing.T) {
+func TestOneOf_Validate_MatchesValue_ShouldReturnNil(t *testing.T) {
 	// setup
-	validator := &Match{
+	validator := &OneOf{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: "ID",
+			fieldName: "Enum",
 		},
-		regex:            regexp.MustCompile(`^\d-\d{3}$`),
-		regexDescription: "ID matching #-###",
+		values: []interface{}{"test1", "test2"},
 	}
 
 	mMessageStore := &mocks.MessageStorer{}
 
 	type testSubjectType struct {
-		ID string
+		Enum string
 	}
-	testSubject := &testSubjectType{ID: "1-123"}
+	testSubject := &testSubjectType{Enum: "test2"}
 
 	// test
 	result := validator.Validate(testSubject, nil, mMessageStore)
@@ -40,23 +38,22 @@ func TestMatch_Validate_MatchesRegex_ShouldReturnNil(t *testing.T) {
 	mMessageStore.AssertExpectations(t)
 }
 
-func TestMatch_Validate_DoesNotMatchRegex_ShouldReturnError(t *testing.T) {
+func TestOneOf_Validate_DoesNotMatchValue_ShouldReturnError(t *testing.T) {
 	// setup
-	validator := &Match{
+	validator := &OneOf{
 		AllFieldValidators: &AllFieldValidators{
-			fieldName: "ID",
+			fieldName: "Enum",
 		},
-		regex:            regexp.MustCompile(`^\d-\d{3}$`),
-		regexDescription: "ID matching #-###",
+		values: []interface{}{"test1", "test2"},
 	}
 
 	mMessageStore := &mocks.MessageStorer{}
-	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.Match"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Does Not Match")
+	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.OneOf"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Does Not Match")
 
 	type testSubjectType struct {
-		ID string
+		Enum string
 	}
-	testSubject := &testSubjectType{ID: "asdf"}
+	testSubject := &testSubjectType{Enum: "test3"}
 
 	// test
 	result := validator.Validate(testSubject, nil, mMessageStore)

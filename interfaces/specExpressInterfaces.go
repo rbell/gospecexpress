@@ -81,6 +81,8 @@ type ValidatorBuilder interface {
 
 	// Custom Rule which if returned error is not nil, error's message will be included in the validation error
 	Expect(validator FieldValidationExpression, options ...ValidatorOption) ValidatorBuilder
+
+	OneOf(values []interface{}, options ...ValidatorOption) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns
