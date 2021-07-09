@@ -152,6 +152,7 @@ func TestEq_Complex_NotEqual_ReturnsFalse(t *testing.T) {
 
 func TestEq_String_Equal_ReturnsTrue(t *testing.T) {
 	// setup
+
 	//nolint:goconst // ignore suggestion of constant
 	a := "test1"
 	//nolint:goconst // ignore suggestion of constant
@@ -167,6 +168,7 @@ func TestEq_String_Equal_ReturnsTrue(t *testing.T) {
 
 func TestEq_String_NotEqual_ReturnsFalse(t *testing.T) {
 	// setup
+
 	//nolint:goconst // ignore suggestion of constant
 	a := "test1"
 	b := "test2"

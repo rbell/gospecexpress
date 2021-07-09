@@ -152,6 +152,7 @@ func TestLt_Complex_NotEqual_ReturnsBadComparisonError(t *testing.T) {
 
 func TestLt_String_Equal_ReturnsFalse(t *testing.T) {
 	// setup
+
 	//nolint:goconst // ignore suggestion of constant
 	a := "test1"
 	//nolint:goconst // ignore suggestion of constant
@@ -167,6 +168,7 @@ func TestLt_String_Equal_ReturnsFalse(t *testing.T) {
 
 func TestLt_String_NotEqual_ReturnsTrue(t *testing.T) {
 	// setup
+
 	//nolint:goconst // ignore suggestion of constant
 	a := "test1"
 	b := "test2"
