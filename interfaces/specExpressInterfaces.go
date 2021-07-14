@@ -13,10 +13,10 @@ import (
 type FieldValidationCondition func(thing interface{}, contextData map[string]interface{}) bool
 
 // ValidationExpression defines a function that, given thing to be validated and additional context, returns an error
-type ValidationExpression func(thing interface{}, contextData map[string]interface{}) error
+type ValidationExpression func(thing interface{}, contextData map[string]interface{}) (validationErr, err error)
 
 // FieldValidationExpression defines a function that, given thing to be validated and context for a field, returns an error
-type FieldValidationExpression func(thing interface{}, ctx FieldValidatorContextGetter) error
+type FieldValidationExpression func(thing interface{}, ctx FieldValidatorContextGetter) (validationErr, err error)
 
 // ValueFromContext defines functor returning a value from a ValidatorContext
 type ValueFromContext func(ctx FieldValidatorContextGetter) interface{}

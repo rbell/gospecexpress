@@ -19,13 +19,13 @@ func TestExpectation_Validate_Expectations_Pass_ShouldReturn_Nil(t *testing.T) {
 		AllFieldValidators: &AllFieldValidators{
 			fieldName: "Country",
 		},
-		exp: func(thing interface{}, ctx interfaces.FieldValidatorContextGetter) error {
+		exp: func(thing interface{}, ctx interfaces.FieldValidatorContextGetter) (verr, err error) {
 			// Fake business logic where only US or CA valid countries (i.e. valid shipping countries)
 			cntry := ctx.GetFieldValue("Country")
 			if !(cntry == "US" || cntry == "CA") {
-				return fmt.Errorf("Invalid country %v", cntry)
+				return fmt.Errorf("Invalid country %v", cntry), nil
 			}
-			return nil
+			return nil, nil
 		},
 	}
 	mMessageStore := &mocks.MessageStorer{}
@@ -47,13 +47,13 @@ func TestExpectation_Validate_Expectations_DoesNotPass_ShouldReturn_error(t *tes
 		AllFieldValidators: &AllFieldValidators{
 			fieldName: "Country",
 		},
-		exp: func(thing interface{}, ctx interfaces.FieldValidatorContextGetter) error {
+		exp: func(thing interface{}, ctx interfaces.FieldValidatorContextGetter) (verr, err error) {
 			// Fake business logic where only US or CA valid countries (i.e. valid shipping countries)
 			cntry := ctx.GetFieldValue("Country")
 			if !(cntry == "US" || cntry == "CA") {
-				return fmt.Errorf("Invalid country %v", cntry)
+				return fmt.Errorf("Invalid country %v", cntry), nil
 			}
-			return nil
+			return nil, nil
 		},
 	}
 	mMessageStore := &mocks.MessageStorer{}
