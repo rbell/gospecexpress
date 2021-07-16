@@ -9,8 +9,12 @@ func WithContext(contextItems ...interface{}) func(something interface{}, contex
 		for _, item := range contextItems {
 			t := reflect.TypeOf(item)
 			key := t.String()
-			if t.Kind() == reflect.Interface {
-				key = t.Elem().Name()
+			if t.Kind() == reflect.Ptr {
+				if t.Elem().Kind() == reflect.Interface {
+					key = t.Elem().Name()
+				} else {
+					key = t.Elem().String()
+				}
 			}
 			context[key] = item
 		}
