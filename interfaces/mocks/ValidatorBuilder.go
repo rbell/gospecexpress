@@ -199,7 +199,7 @@ func (_m *ValidatorBuilder) EqualToValueFromContext(valueFromContext interfaces.
 }
 
 // Expect provides a mock function with given fields: validator, options
-func (_m *ValidatorBuilder) Expect(validator func(interface{}, interfaces.FieldValidatorContextGetter) error, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+func (_m *ValidatorBuilder) Expect(validator interfaces.FieldValidationExpression, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	_va := make([]interface{}, len(options))
 	for _i := range options {
 		_va[_i] = options[_i]
@@ -210,7 +210,7 @@ func (_m *ValidatorBuilder) Expect(validator func(interface{}, interfaces.FieldV
 	ret := _m.Called(_ca...)
 
 	var r0 interfaces.ValidatorBuilder
-	if rf, ok := ret.Get(0).(func(func(interface{}, interfaces.FieldValidatorContextGetter) error, ...interfaces.ValidatorOption) interfaces.ValidatorBuilder); ok {
+	if rf, ok := ret.Get(0).(func(interfaces.FieldValidationExpression, ...interfaces.ValidatorOption) interfaces.ValidatorBuilder); ok {
 		r0 = rf(validator, options...)
 	} else {
 		if ret.Get(0) != nil {
@@ -364,7 +364,7 @@ func (_m *ValidatorBuilder) If(condition interfaces.FieldValidationCondition) in
 	ret := _m.Called(condition)
 
 	var r0 interfaces.ValidatorBuilder
-	if rf, ok := ret.Get(0).(func(validationCondition interfaces.FieldValidationCondition) interfaces.ValidatorBuilder); ok {
+	if rf, ok := ret.Get(0).(func(interfaces.FieldValidationCondition) interfaces.ValidatorBuilder); ok {
 		r0 = rf(condition)
 	} else {
 		if ret.Get(0) != nil {
@@ -560,19 +560,19 @@ func (_m *ValidatorBuilder) Matches(regex *regexp.Regexp, regexDescripton string
 }
 
 // MaxLength provides a mock function with given fields: len, options
-func (_m *ValidatorBuilder) MaxLength(length int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+func (_m *ValidatorBuilder) MaxLength(len int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	_va := make([]interface{}, len(options))
 	for _i := range options {
 		_va[_i] = options[_i]
 	}
 	var _ca []interface{}
-	_ca = append(_ca, length)
+	_ca = append(_ca, len)
 	_ca = append(_ca, _va...)
 	ret := _m.Called(_ca...)
 
 	var r0 interfaces.ValidatorBuilder
 	if rf, ok := ret.Get(0).(func(int, ...interfaces.ValidatorOption) interfaces.ValidatorBuilder); ok {
-		r0 = rf(length, options...)
+		r0 = rf(len, options...)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
@@ -583,19 +583,42 @@ func (_m *ValidatorBuilder) MaxLength(length int, options ...interfaces.Validato
 }
 
 // MinLength provides a mock function with given fields: len, options
-func (_m *ValidatorBuilder) MinLength(length int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+func (_m *ValidatorBuilder) MinLength(len int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	_va := make([]interface{}, len(options))
 	for _i := range options {
 		_va[_i] = options[_i]
 	}
 	var _ca []interface{}
-	_ca = append(_ca, length)
+	_ca = append(_ca, len)
 	_ca = append(_ca, _va...)
 	ret := _m.Called(_ca...)
 
 	var r0 interfaces.ValidatorBuilder
 	if rf, ok := ret.Get(0).(func(int, ...interfaces.ValidatorOption) interfaces.ValidatorBuilder); ok {
-		r0 = rf(length, options...)
+		r0 = rf(len, options...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
+		}
+	}
+
+	return r0
+}
+
+// OneOf provides a mock function with given fields: values, options
+func (_m *ValidatorBuilder) OneOf(values []interface{}, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	_va := make([]interface{}, len(options))
+	for _i := range options {
+		_va[_i] = options[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, values)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 interfaces.ValidatorBuilder
+	if rf, ok := ret.Get(0).(func([]interface{}, ...interfaces.ValidatorOption) interfaces.ValidatorBuilder); ok {
+		r0 = rf(values, options...)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(interfaces.ValidatorBuilder)

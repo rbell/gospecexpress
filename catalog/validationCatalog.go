@@ -25,7 +25,14 @@ func ValidationCatalog() interfaces.Cataloger {
 }
 
 // Validate validates an instance against the default validation catalog
-func Validate(something interface{}) error {
+func Validate(something interface{}, options ...interfaces.ValidateOption) error {
+	if len(options) > 0 {
+		contextData := make(map[string]interface{})
+		for _, opt := range options {
+			opt(something, contextData)
+		}
+		return ValidationCatalog().ValidateWithContext(something, contextData)
+	}
 	return ValidationCatalog().Validate(something)
 }
 

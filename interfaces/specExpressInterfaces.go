@@ -9,6 +9,10 @@ import (
 	"regexp"
 )
 
+// ValidateOption is option passed to catalog.Validate.
+// This enables one to create own option which establishes/modifies context or the thing being validated before being validated.
+type ValidateOption func(something interface{}, context map[string]interface{})
+
 // FieldValidationCondition defines a function returning bool, determining if rules should be enforced for field
 type FieldValidationCondition func(thing interface{}, contextData map[string]interface{}) bool
 
