@@ -49,7 +49,7 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 				return err
 			}
 			if verr != nil {
-				specError = errorhelpers.JoinErrors(specError, err)
+				specError = errorhelpers.JoinErrors(specError, verr)
 			}
 		}
 	}
