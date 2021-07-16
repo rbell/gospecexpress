@@ -560,7 +560,7 @@ func (_m *ValidatorBuilder) Matches(regex *regexp.Regexp, regexDescripton string
 }
 
 // MaxLength provides a mock function with given fields: len, options
-func (_m *ValidatorBuilder) MaxLength(len int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+func (_m *ValidatorBuilder) MaxLength(length int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	_va := make([]interface{}, len(options))
 	for _i := range options {
 		_va[_i] = options[_i]
@@ -572,7 +572,7 @@ func (_m *ValidatorBuilder) MaxLength(len int, options ...interfaces.ValidatorOp
 
 	var r0 interfaces.ValidatorBuilder
 	if rf, ok := ret.Get(0).(func(int, ...interfaces.ValidatorOption) interfaces.ValidatorBuilder); ok {
-		r0 = rf(len, options...)
+		r0 = rf(length, options...)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
@@ -583,7 +583,7 @@ func (_m *ValidatorBuilder) MaxLength(len int, options ...interfaces.ValidatorOp
 }
 
 // MinLength provides a mock function with given fields: len, options
-func (_m *ValidatorBuilder) MinLength(len int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+func (_m *ValidatorBuilder) MinLength(length int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	_va := make([]interface{}, len(options))
 	for _i := range options {
 		_va[_i] = options[_i]
@@ -595,7 +595,7 @@ func (_m *ValidatorBuilder) MinLength(len int, options ...interfaces.ValidatorOp
 
 	var r0 interfaces.ValidatorBuilder
 	if rf, ok := ret.Get(0).(func(int, ...interfaces.ValidatorOption) interfaces.ValidatorBuilder); ok {
-		r0 = rf(len, options...)
+		r0 = rf(length, options...)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(interfaces.ValidatorBuilder)
