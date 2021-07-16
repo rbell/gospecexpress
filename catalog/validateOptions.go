@@ -7,7 +7,11 @@ import "reflect"
 func WithContext(contextItems ...interface{}) func(something interface{}, context map[string]interface{}) {
 	return func(something interface{}, context map[string]interface{}) {
 		for _, item := range contextItems {
-			key := reflect.TypeOf(item).Name()
+			t := reflect.TypeOf(item)
+			key := t.String()
+			if t.Kind() == reflect.Interface {
+				key = t.Elem().Name()
+			}
 			context[key] = item
 		}
 	}
