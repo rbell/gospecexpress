@@ -35,6 +35,14 @@ func NewValidationErrors(errs map[string][]string, children map[string]*Validato
 	return &ValidatorError{errorMap: errs, children: children}
 }
 
+// IsValidatorError returns reference to ValidatorError and a bool indicating if the err passed in is a ValidatorError
+func IsValidatorError(err error) (*ValidatorError, bool) {
+	if e, ok := err.(*ValidatorError); ok {
+		return e, true
+	}
+	return nil, false
+}
+
 // Error returns the error messages in a single string
 func (e *ValidatorError) Error() string {
 	sb := strings.Builder{}

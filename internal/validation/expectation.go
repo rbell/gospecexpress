@@ -29,9 +29,11 @@ func NewExpectationValidator(fieldName, alias string, exp interfaces.FieldValida
 // Validate validates the thing ensuring the field specified is populated
 func (e *Expectation) Validate(thing interface{}, contextData map[string]interface{}, _ interfaces.MessageStorer) error {
 	ctx := e.AllFieldValidators.NewValidatorContext(thing, contextData)
-	err := e.exp(thing, ctx)
+	verr, err := e.exp(thing, ctx)
 	if err != nil {
-		return errors.NewValidationError(e.AllFieldValidators.fieldName, err.Error(), e.shouldWarn)
+		return err
+	} else if verr != nil {
+		return errors.NewValidationError(e.AllFieldValidators.fieldName, verr.Error(), e.shouldWarn)
 	}
 
 	return nil

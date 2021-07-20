@@ -8,6 +8,8 @@ import (
 	"reflect"
 	"sync"
 
+	"github.com/rbell/gospecexpress/internal/validation"
+
 	"github.com/rbell/gospecexpress/interfaces"
 )
 
@@ -45,5 +47,10 @@ func (v *validatorBuilder) Optional(fieldName string) interfaces.ValidatorBuilde
 // If adds a condition as to when the rules for the rules we are building should be applied when validating
 func (v *validatorBuilder) If(condition interfaces.FieldValidationCondition) interfaces.ValidatorBuilder {
 	setCondition(v.validators, v.fieldName, condition)
+	return v
+}
+
+func (v *validatorBuilder) OneOf(values []interface{}, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	addFieldValidator(v.validators, v.fieldName, v.fieldAlias, ApplyValidatorOptions(validation.NewOneOf(v.fieldName, v.fieldAlias, values), options...))
 	return v
 }

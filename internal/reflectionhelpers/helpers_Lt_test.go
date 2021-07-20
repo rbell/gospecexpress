@@ -152,6 +152,7 @@ func TestLt_Complex_NotEqual_ReturnsBadComparisonError(t *testing.T) {
 
 func TestLt_String_Equal_ReturnsFalse(t *testing.T) {
 	// setup
+
 	//nolint:goconst // ignore suggestion of constant
 	a := "test1"
 	//nolint:goconst // ignore suggestion of constant
@@ -167,6 +168,7 @@ func TestLt_String_Equal_ReturnsFalse(t *testing.T) {
 
 func TestLt_String_NotEqual_ReturnsTrue(t *testing.T) {
 	// setup
+
 	//nolint:goconst // ignore suggestion of constant
 	a := "test1"
 	b := "test2"
@@ -263,15 +265,15 @@ func TestLt_NilPointersToDifferntType_ReturnsBadComparisonError(t *testing.T) {
 
 func TestLt_Struct_Equal_ReturnsBadComparisonError(t *testing.T) {
 	// setup
-	type testStruct struct {
+	type testLTEQStruct struct {
 		name        string
 		pointerTest *string
 	}
-	a := testStruct{
+	a := testLTEQStruct{
 		name:        "test",
 		pointerTest: nil,
 	}
-	b := testStruct{
+	b := testLTEQStruct{
 		name:        "test",
 		pointerTest: nil,
 	}
@@ -286,16 +288,16 @@ func TestLt_Struct_Equal_ReturnsBadComparisonError(t *testing.T) {
 
 func TestLt_Struct_NotEqual_ReturnsBadComparisonError(t *testing.T) {
 	// setup
-	type testStruct struct {
+	type testLTNEStruct struct {
 		name        string
 		pointerTest *string
 	}
-	a := testStruct{
+	a := testLTNEStruct{
 		name:        "test",
 		pointerTest: nil,
 	}
 	v := "testValue"
-	b := testStruct{
+	b := testLTNEStruct{
 		name:        "test1",
 		pointerTest: &v,
 	}
@@ -310,12 +312,12 @@ func TestLt_Struct_NotEqual_ReturnsBadComparisonError(t *testing.T) {
 
 func TestLt_Ptr_Equal_ReturnsBadComparisonError(t *testing.T) {
 	// setup
-	type testStruct struct {
+	type testLtPtrEQStruct struct {
 		name        string
 		pointerTest *string
 	}
 	// two pointers referencing same thing
-	a := &testStruct{
+	a := &testLtPtrEQStruct{
 		name:        "test",
 		pointerTest: nil,
 	}
@@ -331,16 +333,16 @@ func TestLt_Ptr_Equal_ReturnsBadComparisonError(t *testing.T) {
 
 func TestLt_Ptr_NotEqual_ReturnsBadComparisonError(t *testing.T) {
 	// setup
-	type testStruct struct {
+	type testLtPtrNEStruct struct {
 		name        string
 		pointerTest *string
 	}
 	// two pointers referencing different places in memory
-	a := &testStruct{
+	a := &testLtPtrNEStruct{
 		name:        "test",
 		pointerTest: nil,
 	}
-	b := &testStruct{
+	b := &testLtPtrNEStruct{
 		name:        "test",
 		pointerTest: nil,
 	}
@@ -355,23 +357,24 @@ func TestLt_Ptr_NotEqual_ReturnsBadComparisonError(t *testing.T) {
 
 func TestLt_StructWithComparer_Equals_ReturnsFalse(t *testing.T) {
 	// setup
-	type testStruct struct {
+	type testLTStructCompEqStruct struct {
 		name string
 		rank int
 	}
-	a := &testStruct{
+	a := &testLTStructCompEqStruct{
 		name: "test",
 		rank: 1,
 	}
-	b := &testStruct{
+	b := &testLTStructCompEqStruct{
 		name: "test",
 		rank: 1,
 	}
+	delete(comparers, reflect.TypeOf(a).Name())
 	comp := func(a, b interface{}) int {
 		//nolint:errcheck //ignore error
-		atest := a.(*testStruct)
+		atest := a.(*testLTStructCompEqStruct)
 		//nolint:errcheck //ignore error
-		btest := b.(*testStruct)
+		btest := b.(*testLTStructCompEqStruct)
 		if atest.rank < btest.rank {
 			return -1
 		}
@@ -392,23 +395,24 @@ func TestLt_StructWithComparer_Equals_ReturnsFalse(t *testing.T) {
 
 func TestLt_StructWithComparer_NotEquals_ReturnsTrue(t *testing.T) {
 	// setup
-	type testStruct struct {
+	type testLTCompNEStruct struct {
 		name string
 		rank int
 	}
-	a := &testStruct{
+	a := &testLTCompNEStruct{
 		name: "test",
 		rank: 1,
 	}
-	b := &testStruct{
+	b := &testLTCompNEStruct{
 		name: "test",
 		rank: 2,
 	}
+	delete(comparers, reflect.TypeOf(a).Name())
 	comp := func(a, b interface{}) int {
 		//nolint:errcheck //ignore error
-		atest := a.(*testStruct)
+		atest := a.(*testLTCompNEStruct)
 		//nolint:errcheck //ignore error
-		btest := b.(*testStruct)
+		btest := b.(*testLTCompNEStruct)
 		if atest.rank < btest.rank {
 			return -1
 		}

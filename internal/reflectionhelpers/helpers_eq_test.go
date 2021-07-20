@@ -152,6 +152,7 @@ func TestEq_Complex_NotEqual_ReturnsFalse(t *testing.T) {
 
 func TestEq_String_Equal_ReturnsTrue(t *testing.T) {
 	// setup
+
 	//nolint:goconst // ignore suggestion of constant
 	a := "test1"
 	//nolint:goconst // ignore suggestion of constant
@@ -167,6 +168,7 @@ func TestEq_String_Equal_ReturnsTrue(t *testing.T) {
 
 func TestEq_String_NotEqual_ReturnsFalse(t *testing.T) {
 	// setup
+
 	//nolint:goconst // ignore suggestion of constant
 	a := "test1"
 	b := "test2"
@@ -310,12 +312,13 @@ func TestEq_Struct_NotEqual_ReturnsFalse(t *testing.T) {
 
 func TestEq_Ptr_Equal_ReturnsTrue(t *testing.T) {
 	// setup
-	type testStruct struct {
+	type testEQPtrEqStruct struct {
 		name        string
 		pointerTest *string
 	}
 	// two pointers referencing same thing
-	a := &testStruct{
+	a := &testEQPtrEqStruct{
+
 		name:        "test",
 		pointerTest: nil,
 	}
@@ -331,16 +334,16 @@ func TestEq_Ptr_Equal_ReturnsTrue(t *testing.T) {
 
 func TestEq_Ptr_NotEqual_ReturnsFalse(t *testing.T) {
 	// setup
-	type testStruct struct {
+	type testEQPtrNEStruct struct {
 		name        string
 		pointerTest *string
 	}
 	// two pointers referencing different places in memory
-	a := &testStruct{
+	a := &testEQPtrNEStruct{
 		name:        "test",
 		pointerTest: nil,
 	}
-	b := &testStruct{
+	b := &testEQPtrNEStruct{
 		name:        "test",
 		pointerTest: nil,
 	}
@@ -355,23 +358,24 @@ func TestEq_Ptr_NotEqual_ReturnsFalse(t *testing.T) {
 
 func TestEq_StructWithComparer_Equals_ReturnsTrue(t *testing.T) {
 	// setup
-	type testStruct struct {
+	type testStructEQStruct struct {
 		name string
 		rank int
 	}
-	a := &testStruct{
+	a := &testStructEQStruct{
 		name: "test",
 		rank: 1,
 	}
-	b := &testStruct{
+	b := &testStructEQStruct{
 		name: "test",
 		rank: 1,
 	}
+	delete(comparers, reflect.TypeOf(a).Name())
 	comp := func(a, b interface{}) int {
 		//nolint:errcheck //ignore error
-		atest := a.(*testStruct)
+		atest := a.(*testStructEQStruct)
 		//nolint:errcheck //ignore error
-		btest := b.(*testStruct)
+		btest := b.(*testStructEQStruct)
 		if atest.rank < btest.rank {
 			return -1
 		}

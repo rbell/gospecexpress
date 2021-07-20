@@ -44,10 +44,17 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 
 	// Validate customExpressions (expressions applied to structure as a whole)
 	for _, exp := range s.customExpressions {
-		if err := exp(thing, contextData); err != nil {
-			specError = errorhelpers.JoinErrors(specError, err)
+		if verr, err := exp(thing, contextData); verr != nil || err != nil {
+			if err != nil {
+				return err
+			}
+			if verr != nil {
+				specError = errorhelpers.JoinErrors(specError, verr)
+			}
 		}
 	}
+
+	var processingError error
 
 	// Validate field validators defined for the structure
 	s.fieldExpressions.Range(func(key, value interface{}) bool {
@@ -64,7 +71,12 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 					}
 					for _, v := range exp.validators {
 						if err := v.Validate(thing, contextData, catalog.ValidationCatalog().MessageStore()); err != nil {
-							specError = errorhelpers.JoinErrors(specError, err)
+							if specErr, ok := specExpressErrors.IsValidatorError(err); ok {
+								specError = errorhelpers.JoinErrors(specError, specErr)
+							} else {
+								processingError = err
+								return false
+							}
 						}
 					}
 				}
@@ -72,6 +84,10 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 		}
 		return true
 	})
+
+	if processingError != nil {
+		return processingError
+	}
 
 	if specError == nil || reflect.ValueOf(specError).IsNil() {
 		return nil
