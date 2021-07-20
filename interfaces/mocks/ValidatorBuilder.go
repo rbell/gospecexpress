@@ -559,14 +559,14 @@ func (_m *ValidatorBuilder) Matches(regex *regexp.Regexp, regexDescripton string
 	return r0
 }
 
-// MaxLength provides a mock function with given fields: len, options
+// MaxLength provides a mock function with given fields: length, options
 func (_m *ValidatorBuilder) MaxLength(length int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	_va := make([]interface{}, len(options))
 	for _i := range options {
 		_va[_i] = options[_i]
 	}
 	var _ca []interface{}
-	_ca = append(_ca, len)
+	_ca = append(_ca, length)
 	_ca = append(_ca, _va...)
 	ret := _m.Called(_ca...)
 
@@ -582,14 +582,14 @@ func (_m *ValidatorBuilder) MaxLength(length int, options ...interfaces.Validato
 	return r0
 }
 
-// MinLength provides a mock function with given fields: len, options
+// MinLength provides a mock function with given fields: length, options
 func (_m *ValidatorBuilder) MinLength(length int, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	_va := make([]interface{}, len(options))
 	for _i := range options {
 		_va[_i] = options[_i]
 	}
 	var _ca []interface{}
-	_ca = append(_ca, len)
+	_ca = append(_ca, length)
 	_ca = append(_ca, _va...)
 	ret := _m.Called(_ca...)
 

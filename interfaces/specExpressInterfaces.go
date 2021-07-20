@@ -73,8 +73,8 @@ type ValidatorBuilder interface {
 
 	// Slice Validators (strings are considered slices)
 	LengthEquals(length int, options ...ValidatorOption) ValidatorBuilder
-	MaxLength(len int, options ...ValidatorOption) ValidatorBuilder
-	MinLength(len int, options ...ValidatorOption) ValidatorBuilder
+	MaxLength(length int, options ...ValidatorOption) ValidatorBuilder
+	MinLength(length int, options ...ValidatorOption) ValidatorBuilder
 	Contains(thing interface{}, options ...ValidatorOption) ValidatorBuilder
 	ContainsValueFromContext(fromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 	RangeValidate(options ...ValidatorOption) ValidatorBuilder
