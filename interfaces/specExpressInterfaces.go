@@ -9,14 +9,18 @@ import (
 	"regexp"
 )
 
+// ValidateOption is option passed to catalog.Validate.
+// This enables one to create own option which establishes/modifies context or the thing being validated before being validated.
+type ValidateOption func(something interface{}, context map[string]interface{})
+
 // FieldValidationCondition defines a function returning bool, determining if rules should be enforced for field
 type FieldValidationCondition func(thing interface{}, contextData map[string]interface{}) bool
 
 // ValidationExpression defines a function that, given thing to be validated and additional context, returns an error
-type ValidationExpression func(thing interface{}, contextData map[string]interface{}) error
+type ValidationExpression func(thing interface{}, contextData map[string]interface{}) (validationErr, err error)
 
 // FieldValidationExpression defines a function that, given thing to be validated and context for a field, returns an error
-type FieldValidationExpression func(thing interface{}, ctx FieldValidatorContextGetter) error
+type FieldValidationExpression func(thing interface{}, ctx FieldValidatorContextGetter) (validationErr, err error)
 
 // ValueFromContext defines functor returning a value from a ValidatorContext
 type ValueFromContext func(ctx FieldValidatorContextGetter) interface{}
@@ -69,8 +73,8 @@ type ValidatorBuilder interface {
 
 	// Slice Validators (strings are considered slices)
 	LengthEquals(length int, options ...ValidatorOption) ValidatorBuilder
-	MaxLength(len int, options ...ValidatorOption) ValidatorBuilder
-	MinLength(len int, options ...ValidatorOption) ValidatorBuilder
+	MaxLength(length int, options ...ValidatorOption) ValidatorBuilder
+	MinLength(length int, options ...ValidatorOption) ValidatorBuilder
 	Contains(thing interface{}, options ...ValidatorOption) ValidatorBuilder
 	ContainsValueFromContext(fromContext ValueFromContext, options ...ValidatorOption) ValidatorBuilder
 	RangeValidate(options ...ValidatorOption) ValidatorBuilder
@@ -81,6 +85,8 @@ type ValidatorBuilder interface {
 
 	// Custom Rule which if returned error is not nil, error's message will be included in the validation error
 	Expect(validator FieldValidationExpression, options ...ValidatorOption) ValidatorBuilder
+
+	OneOf(values []interface{}, options ...ValidatorOption) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns

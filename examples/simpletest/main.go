@@ -35,20 +35,16 @@ func newClubMemberSpec() *ClubMemberSpec {
 	s := &ClubMemberSpec{}
 
 	s.ForType(&ClubMember{}).
-		Custom(func(thing interface{}, contextData map[string]interface{}) error {
-			return fmt.Errorf("This is a test custom validation error returned for the structure as a whole")
+		Custom(func(thing interface{}, contextData map[string]interface{}) (valErr, err error) {
+			return fmt.Errorf("This is a test custom validation error returned for the structure as a whole"), nil
 		}).
 		Required("FirstName").MaxLength(50).
 		Optional("MiddleName").MaxLength(20).
 		Required("LastName", gospecexpress.WithErrorMessage("Sir Name is a required field!")).MaxLength(50).
 		Required("CreditScore").GreaterThan(640, gospecexpress.WithWarning()).
 		Required("MemberExpireAt").GreaterThanOtherField("MemberSince").
-		Required("Guardian").If(func(thing interface{}, contextData map[string]interface{}) bool {
-		if cm, ok := thing.(*ClubMember); ok {
-			return cm.Age < 18
-		}
-		return false
-	})
+		Required("Guardian").If(func(t interface{}, c map[string]interface{}) bool { return isMinor(t, c) }).MaxLength(10).
+		Optional("Guardian").If(func(t interface{}, c map[string]interface{}) bool { return !isMinor(t, c) }).MaxLength(10)
 
 	return s
 }
@@ -66,6 +62,7 @@ func main() {
 		LastName:       "Flinstone",
 		Age:            20,
 		CreditScore:    600,
+		Guardian:       "A name that is way too long",
 		MemberSince:    time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
 		MemberExpireAt: time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC),
 	}
@@ -79,4 +76,11 @@ func main() {
 		// error contains messages as to what is invalid
 		fmt.Printf("ClubMember is not valid:\n%v", err.Error())
 	}
+}
+
+func isMinor(thing interface{}, contextData map[string]interface{}) bool {
+	if cm, ok := thing.(*ClubMember); ok {
+		return cm.Age < 18
+	}
+	return false
 }

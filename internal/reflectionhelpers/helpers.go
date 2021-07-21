@@ -13,6 +13,8 @@ import (
 	"fmt"
 	"reflect"
 	"time"
+
+	"github.com/shopspring/decimal"
 )
 
 var (
@@ -41,9 +43,67 @@ const (
 	StringKind
 	// UintKind indicates value is a uint Kind
 	UintKind
-	// TimeKind indicates value is a time Kind
-	TimeKind
 )
+
+// Comparer defines a function which given a and b, will return -1 if a < b, 0 if a == b, or 1 if a > b
+type Comparer func(a, b interface{}) int
+
+var comparers = make(map[string]Comparer)
+
+func init() {
+	RegisterComparer(reflect.TypeOf(decimal.Zero), func(a, b interface{}) int {
+		if a.(decimal.Decimal).LessThan(b.(decimal.Decimal)) {
+			return -1
+		}
+		if a.(decimal.Decimal).GreaterThan(b.(decimal.Decimal)) {
+			return 1
+		}
+		return 0
+	})
+
+	RegisterComparer(reflect.TypeOf(&decimal.Decimal{}), func(a, b interface{}) int {
+		//nolint:errcheck // ignore error
+		aDec := a.(*decimal.Decimal)
+		//nolint:errcheck // ignore error
+		bDec := b.(*decimal.Decimal)
+		if (aDec == nil && bDec != nil) || (aDec != nil && bDec != nil && aDec.LessThan(*bDec)) {
+			return -1
+		}
+		if (aDec != nil && bDec == nil) || (aDec != nil && bDec != nil && aDec.GreaterThan(*bDec)) {
+			return 1
+		}
+		return 0
+	})
+
+	RegisterComparer(reflect.TypeOf(time.Time{}), func(a, b interface{}) int {
+		if a.(time.Time).Before(b.(time.Time)) {
+			return -1
+		}
+		if a.(time.Time).After(b.(time.Time)) {
+			return 1
+		}
+		return 0
+	})
+
+	RegisterComparer(reflect.TypeOf(&time.Time{}), func(a, b interface{}) int {
+		//nolint:errcheck // ignore error
+		aTime := a.(*time.Time)
+		//nolint:errcheck // ignore error
+		bTime := b.(*time.Time)
+		if (aTime == nil && bTime != nil) || (aTime != nil && bTime != nil && aTime.Before(*bTime)) {
+			return -1
+		}
+		if (aTime != nil && bTime == nil) || (aTime != nil && bTime != nil && aTime.After(*bTime)) {
+			return 1
+		}
+		return 0
+	})
+}
+
+// RegisterComparer registers a comparer function for a type
+func RegisterComparer(forType reflect.Type, c Comparer) {
+	comparers[forType.String()] = c
+}
 
 // StructValue gets the Structure value of a Value t.  If t is an interface wrapping a struct or pointer to a struct
 // the struct referenced by the interface or pointer is returned.
@@ -115,16 +175,20 @@ func Eq(arg1 reflect.Value, arg2 ...reflect.Value) (bool, error) {
 				truth = v1.String() == v2.String()
 			case UintKind:
 				truth = v1.Uint() == v2.Uint()
-			case TimeKind:
-				truth = v1.Interface().(time.Time).Equal(v2.Interface().(time.Time))
 			default:
-				if v2 == zero {
-					truth = v1 == v2
+				t1 := v1.Type()
+				t2 := v2.Type()
+				if compare, ok := comparers[t1.String()]; ok && t1.String() == t2.String() {
+					truth = compare(v1.Interface(), v2.Interface()) == 0
 				} else {
-					if t2 := v2.Type(); !t2.Comparable() {
-						return false, fmt.Errorf("uncomparable type %s: %v", t2, v2)
+					if v2 == zero {
+						truth = v1 == v2
+					} else {
+						if !t2.Comparable() {
+							return false, fmt.Errorf("uncomparable type %s: %v", t2, v2)
+						}
+						truth = v1.Interface() == v2.Interface()
 					}
-					truth = v1.Interface() == v2.Interface()
 				}
 			}
 		}
@@ -145,15 +209,11 @@ func Ne(arg1, arg2 reflect.Value) (bool, error) {
 // Lt evaluates the comparison a < b.
 func Lt(arg1, arg2 reflect.Value) (bool, error) {
 	v1 := indirectInterface(arg1)
-	k1, err := BasicKind(v1)
-	if err != nil {
-		return false, err
-	}
+	//nolint:errcheck // not interested in err
+	k1, _ := BasicKind(v1)
 	v2 := indirectInterface(arg2)
-	k2, err := BasicKind(v2)
-	if err != nil {
-		return false, err
-	}
+	//nolint:errcheck // not interested in err
+	k2, _ := BasicKind(v2)
 	truth := false
 	if k1 != k2 {
 		// Special case: Can compare integer values regardless of type's sign.
@@ -177,10 +237,14 @@ func Lt(arg1, arg2 reflect.Value) (bool, error) {
 			truth = v1.String() < v2.String()
 		case UintKind:
 			truth = v1.Uint() < v2.Uint()
-		case TimeKind:
-			truth = v1.Interface().(time.Time).Before(v2.Interface().(time.Time))
 		default:
-			panic("invalid Kind")
+			t1 := v1.Type()
+			t2 := v2.Type()
+			if compare, ok := comparers[t1.String()]; ok && t1.String() == t2.String() {
+				truth = compare(v1.Interface(), v2.Interface()) < 0
+			} else {
+				return false, errBadComparison
+			}
 		}
 	}
 	return truth, nil
@@ -232,10 +296,6 @@ func indirectInterface(v reflect.Value) reflect.Value {
 
 // BasicKind returns the Kind of the value
 func BasicKind(v reflect.Value) (Kind, error) {
-	if v.Type() == reflect.TypeOf(time.Time{}) {
-		return TimeKind, nil
-	}
-
 	switch v.Kind() {
 	case reflect.Bool:
 		return BoolKind, nil
