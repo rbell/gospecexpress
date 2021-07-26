@@ -53,6 +53,7 @@ func (c *DefaultCatalog) ValidateWithContext(something interface{}, contextData 
 	t := reflect.TypeOf(something)
 	scope := defaultScope
 	if specificScope, ok := contextData[interfaces.ScopeContextKey]; ok {
+		//nolint:errcheck // ignore checking error since we know its a string
 		scope = specificScope.(string)
 	}
 	if vs, ok := c.validators[t]; ok {
@@ -61,6 +62,7 @@ func (c *DefaultCatalog) ValidateWithContext(something interface{}, contextData 
 		}
 	} else {
 		if scope != defaultScope {
+			//nolint:golint // Ignore suggestion of "error strings should not be capitalized or end with punctuation or a newline" since this should be human readable.
 			return fmt.Errorf("There is no specification for %v registered in the catalog for the %v scope.", t.String(), scope)
 		}
 	}
