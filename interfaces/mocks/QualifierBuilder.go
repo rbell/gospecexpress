@@ -28,6 +28,22 @@ func (_m *QualifierBuilder) Custom(exp interfaces.ValidationExpression) interfac
 	return r0
 }
 
+// ForScope provides a mock function with given fields: scope
+func (_m *QualifierBuilder) ForScope(scope string) interfaces.QualifierBuilder {
+	ret := _m.Called(scope)
+
+	var r0 interfaces.QualifierBuilder
+	if rf, ok := ret.Get(0).(func(string) interfaces.QualifierBuilder); ok {
+		r0 = rf(scope)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.QualifierBuilder)
+		}
+	}
+
+	return r0
+}
+
 // Optional provides a mock function with given fields: fieldName
 func (_m *QualifierBuilder) Optional(fieldName string) interfaces.ValidatorBuilder {
 	ret := _m.Called(fieldName)
