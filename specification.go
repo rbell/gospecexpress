@@ -23,6 +23,7 @@ type Specification struct {
 	forType           reflect.Type
 	fieldExpressions  *sync.Map
 	customExpressions []interfaces.ValidationExpression
+	scope             interfaces.SpecificationScoper
 }
 
 // ForType sets the type that the specification is to be applied to
@@ -36,6 +37,11 @@ func (s *Specification) ForType(forType interface{}) interfaces.QualifierBuilder
 // GetForType returns the type that the specification is to be applied to
 func (s *Specification) GetForType() reflect.Type {
 	return s.forType
+}
+
+// GetScope gets the scope for the specification, if specified.
+func (s *Specification) GetScope() interfaces.SpecificationScoper {
+	return s.scope
 }
 
 // Validate validates an instance of the type

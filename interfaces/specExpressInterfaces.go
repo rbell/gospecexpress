@@ -25,11 +25,18 @@ type FieldValidationExpression func(thing interface{}, ctx FieldValidatorContext
 // ValueFromContext defines functor returning a value from a ValidatorContext
 type ValueFromContext func(ctx FieldValidatorContextGetter) interface{}
 
+// SpecificationScoper defines interface for scoping a specification for a type when multiple specifications for the same type are registered
+type SpecificationScoper interface {
+	GetScopeName() string
+	ExtendsDefaultSpecification() bool
+}
+
 // SpecificationValidator defines interface to Validate something
 type SpecificationValidator interface {
 	Validate(subject interface{}, contextData map[string]interface{}) error
 	ForType(forType interface{}) QualifierBuilder
 	GetForType() reflect.Type
+	GetScope() SpecificationScoper
 }
 
 // QualifierBuilder defines interface for starting to qualify an element
@@ -37,6 +44,7 @@ type QualifierBuilder interface {
 	Required(fieldName string, options ...ValidatorOption) ValidatorBuilder
 	Optional(fieldName string) ValidatorBuilder
 	Custom(exp ValidationExpression) QualifierBuilder
+	ForScope(scope string, extendsDefaultSpecification bool) QualifierBuilder
 }
 
 // ValidatorBuilder defines interface methods to build a specification
