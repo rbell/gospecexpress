@@ -30,6 +30,7 @@ type SpecificationValidator interface {
 	Validate(subject interface{}, contextData map[string]interface{}) error
 	ForType(forType interface{}) QualifierBuilder
 	GetForType() reflect.Type
+	GetScope() string
 }
 
 // QualifierBuilder defines interface for starting to qualify an element
@@ -37,6 +38,7 @@ type QualifierBuilder interface {
 	Required(fieldName string, options ...ValidatorOption) ValidatorBuilder
 	Optional(fieldName string) ValidatorBuilder
 	Custom(exp ValidationExpression) QualifierBuilder
+	ForScope(scope string) QualifierBuilder
 }
 
 // ValidatorBuilder defines interface methods to build a specification

@@ -36,6 +36,6 @@ func TestCatalog_RegisterForType_ShouldRegisterDefalutSpecForType(t *testing.T) 
 	// assert
 	mSpec.AssertExpectations(t)
 	assert.Contains(t, c.validators, fakeType)
-	assert.Contains(t, c.validators[fakeType], defaultContext)
-	assert.Equal(t, mSpec, c.validators[fakeType][defaultContext])
+	assert.Contains(t, c.validators[fakeType], defaultScope)
+	assert.Equal(t, mSpec, c.validators[fakeType][defaultScope])
 }

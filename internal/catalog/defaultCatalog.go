@@ -5,13 +5,16 @@
 package catalog
 
 import (
+	"fmt"
 	"reflect"
+
+	"github.com/rbell/gospecexpress/catalog"
 
 	"github.com/rbell/gospecexpress/interfaces"
 )
 
 const (
-	defaultContext = "default"
+	defaultScope = "default"
 )
 
 // DefaultCatalog is the default validation catalog supported for specexpress
@@ -31,10 +34,14 @@ func NewDefaultCatalog() *DefaultCatalog {
 // Register registers a specification in the DefaultCatalog
 func (c *DefaultCatalog) Register(s interfaces.SpecificationValidator) {
 	t := s.GetForType()
+	scope := s.GetScope()
+	if scope == "" {
+		scope = defaultScope
+	}
 	if c.validators[t] == nil {
 		c.validators[t] = make(map[string]interfaces.SpecificationValidator)
 	}
-	c.validators[t][defaultContext] = s
+	c.validators[t][scope] = s
 }
 
 // Validate validates something against the DefaultCatalog of specifications
@@ -46,9 +53,17 @@ func (c *DefaultCatalog) Validate(something interface{}) error {
 // The additional context is a map which can be referenced by the registered validators associated with the subject in the catalog
 func (c *DefaultCatalog) ValidateWithContext(something interface{}, contextData map[string]interface{}) error {
 	t := reflect.TypeOf(something)
+	scope := defaultScope
+	if specificScope, ok := contextData[catalog.ScopeContextKey]; ok {
+		scope = specificScope.(string)
+	}
 	if vs, ok := c.validators[t]; ok {
-		if v, ok := vs[defaultContext]; ok {
+		if v, ok := vs[scope]; ok {
 			return v.Validate(something, contextData)
+		}
+	} else {
+		if scope != defaultScope {
+			return fmt.Errorf("There is no specification for %v registered in the catalog for the %v scope.", t.String(), scope)
 		}
 	}
 
