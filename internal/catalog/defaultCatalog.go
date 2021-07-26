@@ -8,8 +8,6 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/rbell/gospecexpress/catalog"
-
 	"github.com/rbell/gospecexpress/interfaces"
 )
 
@@ -54,7 +52,7 @@ func (c *DefaultCatalog) Validate(something interface{}) error {
 func (c *DefaultCatalog) ValidateWithContext(something interface{}, contextData map[string]interface{}) error {
 	t := reflect.TypeOf(something)
 	scope := defaultScope
-	if specificScope, ok := contextData[catalog.ScopeContextKey]; ok {
+	if specificScope, ok := contextData[interfaces.ScopeContextKey]; ok {
 		scope = specificScope.(string)
 	}
 	if vs, ok := c.validators[t]; ok {
