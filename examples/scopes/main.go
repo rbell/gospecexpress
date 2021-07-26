@@ -51,12 +51,7 @@ func newClubMemberSpecForAMinor() *ClubMemberSpec {
 	// Validation includes validation of Guardian
 	s.ForType(&ClubMember{}).
 		// Adding scope signalling this is a specification for a Minor (i.e. someone under age of 18)
-		ForScope("MinorClubMember").
-		Required("FirstName").MaxLength(50).
-		Optional("MiddleName").MaxLength(20).
-		Required("LastName", gospecexpress.WithErrorMessage("Sir Name is a required field!")).MaxLength(50).
-		Required("CreditScore").GreaterThan(640, gospecexpress.WithWarning()).
-		Required("MemberExpireAt").GreaterThanOtherField("MemberSince").
+		ForScope("MinorClubMember", true).
 		Required("Guardian").If(func(t interface{}, c map[string]interface{}) bool { return isMinor(t, c) }).MaxLength(10)
 
 	return s

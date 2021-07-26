@@ -8,6 +8,9 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/rbell/gospecexpress/errors"
+	"github.com/rbell/gospecexpress/internal/errorhelpers"
+
 	"github.com/rbell/gospecexpress/interfaces"
 )
 
@@ -32,14 +35,15 @@ func NewDefaultCatalog() *DefaultCatalog {
 // Register registers a specification in the DefaultCatalog
 func (c *DefaultCatalog) Register(s interfaces.SpecificationValidator) {
 	t := s.GetForType()
+	scopeKey := defaultScope
 	scope := s.GetScope()
-	if scope == "" {
-		scope = defaultScope
+	if scope != nil && scope.GetScopeName() != "" {
+		scopeKey = scope.GetScopeName()
 	}
 	if c.validators[t] == nil {
 		c.validators[t] = make(map[string]interfaces.SpecificationValidator)
 	}
-	c.validators[t][scope] = s
+	c.validators[t][scopeKey] = s
 }
 
 // Validate validates something against the DefaultCatalog of specifications
@@ -51,23 +55,69 @@ func (c *DefaultCatalog) Validate(something interface{}) error {
 // The additional context is a map which can be referenced by the registered validators associated with the subject in the catalog
 func (c *DefaultCatalog) ValidateWithContext(something interface{}, contextData map[string]interface{}) error {
 	t := reflect.TypeOf(something)
-	scope := defaultScope
+	scopeKey := defaultScope
 	if specificScope, ok := contextData[interfaces.ScopeContextKey]; ok {
 		//nolint:errcheck // ignore checking error since we know its a string
-		scope = specificScope.(string)
+		scopeKey = specificScope.(string)
 	}
+
+	var valError *errors.ValidatorError = nil
 	if vs, ok := c.validators[t]; ok {
-		if v, ok := vs[scope]; ok {
-			return v.Validate(something, contextData)
+
+		var defaultSpec, scopedSpec interfaces.SpecificationValidator
+		extendsDefaultSpec := false
+
+		// locate scopedSpec if validating for a scope
+		if scopeKey != defaultScope {
+			if v, ok := vs[scopeKey]; ok {
+				scopedSpec = v
+				if scope := scopedSpec.GetScope(); scope != nil {
+					extendsDefaultSpec = scope.ExtendsDefaultSpecification()
+				}
+			} else {
+				// A scoped specification was requested but not found.  Return error indicating such.
+				//nolint:golint // Ignore suggestion of "error strings should not be capitalized or end with punctuation or a newline" - needs to be user readable
+				return fmt.Errorf("There is no specification for %v registered in the catalog for the %v scopeKey.", t.String(), scopeKey)
+			}
 		}
-	} else {
-		if scope != defaultScope {
-			//nolint:golint // Ignore suggestion of "error strings should not be capitalized or end with punctuation or a newline" since this should be human readable.
-			return fmt.Errorf("There is no specification for %v registered in the catalog for the %v scope.", t.String(), scope)
+
+		// locate default spec if needed
+		if extendsDefaultSpec || scopeKey == defaultScope {
+			if v, ok := vs[defaultScope]; ok {
+				defaultSpec = v
+			}
+		}
+
+		// Now validate default spec if we have it
+		if defaultSpec != nil {
+			e := defaultSpec.Validate(something, contextData)
+			if e != nil {
+				if ve, ok := errors.IsValidatorError(e); ok {
+					valError = ve
+				} else {
+					return e
+				}
+			}
+		}
+
+		// Add in the results of the scopedSpec
+		if scopedSpec != nil {
+			e := scopedSpec.Validate(something, contextData)
+			if e != nil {
+				if ve, ok := errors.IsValidatorError(e); ok {
+					valError = errorhelpers.JoinErrors(valError, ve)
+				} else {
+					return e
+				}
+			}
 		}
 	}
 
 	// Catalog does not contain specification for something or it is valid.
+	if valError != nil {
+		return valError
+	}
+
 	return nil
 }
 

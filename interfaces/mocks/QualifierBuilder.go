@@ -28,13 +28,13 @@ func (_m *QualifierBuilder) Custom(exp interfaces.ValidationExpression) interfac
 	return r0
 }
 
-// ForScope provides a mock function with given fields: scope
-func (_m *QualifierBuilder) ForScope(scope string) interfaces.QualifierBuilder {
-	ret := _m.Called(scope)
+// ForScope provides a mock function with given fields: scope, extendsDefaultSpecification
+func (_m *QualifierBuilder) ForScope(scope string, extendsDefaultSpecification bool) interfaces.QualifierBuilder {
+	ret := _m.Called(scope, extendsDefaultSpecification)
 
 	var r0 interfaces.QualifierBuilder
-	if rf, ok := ret.Get(0).(func(string) interfaces.QualifierBuilder); ok {
-		r0 = rf(scope)
+	if rf, ok := ret.Get(0).(func(string, bool) interfaces.QualifierBuilder); ok {
+		r0 = rf(scope, extendsDefaultSpecification)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(interfaces.QualifierBuilder)

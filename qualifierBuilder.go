@@ -32,8 +32,8 @@ type qualifierBuilder struct {
 
 // ForScope sets the scope for the specification, allowing more than one specification be defined for a type.
 // To validate using scope, use catalog.Validate(thing, catalog.WithScope("MyRegisteredScope"))
-func (b *qualifierBuilder) ForScope(scope string) interfaces.QualifierBuilder {
-	b.spec.scope = scope
+func (b *qualifierBuilder) ForScope(scope string, extendsDefaultSpecidication bool) interfaces.QualifierBuilder {
+	b.spec.scope = NewSpecificationScope(scope, extendsDefaultSpecidication)
 	return b
 }
 
