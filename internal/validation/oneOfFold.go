@@ -7,6 +7,7 @@ package validation
 import (
 	"fmt"
 	"reflect"
+	"strings"
 
 	"github.com/rbell/gospecexpress/catalog"
 	"github.com/rbell/gospecexpress/errors"
@@ -15,19 +16,19 @@ import (
 )
 
 const (
-	defaultOneOfMessage = "%v does not match the required valid values %v."
-	oneOfValuesKey      = "oneOfValuesKey"
+	defaultOneOfFoldMessage = "%v does not match the required valid values %v (ignoring case)."
+	oneOfFoldValuesKey      = "oneOfFoldValuesKey"
 )
 
-// OneOf defines validator enforcing a string must match one of a slice of values
-type OneOf struct {
+// OneOfFold defines validator enforcing a string must match one of a slice of strings, ignoring case
+type OneOfFold struct {
 	*AllFieldValidators
-	values []interface{}
+	values []string
 }
 
 // NewOneOf returns an initialized OneOf validator
-func NewOneOf(fieldName, alias string, values []interface{}) interfaces.Validator {
-	return &OneOf{
+func NewOneOfFold(fieldName, alias string, values []string) interfaces.Validator {
+	return &OneOfFold{
 		AllFieldValidators: &AllFieldValidators{
 			fieldName:  fieldName,
 			fieldAlias: alias,
@@ -37,17 +38,17 @@ func NewOneOf(fieldName, alias string, values []interface{}) interfaces.Validato
 }
 
 func init() {
-	catalog.ValidationCatalog().MessageStore().SetMessage(&OneOf{}, func(ctx interfaces.FieldValidatorContextGetter) string {
+	catalog.ValidationCatalog().MessageStore().SetMessage(&OneOfFold{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		//nolint:errcheck // ignore error
-		values := ctx.GetContextData()[oneOfValuesKey].([]interface{})
+		values := ctx.GetContextData()[oneOfFoldValuesKey].([]interface{})
 		//nolint:errcheck // ignore error
 		alias := ctx.GetContextData()[ContextFieldAliasKey].(string)
-		return fmt.Sprintf(defaultOneOfMessage, alias, values)
+		return fmt.Sprintf(defaultOneOfFoldMessage, alias, values)
 	})
 }
 
 // Validate validates the field matches the regex
-func (v *OneOf) Validate(thing interface{}, contextData map[string]interface{}, messageStore interfaces.MessageStorer) error {
+func (v *OneOfFold) Validate(thing interface{}, contextData map[string]interface{}, messageStore interfaces.MessageStorer) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
 		// dereference if need be
 		if fv.Kind() == reflect.Ptr {
@@ -55,21 +56,22 @@ func (v *OneOf) Validate(thing interface{}, contextData map[string]interface{}, 
 			fv = &elemVal
 		}
 
+		// Short circuit if the field value is not a string since folding is only applicable to strings
+		if fv.Kind() != reflect.String {
+			return nil
+		}
+
+		fieldStringVal := fv.String()
 		matches := false
 		for _, val := range v.values {
-			valval := reflect.ValueOf(val)
-			if fv != nil {
-				//nolint:errcheck // ignore eq error
-				eq, _ := reflectionhelpers.Eq(*fv, valval)
-				if eq {
-					matches = true
-					break
-				}
+			if strings.EqualFold(val, fieldStringVal) {
+				matches = true
+				break
 			}
 		}
 		if !matches {
 			msg := messageStore.GetMessage(v, v.AllFieldValidators.NewValidatorContext(thing, map[string]interface{}{
-				oneOfValuesKey: v.values,
+				oneOfFoldValuesKey: v.values,
 			}))
 			return errors.NewValidationError(v.fieldName, msg, v.shouldWarn)
 		}
