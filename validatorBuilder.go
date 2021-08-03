@@ -54,3 +54,8 @@ func (v *validatorBuilder) OneOf(values []interface{}, options ...interfaces.Val
 	addFieldValidator(v.validators, v.fieldName, v.fieldAlias, ApplyValidatorOptions(validation.NewOneOf(v.fieldName, v.fieldAlias, values), options...))
 	return v
 }
+
+func (v *validatorBuilder) OneOfFold(values []string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
+	addFieldValidator(v.validators, v.fieldName, v.fieldAlias, ApplyValidatorOptions(validation.NewOneOfFold(v.fieldName, v.fieldAlias, values), options...))
+	return v
+}
