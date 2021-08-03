@@ -95,6 +95,7 @@ type ValidatorBuilder interface {
 	Expect(validator FieldValidationExpression, options ...ValidatorOption) ValidatorBuilder
 
 	OneOf(values []interface{}, options ...ValidatorOption) ValidatorBuilder
+	OneOfFold(values []string, options ...ValidatorOption) ValidatorBuilder
 }
 
 // Validator defines interface for something that can validate.  Similar to a boolean predicate, a validator returns
