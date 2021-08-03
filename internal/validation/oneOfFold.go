@@ -26,7 +26,7 @@ type OneOfFold struct {
 	values []string
 }
 
-// NewOneOf returns an initialized OneOf validator
+// NewOneOfFold returns an initialized OneOf validator
 func NewOneOfFold(fieldName, alias string, values []string) interfaces.Validator {
 	return &OneOfFold{
 		AllFieldValidators: &AllFieldValidators{
