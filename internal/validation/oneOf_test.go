@@ -62,3 +62,54 @@ func TestOneOf_Validate_DoesNotMatchValue_ShouldReturnError(t *testing.T) {
 	assert.NotNil(t, result)
 	mMessageStore.AssertExpectations(t)
 }
+
+func TestOneOf_Validate_ReferenceMatchValue_ShouldReturnNil(t *testing.T) {
+	// setup
+	validator := &OneOf{
+		AllFieldValidators: &AllFieldValidators{
+			fieldName: "Enum",
+		},
+		values: []interface{}{"test1", "test2"},
+	}
+
+	mMessageStore := &mocks.MessageStorer{}
+	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.OneOf"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Does Not Match")
+
+	type testSubjectType struct {
+		Enum *string
+	}
+	test := "test2"
+	testSubject := &testSubjectType{Enum: &test}
+
+	// test
+	result := validator.Validate(testSubject, nil, mMessageStore)
+
+	// assert
+	assert.Nil(t, result)
+}
+
+func TestOneOf_Validate_ReferenceDoesNotMatchValue_ShouldReturnErr(t *testing.T) {
+	// setup
+	validator := &OneOf{
+		AllFieldValidators: &AllFieldValidators{
+			fieldName: "Enum",
+		},
+		values: []interface{}{"test1", "test2"},
+	}
+
+	mMessageStore := &mocks.MessageStorer{}
+	mMessageStore.On("GetMessage", mock.AnythingOfType("*validation.OneOf"), mock.AnythingOfType("*validation.ValidatorContext")).Return("Does Not Match")
+
+	type testSubjectType struct {
+		Enum *string
+	}
+	test := "test3"
+	testSubject := &testSubjectType{Enum: &test}
+
+	// test
+	result := validator.Validate(testSubject, nil, mMessageStore)
+
+	// assert
+	assert.NotNil(t, result)
+	mMessageStore.AssertExpectations(t)
+}
