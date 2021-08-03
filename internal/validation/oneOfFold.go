@@ -40,7 +40,7 @@ func NewOneOfFold(fieldName, alias string, values []string) interfaces.Validator
 func init() {
 	catalog.ValidationCatalog().MessageStore().SetMessage(&OneOfFold{}, func(ctx interfaces.FieldValidatorContextGetter) string {
 		//nolint:errcheck // ignore error
-		values := ctx.GetContextData()[oneOfFoldValuesKey].([]interface{})
+		values := ctx.GetContextData()[oneOfFoldValuesKey].([]string)
 		//nolint:errcheck // ignore error
 		alias := ctx.GetContextData()[ContextFieldAliasKey].(string)
 		return fmt.Sprintf(defaultOneOfFoldMessage, alias, values)
