@@ -30,6 +30,13 @@ type qualifierBuilder struct {
 	forType reflect.Value
 }
 
+// ForScope sets the scope for the specification, allowing more than one specification be defined for a type.
+// To validate using scope, use catalog.Validate(thing, catalog.WithScope("MyRegisteredScope"))
+func (b *qualifierBuilder) ForScope(scope string, extendsDefaultSpecidication bool) interfaces.QualifierBuilder {
+	b.spec.scope = NewSpecificationScope(scope, extendsDefaultSpecidication)
+	return b
+}
+
 // RequiredField indicates a field is required
 func (b *qualifierBuilder) Required(fieldName string, options ...interfaces.ValidatorOption) interfaces.ValidatorBuilder {
 	alias := reflectionhelpers.GetFieldAlias(b.forType, fieldName)

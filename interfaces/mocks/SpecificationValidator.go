@@ -46,6 +46,22 @@ func (_m *SpecificationValidator) GetForType() reflect.Type {
 	return r0
 }
 
+// GetScope provides a mock function with given fields:
+func (_m *SpecificationValidator) GetScope() interfaces.SpecificationScoper {
+	ret := _m.Called()
+
+	var r0 interfaces.SpecificationScoper
+	if rf, ok := ret.Get(0).(func() interfaces.SpecificationScoper); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interfaces.SpecificationScoper)
+		}
+	}
+
+	return r0
+}
+
 // Validate provides a mock function with given fields: subject, contextData
 func (_m *SpecificationValidator) Validate(subject interface{}, contextData map[string]interface{}) error {
 	ret := _m.Called(subject, contextData)

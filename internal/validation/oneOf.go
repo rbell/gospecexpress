@@ -49,6 +49,10 @@ func init() {
 // Validate validates the field matches the regex
 func (v *OneOf) Validate(thing interface{}, contextData map[string]interface{}, messageStore interfaces.MessageStorer) error {
 	if fv, ok := reflectionhelpers.GetFieldValue(thing, v.fieldName); ok {
+		if fv.Kind() == reflect.Ptr {
+			elemVal := fv.Elem()
+			fv = &elemVal
+		}
 		matches := false
 		for _, val := range v.values {
 			valval := reflect.ValueOf(val)
