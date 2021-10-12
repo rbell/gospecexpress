@@ -7,8 +7,6 @@ package errors
 import (
 	"errors"
 	"reflect"
-
-	"github.com/rbell/gospecexpress/internal/errorhelpers"
 )
 
 // JoinErrors joins two errors together into a ValidatorError
@@ -35,11 +33,11 @@ func JoinErrors(e1, e2 error) *ValidatorError {
 	if errors.As(e2, &e) {
 		errMap := ve.GetErrorMap()
 		for key, msg := range e2.(*ValidatorError).GetFlatErrorMap() {
-			errorhelpers.AddMessages(errMap, key, msg...)
+			AddMessagesToMap(errMap, key, msg...)
 		}
 		warnMap := ve.GetWarningMap()
 		for key, msg := range e2.(*ValidatorError).GetFlatWarningMap() {
-			errorhelpers.AddMessages(warnMap, key, msg...)
+			AddMessagesToMap(warnMap, key, msg...)
 		}
 		childErrs := ve.GetChildErrors()
 		for key, ve := range e2.(*ValidatorError).GetChildErrors() {

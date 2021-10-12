@@ -36,7 +36,7 @@ func NewValidationErrors(errs map[string][]string, children map[string]*Validato
 }
 
 // NewValidationErrorsWithWarnings returns a new validation error for a map of error messages
-func NewValidationErrorsWithWarnings(errs map[string][]string, warnings map[string][]string, children map[string]*ValidatorError) *ValidatorError {
+func NewValidationErrorsWithWarnings(errs, warnings map[string][]string, children map[string]*ValidatorError) *ValidatorError {
 	if errs == nil {
 		return &ValidatorError{errorMap: make(map[string][]string), children: children}
 	}

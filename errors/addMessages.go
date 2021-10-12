@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package errorhelpers
+package errors
 
-// AddMessages adds messages to an error map
-func AddMessages(errMap map[string][]string, context string, msg ...string) {
+// AddMessagesToMap adds messages to an error map
+func AddMessagesToMap(errMap map[string][]string, context string, msg ...string) {
 	if _, ok := errMap[context]; !ok {
 		errMap[context] = []string{}
 	}
