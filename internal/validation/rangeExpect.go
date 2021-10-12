@@ -9,8 +9,6 @@ import (
 	"reflect"
 
 	"github.com/rbell/gospecexpress/errors"
-	"github.com/rbell/gospecexpress/internal/errorhelpers"
-
 	"github.com/rbell/gospecexpress/interfaces"
 	"github.com/rbell/gospecexpress/internal/reflectionhelpers"
 )
@@ -44,7 +42,7 @@ func (v *RangeExpect) Validate(thing interface{}, contextData map[string]interfa
 				err := v.exp(ctx)
 				if err != nil {
 					if ve, ok := err.(*errors.ValidatorError); ok {
-						e = errorhelpers.JoinErrors(e, errors.NewValidationErrors(nil, map[string]*errors.ValidatorError{
+						e = errors.JoinErrors(e, errors.NewValidationErrors(nil, map[string]*errors.ValidatorError{
 							fmt.Sprintf("%v[%d]", v.fieldName, i): ve,
 						}))
 					}

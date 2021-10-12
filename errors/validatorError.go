@@ -35,6 +35,14 @@ func NewValidationErrors(errs map[string][]string, children map[string]*Validato
 	return &ValidatorError{errorMap: errs, children: children}
 }
 
+// NewValidationErrorsWithWarnings returns a new validation error for a map of error messages
+func NewValidationErrorsWithWarnings(errs, warnings map[string][]string, children map[string]*ValidatorError) *ValidatorError {
+	if errs == nil {
+		return &ValidatorError{errorMap: make(map[string][]string), children: children}
+	}
+	return &ValidatorError{errorMap: errs, warningMap: warnings, children: children}
+}
+
 // IsValidatorError returns reference to ValidatorError and a bool indicating if the err passed in is a ValidatorError
 func IsValidatorError(err error) (*ValidatorError, bool) {
 	if e, ok := err.(*ValidatorError); ok {
