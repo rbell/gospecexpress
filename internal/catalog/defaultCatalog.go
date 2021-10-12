@@ -9,8 +9,6 @@ import (
 	"reflect"
 
 	"github.com/rbell/gospecexpress/errors"
-	"github.com/rbell/gospecexpress/internal/errorhelpers"
-
 	"github.com/rbell/gospecexpress/interfaces"
 )
 
@@ -105,7 +103,7 @@ func (c *DefaultCatalog) ValidateWithContext(something interface{}, contextData 
 			e := scopedSpec.Validate(something, contextData)
 			if e != nil {
 				if ve, ok := errors.IsValidatorError(e); ok {
-					valError = errorhelpers.JoinErrors(valError, ve)
+					valError = errors.JoinErrors(valError, ve)
 				} else {
 					return e
 				}

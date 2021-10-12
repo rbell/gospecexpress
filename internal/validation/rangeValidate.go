@@ -11,7 +11,6 @@ import (
 	"github.com/rbell/gospecexpress/catalog"
 	"github.com/rbell/gospecexpress/errors"
 	"github.com/rbell/gospecexpress/interfaces"
-	"github.com/rbell/gospecexpress/internal/errorhelpers"
 	"github.com/rbell/gospecexpress/internal/reflectionhelpers"
 )
 
@@ -43,7 +42,7 @@ func (v *RangeValidate) Validate(thing interface{}, contextData map[string]inter
 				err := v.validationCatalog.ValidateWithContext(item.Interface(), contextData)
 				if err != nil {
 					if ve, ok := err.(*errors.ValidatorError); ok {
-						e = errorhelpers.JoinErrors(e, errors.NewValidationErrors(nil, map[string]*errors.ValidatorError{
+						e = errors.JoinErrors(e, errors.NewValidationErrors(nil, map[string]*errors.ValidatorError{
 							fmt.Sprintf("%v[%d]", v.fieldName, i): ve,
 						}))
 					}

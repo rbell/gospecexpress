@@ -10,10 +10,8 @@ import (
 
 	"github.com/rbell/gospecexpress/internal/reflectionhelpers"
 
-	specExpressErrors "github.com/rbell/gospecexpress/errors"
-	"github.com/rbell/gospecexpress/internal/errorhelpers"
-
 	"github.com/rbell/gospecexpress/catalog"
+	specExpressErrors "github.com/rbell/gospecexpress/errors"
 
 	"github.com/rbell/gospecexpress/interfaces"
 )
@@ -55,7 +53,7 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 				return err
 			}
 			if verr != nil {
-				specError = errorhelpers.JoinErrors(specError, verr)
+				specError = specExpressErrors.JoinErrors(specError, verr)
 			}
 		}
 	}
@@ -78,7 +76,7 @@ func (s *Specification) Validate(thing interface{}, contextData map[string]inter
 					for _, v := range exp.validators {
 						if err := v.Validate(thing, contextData, catalog.ValidationCatalog().MessageStore()); err != nil {
 							if specErr, ok := specExpressErrors.IsValidatorError(err); ok {
-								specError = errorhelpers.JoinErrors(specError, specErr)
+								specError = specExpressErrors.JoinErrors(specError, specErr)
 							} else {
 								processingError = err
 								return false
