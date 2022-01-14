@@ -30,6 +30,7 @@ type ClubMemberSpec struct {
 func newClubMemberSpec() *ClubMemberSpec {
 	s := &ClubMemberSpec{}
 
+	//nolint // ignore
 	s.ForType(&ClubMember{}).
 		Custom(func(thing interface{}, contextData map[string]interface{}) (valErr, err error) {
 			return fmt.Errorf("This is a test custom validation error returned for the structure as a whole"), nil
@@ -71,6 +72,7 @@ func Benchmark_Valid_ClubMember_Spec(b *testing.B) {
 	}
 
 	for i := 0; i < b.N; i++ {
+		//nolint // ignore
 		catalog.Validate(c)
 	}
 }
