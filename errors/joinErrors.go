@@ -43,6 +43,9 @@ func JoinErrors(e1, e2 error) *ValidatorError {
 		for key, ve := range e2.(*ValidatorError).GetChildErrors() {
 			childErrs[key] = ve
 		}
+	} else {
+		errMap := ve.GetErrorMap()
+		AddMessagesToMap(errMap, "", e2.Error())
 	}
 
 	return ve
